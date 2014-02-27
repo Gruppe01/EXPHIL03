@@ -46,10 +46,12 @@ class CLientHandler(SocketServer.BaseRequestHandler):
             elif(data['request'] == 'exit'):
                 self.exit(username)  
     
+    #Removes the client thats disconnecting from the clientlist.
     def exit(self, username):
         if username != '':
             clients.remove(username)
     
+    #Method that handles clientlogout.
     def logout(self, data, username):
         if(username != ''):
             response = {'response' : 'logout', 'username' : username}
@@ -62,7 +64,7 @@ class CLientHandler(SocketServer.BaseRequestHandler):
         self.connection.sendall(response) 
         return username   
     
-    
+    #Method that handles the messagecommunication between the server and the client.
     def message(self, data, username):
         # Return the string in uppercase
         if(username != ''):
@@ -75,7 +77,7 @@ class CLientHandler(SocketServer.BaseRequestHandler):
         response = json.dumps(response)
         self.connection.sendall(response)
     
-    
+    #Method that handles the login
     def login(self, data):
         if isValid(data['username']) and data['username'] not in clients:
             response = {'response' : 'login', 'username' : data['username'], 'messages' : messages}
@@ -92,7 +94,8 @@ class CLientHandler(SocketServer.BaseRequestHandler):
         response = json.dumps(response)
         self.connection.sendall(response)
         return username
-
+    
+#Method that checks if the username is valid.
 def isValid(string):
     if re.match('^[\w]+$', string):
         return True 

@@ -12,6 +12,7 @@ class Client(object):
     def start(self, host, port):
         self.connection.connect((host, port))
         user = False
+        print 'Welcome to this awesome chatroom. Start by creating a user. Type \'create user\' to do this.\nType \'help\' to get more information.' 
         while True:
             choice = raw_input('Choices: |Create user| |Write message| |Logout| |Exit| |Help|: ')
             choice = choice.lower()
@@ -29,7 +30,7 @@ class Client(object):
                     else:
                         break
             elif choice == 'exit':
-                self.exit()
+                self.force_disconnect()
                 break
             elif choice == 'help':
                 self.help()
@@ -38,31 +39,33 @@ class Client(object):
             else:
                 print 'Invalid command'
         
-
+    #Prints the recieved message from the server.
     def message_received(self, message, connection):
         print ('Message received: ' + message)
-
+    
+    #Closes the connection between the server and the client.
     def connection_closed(self, connection):
         self.connection.close()
-
+    
+    #Sends the given data to the server.
     def send(self, data):
         self.connection.sendall(data)
-
-    def force_disconnect(self):
-        pass
     
-    def exit(self):
+    #Closes the connection between server and client(almost the same as connection_closed).
+    def force_disconnect(self):
         request = {'request' : 'exit'}
         request = json.dumps(request)
         self.send(request)
         self.connection_closed(self.connection)
     
+    #Help method that prints how to initialize the different choices.
     def help(self):
         print 'The first thing you need to do is to create a user; write \'create user\' to do this.'
         print 'After this you can start writing messages; write \'write message\' to do this.'
         print 'To logout of the server write \'logout\''
         print 'Write \'exit\' when you get the choices to exit the whole program.' 
     
+    #The method that handles messagecommunication between the server and the client.
     def createMessage(self):
         message = raw_input('Enter a message(write \'stop\' to go back to choices): ')
         
@@ -81,11 +84,16 @@ class Client(object):
         # Motta data fra serveren
     
         received_data = self.connection.recv(1024)
-    
-        self.message_received(received_data, self.connection)
+        
+        received_data = json.loads(received_data)
+        
+        if 'error' in received_data:
+            self.message_received(received_data['error'], self.connection)
+            return False
         
         return True
     
+    #Method that creates a new user to the chatroom.
     def createUser(self):
         while True:
             username = raw_input('Enter your username(can only contain alphanumerical characters and underscores): ')
@@ -102,6 +110,7 @@ class Client(object):
                     print messages
                 break
     
+    #Method that logs out the user.
     def logout(self):
         request = json.dumps({'request': 'logout'})
         self.send(request)
