@@ -8,7 +8,8 @@ import json
 class Client(object):
     def __init__(self):
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+    
+    #Starting the connection.
     def start(self, host, port):
         self.connection.connect((host, port))
         user = False
