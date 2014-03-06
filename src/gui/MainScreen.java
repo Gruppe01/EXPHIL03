@@ -12,36 +12,22 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class MainScreen extends JFrame {
+public class MainScreen extends JPanel {
 
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainScreen frame = new MainScreen();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
 	 */
 	public MainScreen() {
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setResizable(false);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 680, 426);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		//setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -49,7 +35,7 @@ public class MainScreen extends JFrame {
 		contentPane.add(scrollPane);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(343, 11, 321, 153);
+		scrollPane_1.setBounds(339, 11, 321, 153);
 		contentPane.add(scrollPane_1);
 		
 		JButton btnEditShow = new JButton("Edit / Show meeting");
@@ -81,7 +67,7 @@ public class MainScreen extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnLogout.setBounds(528, 342, 136, 45);
+		btnLogout.setBounds(524, 342, 136, 45);
 		contentPane.add(btnLogout);
 	}
 }
