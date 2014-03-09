@@ -12,11 +12,7 @@ public class MySQLConnection {
     private String driver;
     private String userName;
     private String password;
-
     private Connection conn;
-    //private Statement statement;
-    private PreparedStatement preparedStatement;
-    //private ResultSet resultSet;
 
     public MySQLConnection() {
         url = "jdbc:mysql://mysql.stud.ntnu.no/";
@@ -24,19 +20,9 @@ public class MySQLConnection {
         driver = "com.mysql.jdbc.Driver";
         userName = "simonbo_exphil03";
         password = "drossap";
-
-        HashMap<String, String> updateMap = new HashMap<>();
-        HashMap<String, String> deleteMap = new HashMap<>();
-
-        updateMap.put("username", "admin");
-        deleteMap.put("username", "simoms");
-
-        insert("User", Arrays.asList("username", "password", "email", "firstName", "lastName"), Arrays.asList("admin", "admin", "admin@exphil03.com", "admin", "admin"));
-        update("User", Arrays.asList("username", "password", "email", "firstName", "lastName"), Arrays.asList("simoms", "drossap", "simoms@exphil03.com", "b-j", "simon"), updateMap);
-        delete("User", deleteMap);
     }
 
-    public MySQLConnection(String url, String dbName, String driver, String userName, String password){
+    public MySQLConnection(String url, String dbName, String driver, String userName, String password) {
         this.url = url;
         this.dbName = dbName;
         this.driver = driver;
@@ -44,14 +30,27 @@ public class MySQLConnection {
         this.password = password;
     }
 
-    public void executeUpdate(String query, List<String> values) {
+    private ArrayList<HashMap<String, String>> execute(String type, String sql, ArrayList<String> values) {
+        try {
+            switch (type){
+                case "update":
+                    executeUpdate(sql, values);
+                    return null;
+                case "query":
+                    return executeQuery(sql, values);
+                default:
+                    return null;
+            }
+        }catch (SQLException ex){
+            throw new IllegalArgumentException("Could not disconnect from database.");
+        }
+    }
+
+    private void executeUpdate(String sql, ArrayList<String> values) throws SQLException {
         try{
             connect();
 
-            System.out.println(query);
-            System.out.println(values);
-
-            preparedStatement = conn.prepareStatement(query);
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
             for(int i=0; i<values.size(); i++){
                 preparedStatement.setString(i+1, values.get(i));
@@ -62,12 +61,26 @@ public class MySQLConnection {
             close();
         }catch (MySQLIntegrityConstraintViolationException ex){
             throw new IllegalArgumentException("Could not edit database. " + ex.getMessage());
-        }catch (SQLException ex){
-            throw new IllegalArgumentException("Could not connect to database.");
         }
     }
 
-    public void insert(String table, List<String> fields, List<String> values) {
+    private ArrayList<HashMap<String, String>> executeQuery(String sql, ArrayList<String> values) throws SQLException {
+        connect();
+
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+        for(int i=0; i<values.size(); i++){
+            preparedStatement.setString(i+1, values.get(i));
+        }
+
+        ArrayList<HashMap<String, String>> results = getResults(preparedStatement.executeQuery());
+
+        close();
+
+        return results;
+    }
+
+    public void insert(String table, ArrayList<String> fields, ArrayList<String> values) {
         if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
 
         String fieldsString = StringUtils.join(fields, ", ");
@@ -79,11 +92,11 @@ public class MySQLConnection {
 
         String insertSQL = "INSERT INTO  " + table + " (" + fieldsString + ") VALUES (" + valuesString + ");";
 
-        executeUpdate(insertSQL, values);
+        execute("update", insertSQL, values);
     }
 
     @SuppressWarnings("unchecked")
-    public void update(String table, List<String> fields, List<String> values, HashMap conditions){
+    public void update(String table, ArrayList<String> fields, ArrayList<String> values, HashMap conditions){
         if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
 
         String setString = StringUtils.join(fields, " = ?, ") + " = ?";
@@ -96,7 +109,7 @@ public class MySQLConnection {
         queryValues.addAll(values);
         queryValues.addAll(conditions.values());
 
-        executeUpdate(updateSQL, queryValues);
+        execute("update", updateSQL, queryValues);
     }
 
     @SuppressWarnings("unchecked")
@@ -105,26 +118,57 @@ public class MySQLConnection {
 
         String deleteSQL = "DELETE FROM " + table + " WHERE " + whereString + ";";
 
-        List<String> queryValues = new ArrayList<String>(conditions.values());
+        ArrayList<String> queryValues = new ArrayList<String>(conditions.values());
 
-        executeUpdate(deleteSQL, queryValues);
+        execute("update", deleteSQL, queryValues);
     }
 
-    private void connect() throws SQLException{
+    @SuppressWarnings("unchecked")
+    public ArrayList<HashMap<String, String>> select(ArrayList<String> tables, ArrayList<String> fields, HashMap conditions){
+        String tablesString = StringUtils.join(tables, ", ");
+        String fieldsString = StringUtils.join(fields, ", ");
+        String whereString = StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
+
+        String selectSQL = "SELECT " + fieldsString + " FROM " + tablesString + " WHERE " + whereString + ";";
+
+        ArrayList<String> queryValues = new ArrayList<String>(conditions.values());
+
+        return execute("query", selectSQL, queryValues);
+    }
+
+    private ArrayList<HashMap<String, String>> getResults(ResultSet resultSet) throws SQLException{
+        ArrayList<HashMap<String, String>> results = new ArrayList<>();
+
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columns = metaData.getColumnCount();
+
+        while(resultSet.next()){
+            HashMap<String, String> map = new HashMap<>();
+
+            for(int i = 1; i<=columns; i++){
+                map.put(metaData.getColumnName(i), resultSet.getString(i));
+            }
+
+            results.add(map);
+        }
+
+        return results;
+    }
+
+    public void connect(){
         try{
             Class.forName(driver).newInstance();
 
             conn = DriverManager.getConnection(url + dbName, userName, password);
+        }catch (SQLException e){
+            throw new IllegalArgumentException("Could not connect to database.");
         }catch (Exception e){
             throw new IllegalArgumentException("Class not found.");
         }
     }
 
-    private void close() throws SQLException {
+    public void close() throws SQLException {
         conn.close();
-    }
-
-    public static void main(String args[]) {
-        MySQLConnection connectionn = new MySQLConnection();
+        conn = null;
     }
 }
