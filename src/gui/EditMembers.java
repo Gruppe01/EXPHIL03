@@ -13,6 +13,10 @@ import javax.swing.JProgressBar;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
+
 import java.awt.ScrollPane;
 import java.awt.Scrollbar;
 import javax.swing.JScrollBar;
@@ -28,6 +32,14 @@ public class EditMembers extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+    	    UIManager.setLookAndFeel(new SyntheticaAluOxideLookAndFeel());
+    	        
+    	} catch (Exception e) {
+    	    try {
+    	        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+    	    } catch (Exception ex) {}
+    	}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
