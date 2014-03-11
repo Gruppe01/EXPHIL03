@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inheritJdk="true">
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$">
+		<testFolder url="file://$MODULE_DIR$/tests"/>
+		<excludeFolder url="file://$MODULE_DIR$/resources"/>
+	</contentEntry>
+	<lib name="javax.mail.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/javax.mail.jar!/"/>
+	</lib>
+	<lib name="swingx-core-1.6.2.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/swingx-core-1.6.2.jar!/"/>
+	</lib>
+	<lib name="jakarta-regexp-1.2.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/jakarta-regexp-1.2.jar!/"/>
+	</lib>
+	<lib name="jfcunit.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/jfcunit.jar!/"/>
+	</lib>
+	<lib name="junit-4.10.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/junit-4.10.jar!/"/>
+	</lib>
+	<lib name="junit.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/junit.jar!/"/>
+	</lib>
+	<lib name="mysql-connector-java-5.1.29-bin.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/mysql-connector-java-5.1.29-bin.jar!/"/>
+	</lib>
+	<lib name="lib/junit.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/junit.jar!/"/>
+	</lib>
+	<lib name="synthetica.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/synthetica.jar!/"/>
+	</lib>
+	<lib name="syntheticaAluOxide.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/syntheticaAluOxide.jar!/"/>
+	</lib>
+	<levels>
+		<level name="lib" value="project"/>
+	</levels>
+</component>
