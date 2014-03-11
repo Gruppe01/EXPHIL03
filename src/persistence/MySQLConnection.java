@@ -30,23 +30,7 @@ public class MySQLConnection {
         this.password = password;
     }
 
-    private ArrayList<HashMap<String, String>> execute(String type, String sql, ArrayList<String> values) {
-        try {
-            switch (type){
-                case "update":
-                    executeUpdate(sql, values);
-                    return null;
-                case "query":
-                    return executeQuery(sql, values);
-                default:
-                    return null;
-            }
-        }catch (SQLException ex){
-            throw new IllegalArgumentException("Could not disconnect from database.");
-        }
-    }
-
-    private void executeUpdate(String sql, ArrayList<String> values) throws SQLException {
+    private ArrayList<HashMap<String, String>> execute(String sql, ArrayList<String> values, boolean returns) throws MySQLIntegrityConstraintViolationException{
         try{
             connect();
 
@@ -56,31 +40,22 @@ public class MySQLConnection {
                 preparedStatement.setString(i+1, values.get(i));
             }
 
-            preparedStatement.executeUpdate();
+            ArrayList<HashMap<String, String>> results = null;
+
+            if(returns) results = getResults(preparedStatement.executeQuery());
+            else preparedStatement.executeUpdate();
 
             close();
+
+            return results;
         }catch (MySQLIntegrityConstraintViolationException ex){
             throw new IllegalArgumentException("Could not edit database. " + ex.getMessage());
+        }catch (SQLException ex){
+            throw new IllegalArgumentException(ex.getMessage());
         }
     }
 
-    private ArrayList<HashMap<String, String>> executeQuery(String sql, ArrayList<String> values) throws SQLException {
-        connect();
-
-        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-
-        for(int i=0; i<values.size(); i++){
-            preparedStatement.setString(i+1, values.get(i));
-        }
-
-        ArrayList<HashMap<String, String>> results = getResults(preparedStatement.executeQuery());
-
-        close();
-
-        return results;
-    }
-
-    public void insert(String table, ArrayList<String> fields, ArrayList<String> values) {
+    public void insert(String table, ArrayList<String> fields, ArrayList<String> values) throws MySQLIntegrityConstraintViolationException {
         if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
 
         String fieldsString = StringUtils.join(fields, ", ");
@@ -92,48 +67,50 @@ public class MySQLConnection {
 
         String insertSQL = "INSERT INTO  " + table + " (" + fieldsString + ") VALUES (" + valuesString + ");";
 
-        execute("update", insertSQL, values);
+        execute(insertSQL, values, false);
     }
 
     @SuppressWarnings("unchecked")
-    public void update(String table, ArrayList<String> fields, ArrayList<String> values, HashMap conditions){
+    public void update(String table, ArrayList<String> fields, ArrayList<String> values, HashMap conditions, ArrayList<String> selection) throws MySQLIntegrityConstraintViolationException {
         if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
 
         String setString = StringUtils.join(fields, " = ?, ") + " = ?";
         String whereString = StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
+        String selectionString = StringUtils.join(selection, " ");
 
-        String updateSQL = "UPDATE " + table + " SET " + setString + " WHERE " + whereString + ";";
+        String updateSQL = "UPDATE " + table + " SET " + setString + " WHERE " + whereString + " " + selectionString + ";";
 
         ArrayList<String> queryValues = new ArrayList<>();
 
         queryValues.addAll(values);
         queryValues.addAll(conditions.values());
 
-        execute("update", updateSQL, queryValues);
+        execute(updateSQL, queryValues, false);
     }
 
     @SuppressWarnings("unchecked")
-    public void delete(String table, HashMap conditions) {
+    public void delete(String table, HashMap conditions) throws MySQLIntegrityConstraintViolationException {
         String whereString = StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
 
         String deleteSQL = "DELETE FROM " + table + " WHERE " + whereString + ";";
 
         ArrayList<String> queryValues = new ArrayList<String>(conditions.values());
 
-        execute("update", deleteSQL, queryValues);
+        execute(deleteSQL, queryValues, false);
     }
 
     @SuppressWarnings("unchecked")
-    public ArrayList<HashMap<String, String>> select(ArrayList<String> tables, ArrayList<String> fields, HashMap conditions){
+    public ArrayList<HashMap<String, String>> select(ArrayList<String> tables, ArrayList<String> fields, HashMap conditions, ArrayList<String> selection) throws MySQLIntegrityConstraintViolationException {
         String tablesString = StringUtils.join(tables, ", ");
         String fieldsString = StringUtils.join(fields, ", ");
         String whereString = StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
+        String selectionString = StringUtils.join(selection, " ");
 
-        String selectSQL = "SELECT " + fieldsString + " FROM " + tablesString + " WHERE " + whereString + ";";
+        String selectSQL = "SELECT " + fieldsString + " FROM " + tablesString + " WHERE " + whereString + " " + selectionString + ";";
 
         ArrayList<String> queryValues = new ArrayList<String>(conditions.values());
 
-        return execute("query", selectSQL, queryValues);
+        return execute(selectSQL, queryValues, true);
     }
 
     private ArrayList<HashMap<String, String>> getResults(ResultSet resultSet) throws SQLException{
