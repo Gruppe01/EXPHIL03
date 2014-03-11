@@ -25,6 +25,7 @@ public class EditMembers extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
 	public EditMembers() {
 		setTitle("Edit Members");
 		setResizable(false);
