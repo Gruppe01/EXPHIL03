@@ -30,7 +30,7 @@ public class MySQLConnection {
         this.password = password;
     }
 
-    private ArrayList<HashMap<String, String>> execute(String sql, ArrayList<String> values, boolean returns) throws MySQLIntegrityConstraintViolationException{
+    private ArrayList<HashMap<String, String>> execute(String sql, ArrayList<String> values, boolean returns) {
         try{
             connect();
 
@@ -55,7 +55,7 @@ public class MySQLConnection {
         }
     }
 
-    public void insert(String table, ArrayList<String> fields, ArrayList<String> values) throws MySQLIntegrityConstraintViolationException {
+    public void insert(String table, ArrayList<String> fields, ArrayList<String> values) {
         if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
 
         String fieldsString = StringUtils.join(fields, ", ");
@@ -71,7 +71,7 @@ public class MySQLConnection {
     }
 
     @SuppressWarnings("unchecked")
-    public void update(String table, ArrayList<String> fields, ArrayList<String> values, HashMap conditions, ArrayList<String> selection) throws MySQLIntegrityConstraintViolationException {
+    public void update(String table, ArrayList<String> fields, ArrayList<String> values, HashMap conditions, ArrayList<String> selection) {
         if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
 
         String setString = StringUtils.join(fields, " = ?, ") + " = ?";
@@ -89,7 +89,7 @@ public class MySQLConnection {
     }
 
     @SuppressWarnings("unchecked")
-    public void delete(String table, HashMap conditions) throws MySQLIntegrityConstraintViolationException {
+    public void delete(String table, HashMap conditions) {
         String whereString = StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
 
         String deleteSQL = "DELETE FROM " + table + " WHERE " + whereString + ";";
@@ -100,7 +100,7 @@ public class MySQLConnection {
     }
 
     @SuppressWarnings("unchecked")
-    public ArrayList<HashMap<String, String>> select(ArrayList<String> tables, ArrayList<String> fields, HashMap conditions, ArrayList<String> selection) throws MySQLIntegrityConstraintViolationException {
+    public ArrayList<HashMap<String, String>> select(ArrayList<String> tables, ArrayList<String> fields, HashMap conditions, ArrayList<String> selection) {
         String tablesString = StringUtils.join(tables, ", ");
         String fieldsString = StringUtils.join(fields, ", ");
         String whereString = StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
@@ -132,7 +132,7 @@ public class MySQLConnection {
         return results;
     }
 
-    public void connect(){
+    public void connect() {
         try{
             Class.forName(driver).newInstance();
 
