@@ -38,6 +38,11 @@ public class UserTest {
         assertTrue("(+47) 123 45 678".matches(User.PHONE_PATTERN));
     }
 
+    @Test
+    public void testGetUsername() throws Exception {
+        assertEquals(testUser.getUsername(), "Username");
+    }
+
     @Test (expected = IllegalArgumentException.class)
     public void testSetUsername() throws Exception {
         testUser.setUsername("User name");
