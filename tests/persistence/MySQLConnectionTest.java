@@ -12,22 +12,28 @@ import java.util.*;
 public class MySQLConnectionTest {
     MySQLConnection validConnection;
     MySQLConnection invalidConnection;
-    HashMap<String, String> updateMap;
-    HashMap<String, String> deleteMap;
-    HashMap<String, String> selectMap;
+
     String username;
+
+    HashMap<String, String> usernameMap;
+    HashMap<String, String> selectMap;
+
+    ArrayList<String> fields;
+    ArrayList<String> valuesBefore;
+    ArrayList<String> valuesAfter;
 
     @Before
     public void setUp() throws Exception {
         validConnection = new MySQLConnection();
-        updateMap = new HashMap<>();
-        deleteMap = new HashMap<>();
-        selectMap = new HashMap<>();
+
         username = "testUser" + Integer.toString(new Random().nextInt(99999));
 
-        updateMap.put("username", username);
-        deleteMap.put("username", username);
-        selectMap.put("username", username);
+        usernameMap = new HashMap<>(); usernameMap.put("username", username);
+        selectMap = new HashMap<>(); selectMap.put("username", username);
+
+        fields = new ArrayList(Arrays.asList("username", "password", "email", "name"));
+        valuesBefore = new ArrayList(Arrays.asList(username, "password123", "testUser123@exphil03.com", "test123 user123"));
+        valuesAfter = new ArrayList(Arrays.asList(username, "password", "testUser@exphil03.com", "test user"));
     }
 
     @After
@@ -36,10 +42,15 @@ public class MySQLConnectionTest {
 
         validConnection = null;
         invalidConnection = null;
-        updateMap = null;
-        deleteMap = null;
-        selectMap = null;
+
         username = null;
+
+        usernameMap = null;
+        selectMap = null;
+
+        fields = null;
+        valuesBefore = null;
+        valuesAfter = null;
     }
 
     @Test
@@ -60,7 +71,7 @@ public class MySQLConnectionTest {
 
         invalidConnection = new MySQLConnection(url, dbName, driver, userName, password);
 
-        select(invalidConnection);
+        select(invalidConnection, selectMap);
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -73,25 +84,24 @@ public class MySQLConnectionTest {
 
         invalidConnection = new MySQLConnection(url, dbName, driver, userName, password);
 
-        select(invalidConnection);
+        select(invalidConnection, selectMap);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testDuplicateEntries() throws Exception{
-        validConnection.insert("User", new ArrayList(Arrays.asList("username", "password", "email", "firstName", "lastName")), new ArrayList(Arrays.asList(username, "password123", "testUser123@exphil03.com", "test123", "user123")));
-        validConnection.insert("User", new ArrayList(Arrays.asList("username", "password", "email", "firstName", "lastName")), new ArrayList(Arrays.asList(username, "password123", "testUser123@exphil03.com", "test123", "user123")));
+        validConnection.insert("User", fields, valuesBefore);
+        validConnection.insert("User", fields, valuesBefore);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testSQLException() throws Exception{
-        selectMap = new HashMap<>();
-        selectMap.put("userame", username);
+        selectMap = new HashMap<>(); selectMap.put("usrname", username);
 
-        select(validConnection);
+        select(validConnection, selectMap);
     }
 
-    private ArrayList<HashMap<String, String>> select(MySQLConnection connection) throws Exception {
-        return connection.select(new ArrayList(Arrays.asList("User")), new ArrayList(Arrays.asList("username", "password", "email", "firstName", "lastName")), selectMap, new ArrayList(Arrays.asList("")));
+    private ArrayList<HashMap<String, String>> select(MySQLConnection connection, HashMap<String, String> map) throws Exception {
+        return connection.select(new ArrayList(Arrays.asList("User")), fields, map, new ArrayList(Arrays.asList("")));
     }
 
     public void testInsert() throws Exception {
@@ -99,12 +109,11 @@ public class MySQLConnectionTest {
         selectMap.put("username", username);
         selectMap.put("password", "password123");
         selectMap.put("email", "testUser123@exphil03.com");
-        selectMap.put("firstName", "test123");
-        selectMap.put("lastName", "user123");
+        selectMap.put("name", "test123 user123");
 
-        validConnection.insert("User", new ArrayList(Arrays.asList("username", "password", "email", "firstName", "lastName")), new ArrayList(Arrays.asList(username, "password123", "testUser123@exphil03.com", "test123", "user123")));
+        validConnection.insert("User", fields, valuesBefore);
 
-        ArrayList<HashMap<String, String>> results = select(validConnection);
+        ArrayList<HashMap<String, String>> results = select(validConnection, selectMap);
 
         assertEquals(results.size(), 1);
     }
@@ -114,42 +123,30 @@ public class MySQLConnectionTest {
         selectMap.put("username", username);
         selectMap.put("password", "password");
         selectMap.put("email", "testUser@exphil03.com");
-        selectMap.put("firstName", "test");
-        selectMap.put("lastName", "user");
+        selectMap.put("name", "test user");
 
-        validConnection.update("User", new ArrayList(Arrays.asList("password", "email", "firstName", "lastName")), new ArrayList(Arrays.asList("password", "testUser@exphil03.com", "test", "user")), updateMap, new ArrayList(Arrays.asList("")));
+        validConnection.update("User", fields, valuesAfter, usernameMap, new ArrayList(Arrays.asList("")));
 
-        ArrayList<HashMap<String, String>> results = select(validConnection);
+        ArrayList<HashMap<String, String>> results = select(validConnection, selectMap);
 
         assertEquals(results.size(), 1);
     }
 
     public void testSelect() throws Exception {
-        selectMap = new HashMap<>();
-        selectMap.put("username", username);
-        selectMap.put("password", "password");
-        selectMap.put("email", "testUser@exphil03.com");
-        selectMap.put("firstName", "test");
-        selectMap.put("lastName", "user");
-
-        ArrayList<HashMap<String, String>> results = select(validConnection);
+        ArrayList<HashMap<String, String>> results = select(validConnection, selectMap);
 
         Iterator<String> iterator = results.get(0).values().iterator();
 
-        assertEquals(iterator.next(), "user");
         assertEquals(iterator.next(), username);
         assertEquals(iterator.next(), "testUser@exphil03.com");
-        assertEquals(iterator.next(), "test");
+        assertEquals(iterator.next(), "test user");
         assertEquals(iterator.next(), "password");
     }
 
     public void testDelete() throws Exception {
-        selectMap = new HashMap<>();
-        selectMap.put("username", username);
+        validConnection.delete("User", usernameMap);
 
-        validConnection.delete("User", deleteMap);
-
-        ArrayList<HashMap<String, String>> result = select(validConnection);
+        ArrayList<HashMap<String, String>> result = select(validConnection, usernameMap);
 
         assertEquals(0, result.size());
     }
