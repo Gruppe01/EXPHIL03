@@ -9,15 +9,15 @@ public class Meeting {
 	private String starttime;
 	private String endtime;
 	private String description;
+    private int room;
 
-	public Meeting(User creator, String starttime, String endtime, String description){
-		admins = new ArrayList<User>();
-		members = new ArrayList<User>();
-		admins.add(creator);
-		members.add(creator);
+	public Meeting(User creator, String starttime, String endtime, String description, int room){
+		admins = new ArrayList<>(); admins.add(creator);
+		members = new ArrayList<>(); members.add(creator);
 		setStarttime(starttime);
 		setEndtime(endtime);
         setDescription(description);
+        setRoom(room);
 		meetingID = 0;
 	}
 	
@@ -25,7 +25,7 @@ public class Meeting {
 		return admins;
 	}
 	
-	public void addAdmin(User admin) {
+	public void addAdmin(User admin) throws IllegalArgumentException {
 		if (admins.contains(admin)){
             throw new IllegalArgumentException("The user is already an admin");
         }else{
@@ -33,7 +33,7 @@ public class Meeting {
         }
 	}
 	
-	public void deleteAdmin(User admin){
+	public void deleteAdmin(User admin) throws IllegalArgumentException {
 		if (!admins.contains(admin)){
             throw new IllegalArgumentException("The user is not an current admin");
         }else{
@@ -45,7 +45,7 @@ public class Meeting {
 		return members;
 	}
 	
-	public void addMember(User member) {
+	public void addMember(User member) throws IllegalArgumentException {
 		if (members.contains(member)){
             throw new IllegalArgumentException("The user is allready invited");
         }else{
@@ -53,7 +53,7 @@ public class Meeting {
         }
 	}
 	
-	public void deleteMember(User member){
+	public void deleteMember(User member) throws IllegalArgumentException {
 		if (!members.contains(member)){
             throw new IllegalArgumentException("The user is not a current member");
         }else{
@@ -65,11 +65,11 @@ public class Meeting {
 		return starttime;
 	}
 	
-	public void setStarttime(String starttime) {
+	public void setStarttime(String starttime) throws IllegalArgumentException {
 		if (starttime.matches("[0-9]+") && starttime.length() < 3 && Integer.parseInt(starttime) < 25 && Integer.parseInt(starttime) > 0) {
 			this.starttime = starttime;
 		}else{
-			throw new IllegalArgumentException("Invalid number.");
+			throw new IllegalArgumentException("Invalid time format.");
 		}
 	}
 	
@@ -77,11 +77,11 @@ public class Meeting {
 		return endtime;
 	}
 	
-	public void setEndtime(String endtime) {
+	public void setEndtime(String endtime) throws IllegalArgumentException {
 		if (endtime.matches("[0-9]+") && endtime.length() < 3 && Integer.parseInt(endtime) < 25 && Integer.parseInt(endtime) > 0) {
 			this.endtime = endtime;
 		}else{
-			throw new IllegalArgumentException("Invalid number.");
+			throw new IllegalArgumentException("Invalid time format.");
 		}
 	}
 	
@@ -96,6 +96,14 @@ public class Meeting {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+    public int getRoom() {
+        return room;
+    }
+
+    public void setRoom(int room) {
+        this.room = room;
+    }
 	
 	public int getMeetingID() {
 		return meetingID;
