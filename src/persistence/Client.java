@@ -1,8 +1,7 @@
 package persistence;
 
 import java.net.Socket;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 
 public class Client {
     private static final int THROTTLE = Server.THROTTLE;
@@ -11,11 +10,15 @@ public class Client {
     private Inport inport;
 
     private class Inport extends Thread{
-        private ObjectInputStream in;
+        private DataInputStream in;
 
         public void run(){
             try{
-                in = new ObjectInputStream(socket.getInputStream());
+                //Send and receive
+                in = new DataInputStream(socket.getInputStream());
+
+                System.out.println(in.read());
+                //End
             }catch(IOException e){
                 System.out.println("Could not get input stream from " + toString());
                 return;
@@ -59,6 +62,6 @@ public class Client {
 
     //For testing purposes
     public static void main(String args[]) throws Exception{
-        Client client = new Client(new Socket("192.168.1.238", 1234)); client.inport.start();;
+        Client client = new Client(new Socket("127.0.0.1", 1234)); client.inport.start();;
     }
 }

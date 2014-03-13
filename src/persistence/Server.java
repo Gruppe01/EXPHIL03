@@ -1,20 +1,22 @@
 package persistence;
 
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.io.IOException;
+import model.User;
+
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 
 public class Server extends Thread {
-    public static final int PORT = 1234;
+    public static final int PORT = 1235;
     public static final int THROTTLE = 200;
 
     private ServerSocket serverSocket;
     private InetAddress host;
     private Socket socket;
+    private DataOutputStream out;
     private ArrayList<Client> clients = new ArrayList<>();
+
+    User user = new User("Simoms", "drossap", "Simon B-J", "simoms_85@hotmail.com", "12345678");
 
     public Server(){
         try{
@@ -49,6 +51,13 @@ public class Server extends Thread {
 
             try{
                 socket = serverSocket.accept();
+                //Send and receive
+
+                out.writeUTF("Hei");
+                out.flush();
+                out.close();
+
+                //
             }catch(IOException e){
                 System.out.println("Could not connect to client.");
             }
