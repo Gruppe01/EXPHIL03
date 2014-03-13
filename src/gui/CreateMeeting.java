@@ -6,9 +6,12 @@ import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
+import javax.swing.JTextPane;
+import javax.swing.JList;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 public class CreateMeeting extends JPanel {
-	private JTextField textField;
 	private JScrollPane scrollPane;
 	private JTextField textField_3;
 	private JLabel lblDescription;
@@ -26,73 +29,80 @@ public class CreateMeeting extends JPanel {
 	 * Create the panel.
 	 */
 	public CreateMeeting() {
-		setBounds(100, 100, 680, 426);
+		setBounds(100, 100, 584, 394);
 		setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(195, 118, 145, 20);
-		add(textField);
-		textField.setColumns(10);
-		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(519, 51, 125, 183);
+		scrollPane.setBounds(429, 84, 125, 183);
 		add(scrollPane);
 		
+		JList list = new JList();
+		scrollPane.setViewportView(list);
+		
+		JLabel lblAvail = new JLabel("Available rooms");
+		lblAvail.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblAvail.setHorizontalAlignment(SwingConstants.CENTER);
+		scrollPane.setColumnHeaderView(lblAvail);
+		
 		textField_3 = new JTextField();
-		textField_3.setBounds(519, 258, 125, 20);
+		textField_3.setBounds(429, 278, 125, 20);
 		add(textField_3);
 		textField_3.setColumns(10);
 		
 		lblDescription = new JLabel("Description:");
-		lblDescription.setBounds(65, 121, 101, 14);
+		lblDescription.setBounds(10, 143, 101, 14);
 		add(lblDescription);
 		
 		lblSelectTimeStart = new JLabel("Select time start:");
-		lblSelectTimeStart.setBounds(65, 152, 101, 14);
+		lblSelectTimeStart.setBounds(10, 213, 101, 14);
 		add(lblSelectTimeStart);
 		
 		lblSelectTimeEnd = new JLabel("Select time end:");
-		lblSelectTimeEnd.setBounds(65, 183, 101, 14);
+		lblSelectTimeEnd.setBounds(10, 253, 101, 14);
 		add(lblSelectTimeEnd);
 		
 		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(10, 370, 113, 45);
+		btnCancel.setBounds(10, 333, 113, 45);
 		add(btnCancel);
 		
 		btnEditMembers = new JButton("Edit Members");
-		btnEditMembers.setBounds(281, 370, 113, 45);
+		btnEditMembers.setBounds(236, 333, 113, 45);
 		add(btnEditMembers);
 		
 		btnCreateMeeting = new JButton("Create meeting");
-		btnCreateMeeting.setBounds(557, 370, 113, 45);
+		btnCreateMeeting.setBounds(461, 333, 113, 45);
 		add(btnCreateMeeting);
 		
 		lblParticipants = new JLabel("Participants:");
-		lblParticipants.setBounds(446, 261, 86, 14);
+		lblParticipants.setBounds(331, 281, 86, 14);
 		add(lblParticipants);
 		
 		label = new JLabel(":");
-		label.setBounds(264, 152, 15, 14);
+		label.setBounds(190, 213, 15, 14);
 		add(label);
 		
 		label_1 = new JLabel(":");
-		label_1.setBounds(264, 183, 15, 14);
+		label_1.setBounds(190, 250, 15, 14);
 		add(label_1);
 		
 		JSpinner spinner = new JSpinner();
-		spinner.setBounds(195, 149, 59, 20);
+		spinner.setBounds(121, 210, 59, 20);
 		add(spinner);
 		
 		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setBounds(195, 180, 59, 20);
+		spinner_1.setBounds(121, 247, 59, 20);
 		add(spinner_1);
 		
 		JSpinner spinner_2 = new JSpinner();
-		spinner_2.setBounds(281, 149, 59, 20);
+		spinner_2.setBounds(200, 210, 59, 20);
 		add(spinner_2);
 		
 		spinner_3 = new JSpinner();
-		spinner_3.setBounds(281, 180, 59, 20);
+		spinner_3.setBounds(200, 247, 59, 20);
 		add(spinner_3);
+		
+		JTextPane textPane = new JTextPane();
+		textPane.setBounds(121, 103, 143, 86);
+		add(textPane);
 	}
 }
