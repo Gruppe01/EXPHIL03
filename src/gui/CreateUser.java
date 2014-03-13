@@ -27,8 +27,9 @@ public class CreateUser extends JFrame {
 	 * Create the frame.
 	 */
 	public CreateUser() {
+        setResizable(false);
 		setTitle("Create user");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -58,31 +59,31 @@ public class CreateUser extends JFrame {
 		repeatpasswordField.setBounds(121, 158, 200, 20);
 		contentPane.add(repeatpasswordField);
 		
-		JLabel usernameLabel = new JLabel("Username");
+		JLabel usernameLabel = new JLabel("Username:");
 		usernameLabel.setBounds(10, 34, 101, 14);
 		contentPane.add(usernameLabel);
 		
-		JLabel emailLabel = new JLabel("Email");
+		JLabel emailLabel = new JLabel("Email:");
 		emailLabel.setBounds(10, 65, 101, 14);
 		contentPane.add(emailLabel);
 		
-		JLabel mobilenumberLabel = new JLabel("Mobile number");
+		JLabel mobilenumberLabel = new JLabel("Mobile number:");
 		mobilenumberLabel.setBounds(10, 96, 101, 14);
 		contentPane.add(mobilenumberLabel);
 		
-		JLabel passwordLabel = new JLabel("Password");
+		JLabel passwordLabel = new JLabel("Password:");
 		passwordLabel.setBounds(10, 127, 101, 14);
 		contentPane.add(passwordLabel);
 		
-		JLabel repeatpasswordLabel = new JLabel("Repeat password");
+		JLabel repeatpasswordLabel = new JLabel("Repeat password:");
 		repeatpasswordLabel.setBounds(10, 161, 101, 14);
 		contentPane.add(repeatpasswordLabel);
 		
-		JButton cancelButton = new JButton("Cancel");
+		JButton cancelButton = new JButton("Cancel:");
 		cancelButton.setBounds(39, 206, 93, 29);
 		contentPane.add(cancelButton);
 		
-		confirmButton = new JButton("Confirm");
+		confirmButton = new JButton("Confirm:");
 		confirmButton.setBounds(309, 206, 93, 29);
 		contentPane.add(confirmButton);
 	}
