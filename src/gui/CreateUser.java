@@ -1,18 +1,13 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
-public class CreateUser extends JFrame {
-
+public class CreateUser extends JPanel {
 	private JPanel contentPane;
 	private JTextField usernameField;
 	private JTextField emailField;
@@ -20,20 +15,12 @@ public class CreateUser extends JFrame {
 	private JPasswordField passwordField;
 	private JPasswordField repeatpasswordField;
 	private JButton confirmButton;
-
-
-
 	/**
-	 * Create the frame.
+	 * Create the panel.
 	 */
 	public CreateUser() {
-		setResizable(false);
-		setTitle("Create user");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		usernameField = new JTextField();
@@ -84,7 +71,7 @@ public class CreateUser extends JFrame {
 		contentPane.add(cancelButton);
 		
 		confirmButton = new JButton("Confirm");
-		confirmButton.setBounds(309, 206, 93, 29);
+		confirmButton.setBounds(314, 206, 93, 29);
 		contentPane.add(confirmButton);
 	}
 
