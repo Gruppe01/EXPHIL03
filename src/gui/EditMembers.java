@@ -1,39 +1,21 @@
 package gui;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.UIManager;
-import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
-
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
-public class EditMembers extends JFrame {
-
+public class EditMembers extends JPanel {
 	private JPanel contentPane;
-
 	/**
-	 * Launch the application.
+	 * Create the panel.
 	 */
-
-	/**
-	 * Create the frame.
-	 */
-	
 	public EditMembers() {
-		setTitle("Edit Members");
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 684, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -97,4 +79,5 @@ public class EditMembers extends JFrame {
 		btnSelectAll.setBounds(187, 195, 89, 23);
 		contentPane.add(btnSelectAll);
 	}
+
 }
