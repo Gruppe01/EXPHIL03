@@ -7,6 +7,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 public class EditMembers extends JPanel {
 	private JPanel contentPane;
@@ -78,6 +82,16 @@ public class EditMembers extends JPanel {
 		JButton btnSelectAll = new JButton("Select all");
 		btnSelectAll.setBounds(187, 195, 89, 23);
 		contentPane.add(btnSelectAll);
+		
+		JButton btnNewButton_2 = new JButton("Add external");
+		btnNewButton_2.setBounds(167, 11, 119, 23);
+		contentPane.add(btnNewButton_2);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Search...", "Simon", "Robin", "Simen", "Sindre", "Peder", "Arne", "Kjell-Elvis"}));
+		comboBox.setBounds(27, 12, 104, 20);
+		AutoCompleteDecorator.decorate(comboBox);
+		contentPane.add(comboBox);
 	}
 
 }
