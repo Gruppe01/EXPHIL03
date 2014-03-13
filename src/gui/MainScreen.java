@@ -78,22 +78,6 @@ public class MainScreen extends JPanel {
 		btnShowCalendar.setBounds(276, 231, 136, 45);
 		contentPane.add(btnShowCalendar);
 		
-		JButton btnNewMeeting = new JButton("New Meeting");
-		btnNewMeeting.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewMeeting.setBounds(341, 342, 136, 45);
-		contentPane.add(btnNewMeeting);
-		
-		JButton btnLogout = new JButton("Logout");
-		btnLogout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnLogout.setBounds(524, 342, 136, 45);
-		contentPane.add(btnLogout);
-		
 		JButton btnNewMeeting_1 = new JButton("New meeting");
 		btnNewMeeting_1.setBounds(276, 287, 136, 44);
 		contentPane.add(btnNewMeeting_1);
