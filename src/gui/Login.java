@@ -36,7 +36,7 @@ public class Login extends JPanel {
 		passwordLabel.setBounds(22, 91, 89, 17);
 		contentPane.add(passwordLabel);
 		
-		JButton loginButton = new JButton("Login");
+		JButton loginButton = new JButton("Log in");
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
