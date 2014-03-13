@@ -79,11 +79,11 @@ public class CreateUser extends JFrame {
 		repeatpasswordLabel.setBounds(10, 161, 101, 14);
 		contentPane.add(repeatpasswordLabel);
 		
-		JButton cancelButton = new JButton("Cancel:");
+		JButton cancelButton = new JButton("Cancel");
 		cancelButton.setBounds(39, 206, 93, 29);
 		contentPane.add(cancelButton);
 		
-		confirmButton = new JButton("Confirm:");
+		confirmButton = new JButton("Confirm");
 		confirmButton.setBounds(309, 206, 93, 29);
 		contentPane.add(confirmButton);
 	}
