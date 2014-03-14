@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 public class UserTest {
     User testUser;
-
+    ExternalUser testExternalUser;
     @Before
     public void setUp() throws Exception {
         testUser = new User("Username", "password", "FirstName LastName", "email@example.com", "+47 123 45 678");
@@ -81,13 +81,22 @@ public class UserTest {
     }
 
     @Test
-    public void testGetCellphonenumber() throws Exception {
-        assertEquals(testUser.getCellphonenumber(), "+47 123 45 678");
+    public void testGetPhonenumber() throws Exception {
+        assertEquals(testUser.getPhonenumber(), "+47 123 45 678");
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void testSetCellphonenumber() throws Exception {
-        testUser.setCellphonenumber("+47 123 45a 678");
+    public void testSetPhonenumber() throws Exception {
+        testUser.setPhonenumber("+47 123 45a 678");
+    }
+
+    @Test
+    public void setTestExternalUser() throws Exception {
+        testExternalUser = new ExternalUser("Test User", "externaluser@exphil03.com", "+47 123 45 678");
+
+        assertEquals("Test User", testExternalUser.getName());
+        assertEquals("externaluser@exphil03.com", testExternalUser.getEmail());
+        assertEquals("+47 123 45 678", testExternalUser.getPhonenumber());
     }
 
     @Test

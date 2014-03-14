@@ -30,7 +30,7 @@ public class MySQLConnection {
         this.password = password;
     }
 
-    private ArrayList<HashMap<String, String>> execute(String sql, ArrayList<String> values, boolean returns) {
+    protected ArrayList<HashMap<String, String>> execute(String sql, ArrayList<String> values, boolean returns) {
         try{
             connect();
 
@@ -132,7 +132,7 @@ public class MySQLConnection {
         return results;
     }
 
-    public void connect() {
+    private void connect() {
         try{
             Class.forName(driver).newInstance();
 
@@ -144,7 +144,7 @@ public class MySQLConnection {
         }
     }
 
-    public void close() throws SQLException {
+    private void close() throws SQLException {
         conn.close();
         conn = null;
     }
