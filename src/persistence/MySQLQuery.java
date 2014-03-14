@@ -15,6 +15,10 @@ public class MySQLQuery {
         connection = new MySQLConnection(url, dbName, driver, userName, password);
     }
 
+    protected ArrayList<HashMap<String, String>> execute(String sql, ArrayList<String> values, boolean returns){
+        return connection.execute(sql, values, returns);
+    }
+
     public void insert(String table, ArrayList<String> fields, ArrayList<String> values) {
         if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
 
@@ -87,7 +91,10 @@ public class MySQLQuery {
         return rooms;
     }
 
-    protected ArrayList<HashMap<String, String>> execute(String sql, ArrayList<String> values, boolean returns){
-        return connection.execute(sql, values, returns);
+    @SuppressWarnings("unchecked")
+    public int getNextID(String table){
+        ArrayList<HashMap<String, String>> tableInfo = execute("SHOW TABLE STATUS LIKE ?;", new ArrayList(Arrays.asList(table)), true);
+        System.out.println(tableInfo);
+        return Integer.parseInt(tableInfo.get(0).get("AUTO_INCREMENT"));
     }
 }

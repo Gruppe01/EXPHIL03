@@ -1,5 +1,7 @@
 package model;
 
+import persistence.MySQLQuery;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -13,14 +15,16 @@ public class Meeting {
 	private String starttime;
 	private String endtime;
 	private String description;
-    private int room;
+    private int minCapacity;
+    private Room room;
 
-	public Meeting(User creator, String starttime, String endtime, String description, int room){
+	public Meeting(User creator, String starttime, String endtime, String description, int capacity, Room room){
 		admins = new ArrayList<>(); admins.add(creator);
 		members = new ArrayList<>(); members.add(creator);
 		setStarttime(starttime);
 		setEndtime(endtime);
         setDescription(description);
+        setMinCapacity(capacity);
         setRoom(room);
 		meetingID = 0;
 
@@ -71,7 +75,7 @@ public class Meeting {
         return externalMembers;
     }
 
-    public void addExternalMember(String member) {
+    public void addExternalMember(String member) throws IllegalArgumentException {
         if (externalMembers.contains(member)){
             throw new IllegalArgumentException("The email is allready invited");
         }else{
@@ -79,7 +83,7 @@ public class Meeting {
         }
     }
 
-    public void deleteExternalMember(String member){
+    public void deleteExternalMember(String member) throws IllegalArgumentException {
         if (!externalMembers.contains(member)){
             throw new IllegalArgumentException("The email is not a current member");
         }else{
@@ -91,7 +95,7 @@ public class Meeting {
 		return starttime;
 	}
 
-	public void setStarttime(String starttime) {
+	public void setStarttime(String starttime) throws IllegalArgumentException {
 		if (true) {
 			this.starttime = starttime;
 		}else{
@@ -103,7 +107,7 @@ public class Meeting {
 		return endtime;
 	}
 
-	public void setEndtime(String endtime) {
+	public void setEndtime(String endtime) throws IllegalArgumentException {
 		if (true) {
 			this.endtime = endtime;
 		}else{
@@ -112,8 +116,8 @@ public class Meeting {
 	}
 	
 	public String getDuration() {
-        long minutes = -1;
-        long hours = -1;
+        long minutes;
+        long hours;
 
         try {
             Date startTime = DATE_FORMAT.parse(starttime);
@@ -141,12 +145,28 @@ public class Meeting {
 		this.description = description;
 	}
 
-    public int getRoom() {
+    public int getMinCapacity() {
+        return minCapacity;
+    }
+
+    public void setMinCapacity(int capacity) throws IllegalArgumentException{
+        if(capacity < 0){
+            throw new IllegalArgumentException("Capacity cannot be less than zero.");
+        }else{
+            this.minCapacity = capacity;
+        }
+    }
+
+    public Room getRoom() {
         return room;
     }
 
-    public void setRoom(int room) {
-        this.room = room;
+    public void setRoom(Room room) throws IllegalArgumentException {
+        if(new MySQLQuery().getAvailableRooms(starttime, endtime, minCapacity).contains(room.getRoomNumber())){
+            this.room = room;
+        }else{
+            throw new IllegalArgumentException("Selected room not available.");
+        }
     }
 	
 	public int getMeetingID() {
@@ -161,7 +181,7 @@ public class Meeting {
 	}
 
     public static void main(String args[]){
-        Meeting meeting = new Meeting(new User("asdasd", "asdasd", "asdasd", "si@df.com", "12345678"), "2014-03-13 11:00:00", "2014-03-13 13:01:00", "Kjempegøy!", 1);
+        Meeting meeting = new Meeting(new User("asdasd", "asdasd", "asdasd", "si@df.com", "12345678"), "2014-03-13 11:00:00", "2014-03-13 13:01:00", "Kjempegøy!", 5, new Room(new MySQLQuery().getNextID("MeetingRoom"), 10));
 
         System.out.println(meeting);
     }
