@@ -128,5 +128,10 @@ setLayout(null);
 		textField.setBounds(517, 225, 123, 20);
 		add(textField);
 		textField.setColumns(10);
+		
+		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"SMS", "Email", "Both"}));
+		comboBox_1.setBounds(347, 225, 60, 20);
+		add(comboBox_1);
 	}
 }
