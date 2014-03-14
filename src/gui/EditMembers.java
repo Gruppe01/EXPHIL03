@@ -13,18 +13,16 @@ import javax.swing.DefaultComboBoxModel;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 public class EditMembers extends JPanel {
-	private JPanel contentPane;
 	/**
 	 * Create the panel.
 	 */
 	public EditMembers() {
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(null);
+		setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(408, 45, 260, 139);
-		contentPane.add(scrollPane);
+		add(scrollPane);
 		
 		JList list = new JList();
 		scrollPane.setViewportView(list);
@@ -34,28 +32,28 @@ public class EditMembers extends JPanel {
 		scrollPane.setColumnHeaderView(lblMeetingMembers);
 		
 		JButton btnMakeAdmin = new JButton("Make admin");
-		btnMakeAdmin.setBounds(418, 11, 104, 23);
-		contentPane.add(btnMakeAdmin);
+		btnMakeAdmin.setBounds(408, 11, 119, 23);
+		add(btnMakeAdmin);
 		
 		JButton btnDeleteAdmin = new JButton("Delete admin");
-		btnDeleteAdmin.setBounds(564, 11, 104, 23);
-		contentPane.add(btnDeleteAdmin);
+		btnDeleteAdmin.setBounds(549, 11, 119, 23);
+		add(btnDeleteAdmin);
 		
 		JButton btnDeleteMember = new JButton("Delete member");
-		btnDeleteMember.setBounds(418, 195, 119, 23);
-		contentPane.add(btnDeleteMember);
+		btnDeleteMember.setBounds(408, 195, 129, 23);
+		add(btnDeleteMember);
 		
 		JButton btnNewButton = new JButton("Done");
 		btnNewButton.setBounds(579, 214, 89, 47);
-		contentPane.add(btnNewButton);
+		add(btnNewButton);
 		
 		JButton button = new JButton(">>");
 		button.setBounds(316, 103, 67, 23);
-		contentPane.add(button);
+		add(button);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 45, 136, 139);
-		contentPane.add(scrollPane_1);
+		add(scrollPane_1);
 		
 		JList list_1 = new JList();
 		scrollPane_1.setViewportView(list_1);
@@ -66,7 +64,7 @@ public class EditMembers extends JPanel {
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBounds(156, 45, 141, 139);
-		contentPane.add(scrollPane_2);
+		add(scrollPane_2);
 		
 		JList list_2 = new JList();
 		scrollPane_2.setViewportView(list_2);
@@ -77,21 +75,21 @@ public class EditMembers extends JPanel {
 		
 		JButton btnNewButton_1 = new JButton("Cancel");
 		btnNewButton_1.setBounds(10, 214, 89, 47);
-		contentPane.add(btnNewButton_1);
+		add(btnNewButton_1);
 		
 		JButton btnSelectAll = new JButton("Select all");
 		btnSelectAll.setBounds(187, 195, 89, 23);
-		contentPane.add(btnSelectAll);
+		add(btnSelectAll);
 		
 		JButton btnNewButton_2 = new JButton("Add external");
 		btnNewButton_2.setBounds(167, 11, 119, 23);
-		contentPane.add(btnNewButton_2);
+		add(btnNewButton_2);
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Search...", "Simon", "Robin", "Simen", "Sindre", "Peder", "Arne", "Kjell-Elvis"}));
 		comboBox.setBounds(27, 12, 104, 20);
 		AutoCompleteDecorator.decorate(comboBox);
-		contentPane.add(comboBox);
+		add(comboBox);
 	}
 
 }

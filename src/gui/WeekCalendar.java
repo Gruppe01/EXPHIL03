@@ -48,7 +48,7 @@ public class WeekCalendar extends JPanel {
 		add(lblNewLabel);
 		
 		JButton btnAdd = new JButton("Add");
-		btnAdd.setBounds(535, 102, 77, 23);
+		btnAdd.setBounds(513, 102, 117, 23);
 		add(btnAdd);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -63,7 +63,7 @@ public class WeekCalendar extends JPanel {
 		scrollPane.setViewportView(list);
 		
 		JButton btnRemove = new JButton("Remove");
-		btnRemove.setBounds(535, 276, 77, 23);
+		btnRemove.setBounds(513, 276, 117, 23);
 		add(btnRemove);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -160,7 +160,7 @@ public class WeekCalendar extends JPanel {
 		JTextPane txtpnInvitedAttendingDeclined = new JTextPane();
 		txtpnInvitedAttendingDeclined.setEditable(false);
 		txtpnInvitedAttendingDeclined.setText("Invited: \r\n\r\nAttending:\r\nDeclined:");
-		txtpnInvitedAttendingDeclined.setBounds(24, 73, 95, 70);
+		txtpnInvitedAttendingDeclined.setBounds(24, 73, 95, 129);
 		add(txtpnInvitedAttendingDeclined);
 		
 		JButton btnRemoveSche = new JButton("Remove meeting from my schedule");
@@ -170,7 +170,7 @@ public class WeekCalendar extends JPanel {
 //		btnRemoveSche.add(BorderLayout.NORTH, label1);
 //		btnRemoveSche.add(BorderLayout.SOUTH, label2);
 		btnRemoveSche.setToolTipText("");
-		btnRemoveSche.setBounds(211, 293, 205, 31);
+		btnRemoveSche.setBounds(165, 293, 288, 31);
 		add(btnRemoveSche);
 		
 		JButton btnBack = new JButton("Back");
