@@ -87,11 +87,11 @@ public class ShowMeeting extends JPanel {
 		add(chckbxShowInCalendar);
 		
 		JButton btnAccept = new JButton("Accept");
-		btnAccept.setBounds(423, 230, 89, 23);
+		btnAccept.setBounds(470, 253, 89, 23);
 		add(btnAccept);
 		
 		JButton btnDecline = new JButton("Decline");
-		btnDecline.setBounds(423, 264, 89, 23);
+		btnDecline.setBounds(470, 287, 89, 23);
 		add(btnDecline);
 		
 
@@ -113,6 +113,11 @@ public class ShowMeeting extends JPanel {
 		JLabel lblCreatAlaram = new JLabel("Create alarm:");
 		lblCreatAlaram.setBounds(130, 225, 72, 14);
 		add(lblCreatAlaram);
+		
+		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"SMS", "Email", "Both"}));
+		comboBox_1.setBounds(345, 225, 57, 20);
+		add(comboBox_1);
 		
 		
 //		JScrollPane scrollPane_1 = new JScrollPane();
