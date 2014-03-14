@@ -15,13 +15,21 @@ public class Frame extends JPanel{
 		login = new Login();
 		this.setLayout(new BorderLayout());
 		frame = new JFrame();
-		frame.setContentPane(login);
-		frame.pack();
+		frame.setResizable(false);
 		frame.setVisible(true);
-		setFrame(425,300);
+		setFrame("login");
 	}
 	
-	public void setFrame(int width,int hight){
-		frame.setSize(width, hight);
+	public void setFrame(String panel){
+		
+		switch(panel){
+			case "login":
+				frame.setContentPane(login);
+				frame.setSize(425,300);
+				break;
+		}
+		
+		
+		
 	}
 }
