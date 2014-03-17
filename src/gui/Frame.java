@@ -19,12 +19,13 @@ public class Frame extends JPanel{
 	private ShowMeeting showMeeting;
 	private ShowMembers showMembers;
 	private WeekCalendar weekCalendar;
+	private JPanel curPanel;
 	
 	public Frame(){
 		
 		frame = new JFrame();
-		login = new Login();
-		createUser = new CreateUser();
+		login = new Login(this);
+		createUser = new CreateUser(this);
 		createMeeting = new CreateMeeting();
 		editMeeting = new EditMeeting();
 		mainScreen = new MainScreen();
@@ -35,54 +36,82 @@ public class Frame extends JPanel{
 		addExternal = new AddExternal();
 		showMembers = new ShowMembers();
 		
+		curPanel = login;
+		
 		this.setLayout(new BorderLayout());
 		frame.setResizable(false);
 		frame.setVisible(true);
-		//setFrame("");//this is for testing
+		setFrame("login");//this is for testing
 		
 	}
 	
 	public void setFrame(String panel){
 		
+		
+		
 		switch(panel){
 			case "login":
-				frame.getContentPane().removeAll();
-				frame.setContentPane(login);
+				frame.remove(curPanel);
+				frame.add(login);
+				frame.validate();
+				frame.repaint();
+				curPanel=login;
 				frame.setSize(425,300);
 				break;
 			case "createUser":
-				frame.getContentPane().removeAll();
-				frame.setContentPane(createUser);
+				frame.remove(curPanel);
+				frame.add(createUser);
+				frame.validate();
+				frame.repaint();
+				curPanel=createUser;
 				frame.setSize(425,300);
 				break;
 			case "createMeeting":
-				frame.getContentPane().removeAll();
-				frame.setContentPane(createMeeting);
+				frame.remove(curPanel);
+				frame.add(createMeeting);
+				frame.validate();
+				frame.repaint();
+				curPanel=createMeeting;
 				frame.setSize(600, 300);
 				break;
 			case "editMeeting":
-				frame.getContentPane().removeAll();
-				frame.setContentPane(editMeeting);
+				frame.remove(curPanel);
+				frame.add(editMeeting);
+				frame.validate();
+				frame.repaint();
+				curPanel=editMeeting;
 				frame.setSize(700, 300);
 				break;
 			case "mainScreen":
-				frame.getContentPane().removeAll();
-				frame.setContentPane(mainScreen);
+				frame.remove(curPanel);
+				frame.add(mainScreen);
+				frame.validate();
+				frame.repaint();
+				curPanel=mainScreen;
 				frame.setSize(700, 400);
 				break;
 			case"showMeeting":
-				frame.getContentPane().removeAll();
-				frame.setContentPane(showMeeting);
+				frame.remove(curPanel);
+				frame.add(showMeeting);
+				frame.validate();
+				frame.repaint();
+				curPanel=showMeeting;
 				frame.setSize(600, 400);
 				break;
 			case "weekCalendar":
-				frame.getContentPane().removeAll();
-				frame.setContentPane(weekCalendar);
+				frame.remove(curPanel);
+				frame.add(weekCalendar);
+				frame.validate();
+				frame.repaint();
+				curPanel=weekCalendar;
 				frame.setSize(700, 400);
 				break;
 			case "editMembers":
-				frame.getContentPane().removeAll();
-				frame.setContentPane(editMembers);
+				frame.remove(curPanel);
+				frame.add(editMembers);
+				frame.validate();
+				frame.repaint();
+				curPanel=editMembers;
 				frame.setSize(700, 300);
 				break;
 		}

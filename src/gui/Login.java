@@ -6,6 +6,7 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,7 +16,7 @@ public class Login extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Login() {
+	public Login(final Frame frame) {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		
@@ -37,16 +38,21 @@ public class Login extends JPanel {
 		add(passwordLabel);
 		
 		JButton loginButton = new JButton("Log in");
+		loginButton.setBounds(121, 120, 89, 23);
+		add(loginButton);
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		loginButton.setBounds(121, 120, 89, 23);
-		add(loginButton);
 		
 		JButton newuserButton = new JButton("New user");
 		newuserButton.setBounds(232, 120, 89, 23);
 		add(newuserButton);
+		newuserButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.setFrame("createUser");
+			}
+		});
 		
 		JButton FYPButton = new JButton("Forgot your password?");
 		FYPButton.setBounds(121, 154, 200, 28);

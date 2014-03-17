@@ -1,5 +1,8 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,7 +20,7 @@ public class CreateUser extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CreateUser() {
+	public CreateUser(final Frame frame) {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		
@@ -67,10 +70,20 @@ public class CreateUser extends JPanel {
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.setBounds(39, 206, 93, 29);
 		add(cancelButton);
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.setFrame("login");
+			}
+		});
 		
 		confirmButton = new JButton("Confirm");
 		confirmButton.setBounds(314, 206, 93, 29);
 		add(confirmButton);
+		confirmButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.setFrame("login");
+			}
+		});
 	}
 
 }
