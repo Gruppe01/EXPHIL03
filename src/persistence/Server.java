@@ -1,81 +1,102 @@
 package persistence;
 
-import model.User;
-
 import java.io.*;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
-public class Server extends Thread {
-    public static final int PORT = 1235;
-    public static final int THROTTLE = 200;
+public class Server{
+    public static final String HOST = "localhost";
+    public static final int PORT = 1234;
 
     private ServerSocket serverSocket;
-    private InetAddress host;
-    private Socket socket;
-    private DataOutputStream out;
-    private ArrayList<Client> clients = new ArrayList<>();
-
-    User user = new User("Simoms", "drossap", "Simon B-J", "simoms_85@hotmail.com", "12345678");
+    private ArrayList<Socket> clients = new ArrayList<>();
+    private boolean serverOn = true;
 
     public Server(){
         try{
-            host = InetAddress.getLocalHost();
-        }catch(UnknownHostException e){
-            System.out.println("Could not get the host address.");
+            serverSocket = new ServerSocket(PORT);
+        }catch(IOException ioe){
+            System.out.println("Could not create server socket on port " + PORT);
             System.exit(0);
         }
 
-        System.out.println("Running server on ip " + host);
+        System.out.println("Server running on " + HOST + ":" + PORT);
+
+        while(serverOn){
+            try{
+                Socket clientSocket = serverSocket.accept();
+                clients.add(clientSocket);
+
+                System.out.println(clientSocket + " connected to server");
+
+                ClientServiceThread cliThread = new ClientServiceThread(clientSocket);
+                cliThread.start();
+            }catch(IOException ioe){
+                System.out.println("Exception encountered on connection to socket");
+            }
+        }
 
         try{
-            serverSocket = new ServerSocket(PORT, 0, host);
-        }catch(IOException e){
-            System.out.println("Could not open server socket.");
+            serverSocket.close();
+            System.out.println("Server stopped");
+        }catch(Exception e){
+            System.out.println("Problem stopping server socket");
             System.exit(0);
         }
-
-        System.out.println("Socket " + serverSocket + " created.");
     }
 
-    public void run(){
-        System.out.println("Server is running.");
+    public void sendMessage(ArrayList<String> tables, Socket socket){
+        for(Socket client : clients){
+            if(client == socket) continue;
 
-        while(true) {
-            for(Client client : clients){
-                if(!client.isConnected()){
-                    System.out.println(client + " disconnected.");
-                    clients.remove(client);
-                }
-            }
+            try {
+                ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
-            try{
-                socket = serverSocket.accept();
-                //Send and receive
-
-                out.writeUTF("Hei");
+                out.writeObject(tables);
                 out.flush();
-                out.close();
-
-                //
             }catch(IOException e){
-                System.out.println("Could not connect to client.");
-            }
-
-            System.out.println("Client " + socket + " has connected.");
-
-            clients.add(new Client(socket));
-
-            try{
-                Thread.sleep(THROTTLE);
-            }catch(InterruptedException e){
-                System.out.println("Server has been interrupted.");
+                System.out.println("Could not send to " + client);
             }
         }
     }
 
-    //For testing purposes
-    public static void main(String args[]){
-        Server server = new Server(); server.start();
+    @SuppressWarnings("unchecked")
+    class ClientServiceThread extends Thread{
+        private Socket socket;
+
+        public ClientServiceThread(Socket socket){
+            this.socket = socket;
+        }
+
+        public void run(){
+            try{
+                while(serverOn){
+                    ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+                    System.out.println("Waiting for client");
+
+                    try {
+                        ArrayList<String> tables = (ArrayList<String>) in.readObject();
+
+                        sendMessage(tables, socket);
+                    }catch(ClassNotFoundException e){
+                        System.out.println("Received unapproved item");
+                    }
+                }
+            }catch(IOException e){
+                System.out.println("Disconnected from " + socket);
+            }finally{
+                try{
+                    socket.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void main (String[] args){
+        new Server();
     }
 }
