@@ -20,6 +20,7 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTextField;
 
 public class ShowMeeting extends JPanel {
 	private JTable table;
@@ -27,18 +28,6 @@ public class ShowMeeting extends JPanel {
 	
 	public ShowMeeting() {
 		setLayout(null);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 54, 110, 168);
-		add(scrollPane);
-		
-		JLabel lblMeetings = new JLabel("Meetings");
-		lblMeetings.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMeetings.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		scrollPane.setColumnHeaderView(lblMeetings);
-		
-		JList list = new JList();
-		scrollPane.setViewportView(list);
 		
 		JLabel lblDescription = new JLabel("Description:");
 		lblDescription.setBounds(130, 58, 72, 14);
@@ -74,7 +63,7 @@ public class ShowMeeting extends JPanel {
 		textPane_3.setBounds(212, 194, 123, 20);
 		add(textPane_3);
 		
-		JButton btnCancel = new JButton("Cancel");
+		JButton btnCancel = new JButton("Back");
 		btnCancel.setBounds(10, 287, 89, 23);
 		add(btnCancel);
 		
@@ -95,16 +84,6 @@ public class ShowMeeting extends JPanel {
 		add(btnDecline);
 		
 
-		UtilDateModel model = new UtilDateModel();
-		JDatePanelImpl datePanel = new JDatePanelImpl(model);
-		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
-		datePicker.getJFormattedTextField().setText("Choose date here");
-		datePicker.setTextEditable(false);
-		datePicker.setToolTipText("");
-		datePicker.setBounds(357, 54, 137, 23);
-		
-		add(datePicker);
-		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Time before meeting", "10 min", "15 min", "20 min", "25 min", "30 min"}));
 		comboBox.setBounds(212, 225, 123, 20);
@@ -118,6 +97,15 @@ public class ShowMeeting extends JPanel {
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"SMS", "Email", "Both"}));
 		comboBox_1.setBounds(345, 225, 57, 20);
 		add(comboBox_1);
+		
+		JLabel lblDate = new JLabel("Date:");
+		lblDate.setBounds(381, 58, 46, 14);
+		add(lblDate);
+		
+		JTextPane textPane_4 = new JTextPane();
+		textPane_4.setEditable(false);
+		textPane_4.setBounds(421, 58, 123, 20);
+		add(textPane_4);
 		
 		
 
