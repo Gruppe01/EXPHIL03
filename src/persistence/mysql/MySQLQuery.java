@@ -40,9 +40,9 @@ public class MySQLQuery {
 
         String setString = StringUtils.join(fields, " = ?, ") + " = ?";
         String whereString = StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
-        String selectionString = StringUtils.join(selection, " ");
+        String selectionString = selection == null ? "" : " " + StringUtils.join(selection, " ");
 
-        String updateSQL = "UPDATE " + table + " SET " + setString + " WHERE " + whereString + " " + selectionString + ";";
+        String updateSQL = "UPDATE " + table + " SET " + setString + " WHERE " + whereString + selectionString + ";";
 
         ArrayList<String> queryValues = new ArrayList<>();
 
@@ -67,12 +67,12 @@ public class MySQLQuery {
     public ArrayList<HashMap<String, String>> select(ArrayList<String> tables, ArrayList<String> fields, HashMap conditions, ArrayList<String> selection) {
         String tablesString = StringUtils.join(tables, ", ");
         String fieldsString = StringUtils.join(fields, ", ");
-        String whereString = StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
-        String selectionString = StringUtils.join(selection, " ");
+        String whereString = conditions == null ? "" : " WHERE " + StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
+        String selectionString = selection == null ? "" : " " + StringUtils.join(selection, " ");
 
-        String selectSQL = "SELECT " + fieldsString + " FROM " + tablesString + " WHERE " + whereString + " " + selectionString + ";";
+        String selectSQL = "SELECT " + fieldsString + " FROM " + tablesString + whereString  + selectionString + ";";
 
-        ArrayList<String> queryValues = new ArrayList<String>(conditions.values());
+        ArrayList<String> queryValues = conditions == null ? null : new ArrayList<String>(conditions.values());
 
         return connection.execute(selectSQL, queryValues, true);
     }

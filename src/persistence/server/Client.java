@@ -1,5 +1,7 @@
 package persistence.server;
 
+import persistence.UpdateHandler;
+
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -8,6 +10,11 @@ public class Client {
     private static final String HOST = Server.HOST;
     private static final int PORT = Server.PORT;
     private Socket socket;
+    private UpdateHandler updateHandler;
+
+    public Client(UpdateHandler updateHandler){
+        this.updateHandler = updateHandler;
+    }
 
     @SuppressWarnings("unchecked")
     public void run(){
@@ -23,7 +30,7 @@ public class Client {
                 try{
                     ArrayList<String> tables = (ArrayList<String>) in.readObject();
 
-                   //TODO: Update client model
+                   updateHandler.receiveUpdates(tables);
                 }catch(ClassNotFoundException e) {
                     System.out.println(e.getMessage());
                     break;
@@ -55,10 +62,5 @@ public class Client {
         }catch(IOException e){
             System.out.println("Could not send to " + socket);
         }
-    }
-
-    public static void main(String args[]){
-        Client client = new Client();
-        client.run();
     }
 }
