@@ -1,10 +1,11 @@
 package model;
 
-import com.sun.swing.internal.plaf.synth.resources.synth_sv;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+
+import persistence.MySQLQuery;
+
 
 public class Meeting {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -16,67 +17,90 @@ public class Meeting {
 	private String starttime;
 	private String endtime;
 	private String description;
-    private int room;
+    private int minCapacity;
+    private String place;
+    private Room room;
 
-	public Meeting(User creator, String starttime, String endtime, String description, int room){
-		admins = new ArrayList<User>();
-		members = new ArrayList<User>();
-		admins.add(creator);
-		members.add(creator);
+	public Meeting(User creator, String starttime, String endtime, String description, int capacity, Room room){
+		admins = new ArrayList<>(); admins.add(creator);
+		members = new ArrayList<>(); members.add(creator);
 		setStarttime(starttime);
 		setEndtime(endtime);
         setDescription(description);
+        setMinCapacity(capacity);
         setRoom(room);
-		meetingID = 0;
+		meetingID = new MySQLQuery().getNextID("Meeting");
 
         System.out.println(DATE_FORMAT.format(new Date()));
+
+	}
+	
+	public Meeting(User creator, String starttime, String endtime, String description, String place){
+		admins = new ArrayList<>(); admins.add(creator);
+		members = new ArrayList<>(); members.add(creator);
+		setStarttime(starttime);
+		setEndtime(endtime);
+        setDescription(description);
+        setPlace(place);
+		meetingID = new MySQLQuery().getNextID("Meeting");
+
+        System.out.println(DATE_FORMAT.format(new Date()));
+
+	}
+	
+	public String getPlace(){
+		return place;
+	}
+	
+	public void setPlace(String place){
+		this.place = place;
 	}
 	
 	public ArrayList<User> getAdmins() {
 		return admins;
 	}
 	
+
 	public void addAdmin(User admin) {
-		if (admins.contains(admin)){
-            throw new IllegalArgumentException("The user is already an admin");
-        }else{
-            this.admins.add(admin);
-        }
+		if (admins.contains(admin)) throw new IllegalArgumentException("The user is allready an admin");
+		
+		this.admins.add(admin);
 	}
 	
 	public void deleteAdmin(User admin){
-		if (!admins.contains(admin)){
-            throw new IllegalArgumentException("The user is not an current admin");
-        }else{
-            this.admins.remove(admin);
-        }
+		if (admins.contains(admin)){
+			this.admins.remove(admin);
+		}
+		else{
+			throw new IllegalArgumentException("The user is not an current admin");
+		}
 	}
+
 	
 	public ArrayList<User> getMembers() {
 		return members;
 	}
 	
+
 	public void addMember(User member) {
-		if (members.contains(member)){
-            throw new IllegalArgumentException("The user is allready invited");
-        }else{
-            this.members.add(member);
-        }
+		if (members.contains(member)) throw new IllegalArgumentException("The user is allready invited");
+		this.members.add(member);
 	}
 	
 	public void deleteMember(User member){
-		if (!members.contains(member)){
-            throw new IllegalArgumentException("The user is not a current member");
-        }else{
-            this.members.remove(member);
-        }
+		if (members.contains(member)){
+			this.members.remove(member);
+		}
+		else{
+			throw new IllegalArgumentException("The user is not a current member");
+		}
 	}
 
     public ArrayList<String> getExternalMembers() {
         return externalMembers;
     }
 
-    public void addExternalMember(String member) {
+    public void addExternalMember(String member) throws IllegalArgumentException {
         if (externalMembers.contains(member)){
             throw new IllegalArgumentException("The email is allready invited");
         }else{
@@ -84,7 +108,7 @@ public class Meeting {
         }
     }
 
-    public void deleteExternalMember(String member){
+    public void deleteExternalMember(String member) throws IllegalArgumentException {
         if (!externalMembers.contains(member)){
             throw new IllegalArgumentException("The email is not a current member");
         }else{
@@ -96,7 +120,10 @@ public class Meeting {
 		return starttime;
 	}
 	
-	public void setStarttime(String starttime) {
+	
+	
+
+	public void setStarttime(String starttime) throws IllegalArgumentException {
 		if (true) {
 			this.starttime = starttime;
 		}else{
@@ -108,7 +135,9 @@ public class Meeting {
 		return endtime;
 	}
 	
-	public void setEndtime(String endtime) {
+	
+
+	public void setEndtime(String endtime) throws IllegalArgumentException {
 		if (true) {
 			this.endtime = endtime;
 		}else{
@@ -117,8 +146,8 @@ public class Meeting {
 	}
 	
 	public String getDuration() {
-        long minutes = -1;
-        long hours = -1;
+        long minutes;
+        long hours;
 
         try {
             Date startTime = DATE_FORMAT.parse(starttime);
@@ -145,13 +174,29 @@ public class Meeting {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+    public int getMinCapacity() {
+        return minCapacity;
+    }
 
-    public int getRoom() {
+    public void setMinCapacity(int capacity) throws IllegalArgumentException{
+        if(capacity < 0){
+            throw new IllegalArgumentException("Capacity cannot be less than zero.");
+        }else{
+            this.minCapacity = capacity;
+        }
+    }
+
+    public Room getRoom() {
         return room;
     }
 
-    public void setRoom(int room) {
-        this.room = room;
+    public void setRoom(Room room) throws IllegalArgumentException {
+        if(new MySQLQuery().getAvailableRooms(starttime, endtime, minCapacity).contains(room.getRoomNumber())){
+            this.room = room;
+        }else{
+            throw new IllegalArgumentException("Selected room not available.");
+        }
     }
 	
 	public int getMeetingID() {
@@ -161,12 +206,12 @@ public class Meeting {
 	@Override
 	public String toString() {
 		return "Meeting [members=" + members + ", starttime=" + starttime
-				+ ", endtime=" + endtime + ", duration=" + getDuration()
+				+  ", endtime=" + endtime + ", duration=" + getDuration()
 				+ ", description=" + description + "]";
 	}
 
     public static void main(String args[]){
-        Meeting meeting = new Meeting(new User("asdasd", "asdasd", "asdasd", "si@df.com", "12345678"), "2014-03-13 11:00:00", "2014-03-13 13:01:00", "Kjempegøy!", 1);
+        Meeting meeting = new Meeting(new User("asdasd", "asdasd", "asdasd", "si@df.com", "12345678"), "2014-03-13 11:00:00", "2014-03-13 13:01:00", "Kjempegøy!", 5, new Room(new MySQLQuery().getNextID("MeetingRoom"), 10));
 
         System.out.println(meeting);
     }
