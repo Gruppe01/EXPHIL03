@@ -1,9 +1,11 @@
 package model;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
 import persistence.MySQLQuery;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 public class Meeting {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -16,6 +18,7 @@ public class Meeting {
 	private String endtime;
 	private String description;
     private int minCapacity;
+    private String place;
     private Room room;
 
 	public Meeting(User creator, String starttime, String endtime, String description, int capacity, Room room){
@@ -26,49 +29,71 @@ public class Meeting {
         setDescription(description);
         setMinCapacity(capacity);
         setRoom(room);
-		meetingID = 0;
+		meetingID = new MySQLQuery().getNextID("Meeting");
 
         System.out.println(DATE_FORMAT.format(new Date()));
+
+	}
+	
+	public Meeting(User creator, String starttime, String endtime, String description, String place){
+		admins = new ArrayList<>(); admins.add(creator);
+		members = new ArrayList<>(); members.add(creator);
+		setStarttime(starttime);
+		setEndtime(endtime);
+        setDescription(description);
+        setPlace(place);
+		meetingID = new MySQLQuery().getNextID("Meeting");
+
+        System.out.println(DATE_FORMAT.format(new Date()));
+
+	}
+	
+	public String getPlace(){
+		return place;
+	}
+	
+	public void setPlace(String place){
+		this.place = place;
 	}
 	
 	public ArrayList<User> getAdmins() {
 		return admins;
 	}
 	
-	public void addAdmin(User admin) throws IllegalArgumentException {
-		if (admins.contains(admin)){
-            throw new IllegalArgumentException("The user is already an admin");
-        }else{
-            this.admins.add(admin);
-        }
+
+	public void addAdmin(User admin) {
+		if (admins.contains(admin)) throw new IllegalArgumentException("The user is allready an admin");
+		
+		this.admins.add(admin);
 	}
 	
-	public void deleteAdmin(User admin) throws IllegalArgumentException {
-		if (!admins.contains(admin)){
-            throw new IllegalArgumentException("The user is not an current admin");
-        }else{
-            this.admins.remove(admin);
-        }
+	public void deleteAdmin(User admin){
+		if (admins.contains(admin)){
+			this.admins.remove(admin);
+		}
+		else{
+			throw new IllegalArgumentException("The user is not an current admin");
+		}
 	}
+
 	
 	public ArrayList<User> getMembers() {
 		return members;
 	}
 	
-	public void addMember(User member) throws IllegalArgumentException {
-		if (members.contains(member)){
-            throw new IllegalArgumentException("The user is allready invited");
-        }else{
-            this.members.add(member);
-        }
+
+	public void addMember(User member) {
+		if (members.contains(member)) throw new IllegalArgumentException("The user is allready invited");
+		this.members.add(member);
 	}
 	
-	public void deleteMember(User member) throws IllegalArgumentException {
-		if (!members.contains(member)){
-            throw new IllegalArgumentException("The user is not a current member");
-        }else{
-            this.members.remove(member);
-        }
+	public void deleteMember(User member){
+		if (members.contains(member)){
+			this.members.remove(member);
+		}
+		else{
+			throw new IllegalArgumentException("The user is not a current member");
+		}
 	}
 
     public ArrayList<String> getExternalMembers() {
@@ -94,6 +119,9 @@ public class Meeting {
 	public String getStarttime() {
 		return starttime;
 	}
+	
+	
+	
 
 	public void setStarttime(String starttime) throws IllegalArgumentException {
 		if (true) {
@@ -106,6 +134,8 @@ public class Meeting {
 	public String getEndtime() {
 		return endtime;
 	}
+	
+	
 
 	public void setEndtime(String endtime) throws IllegalArgumentException {
 		if (true) {
@@ -144,7 +174,7 @@ public class Meeting {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
     public int getMinCapacity() {
         return minCapacity;
     }
@@ -176,7 +206,7 @@ public class Meeting {
 	@Override
 	public String toString() {
 		return "Meeting [members=" + members + ", starttime=" + starttime
-				+ ", endtime=" + endtime + ", duration=" + getDuration()
+				+  ", endtime=" + endtime + ", duration=" + getDuration()
 				+ ", description=" + description + "]";
 	}
 
