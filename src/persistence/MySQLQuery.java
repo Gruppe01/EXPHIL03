@@ -94,7 +94,7 @@ public class MySQLQuery {
     @SuppressWarnings("unchecked")
     public int getNextID(String table){
         ArrayList<HashMap<String, String>> tableInfo = execute("SHOW TABLE STATUS LIKE ?;", new ArrayList(Arrays.asList(table)), true);
-        System.out.println(tableInfo);
-        return Integer.parseInt(tableInfo.get(0).get("AUTO_INCREMENT"));
+
+        return Integer.parseInt(tableInfo.get(0).get("AUTO_INCREMENT")) + 1;
     }
 }

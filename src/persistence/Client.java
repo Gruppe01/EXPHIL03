@@ -1,67 +1,64 @@
 package persistence;
 
-import java.net.Socket;
 import java.io.*;
+import java.net.*;
+import java.util.ArrayList;
 
 public class Client {
-    private static final int THROTTLE = Server.THROTTLE;
+    private static final String HOST = Server.HOST;
+    private static final int PORT = Server.PORT;
     private Socket socket;
-    private boolean connected;
-    private Inport inport;
 
-    private class Inport extends Thread{
-        private DataInputStream in;
+    @SuppressWarnings("unchecked")
+    public void run(){
+        ObjectInputStream in = null;
 
-        public void run(){
-            try{
-                //Send and receive
-                in = new DataInputStream(socket.getInputStream());
-
-                System.out.println(in.read());
-                //End
-            }catch(IOException e){
-                System.out.println("Could not get input stream from " + toString());
-                return;
-            }
-
-            System.out.println(socket + " has connected input.");
+        try{
+            socket = new Socket(Server.HOST, PORT);
+            System.out.println("Connected to server on " + HOST + ":" + PORT);
 
             while(true){
+                in = new ObjectInputStream(socket.getInputStream());
+
                 try{
-                    Thread.sleep(THROTTLE);
-                }catch(Exception e){
-                    System.out.println(toString() + " has input interrupted.");
+                    ArrayList<String> tables = (ArrayList<String>) in.readObject();
+
+                   //TODO: Update client model
+                }catch(ClassNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    break;
                 }
+            }
+        }catch(UnknownHostException e){
+            System.err.println("Cannot connect to " + HOST + " on port " + PORT);
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }finally{
+            try{
+                if(in != null) in.close();
+
+                System.out.println("Closed input stream");
+            }catch(IOException e){
+                System.out.println(e.getMessage());
             }
         }
     }
 
-    public Client(Socket newSocket){
-        socket = newSocket;
-        connected = true;
-        inport = new Inport();
-        inport.start();
-    }
+    public void sendMessage(ArrayList<String> tables){
+        ObjectOutputStream out;
 
-    public boolean isConnected(){
-        return connected;
-    }
-
-    public void purgeDissconnect(){
         try{
-            connected = false;
-            socket.close();
-        } catch(IOException e){
-            System.out.println("Could not purge " + socket + ".");
+            out = new ObjectOutputStream(socket.getOutputStream());
+
+            out.writeObject(tables);
+            out.flush();
+        }catch(IOException e){
+            System.out.println("Could not send to " + socket);
         }
     }
 
-    public String toString(){
-        return socket.toString();
-    }
-
-    //For testing purposes
-    public static void main(String args[]) throws Exception{
-        Client client = new Client(new Socket("127.0.0.1", 1234)); client.inport.start();;
+    public static void main(String args[]){
+        Client client = new Client();
+        client.run();
     }
 }
