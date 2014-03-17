@@ -30,6 +30,7 @@ public class CreateMeeting extends JPanel {
 	private JLabel label_1;
 	private JSpinner spinner_3;
 	private JScrollPane scrollPane_1;
+	private JTextField textField;
 
 	/**
 	 * Create the panel.
@@ -51,7 +52,6 @@ public class CreateMeeting extends JPanel {
 		scrollPane.setColumnHeaderView(lblAvail);
 		
 		textField_3 = new JTextField();
-		textField_3.setEditable(false);
 		textField_3.setBounds(449, 225, 125, 20);
 		add(textField_3);
 		textField_3.setColumns(10);
@@ -61,11 +61,11 @@ public class CreateMeeting extends JPanel {
 		add(lblDescription);
 		
 		lblSelectTimeStart = new JLabel("Select time start:");
-		lblSelectTimeStart.setBounds(10, 140, 101, 14);
+		lblSelectTimeStart.setBounds(10, 176, 101, 14);
 		add(lblSelectTimeStart);
 		
 		lblSelectTimeEnd = new JLabel("Select time end:");
-		lblSelectTimeEnd.setBounds(10, 176, 101, 14);
+		lblSelectTimeEnd.setBounds(10, 207, 101, 14);
 		add(lblSelectTimeEnd);
 		
 		btnCancel = new JButton("Cancel");
@@ -85,31 +85,31 @@ public class CreateMeeting extends JPanel {
 		add(lblParticipants);
 		
 		label = new JLabel(":");
-		label.setBounds(190, 140, 15, 14);
+		label.setBounds(190, 176, 15, 14);
 		add(label);
 		
 		label_1 = new JLabel(":");
-		label_1.setBounds(190, 176, 15, 14);
+		label_1.setBounds(190, 207, 15, 14);
 		add(label_1);
 		
 		JSpinner spinner = new JSpinner();
-		spinner.setBounds(121, 137, 59, 20);
+		spinner.setBounds(121, 173, 59, 20);
 		add(spinner);
 		
 		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setBounds(121, 173, 59, 20);
+		spinner_1.setBounds(121, 204, 59, 20);
 		add(spinner_1);
 		
 		JSpinner spinner_2 = new JSpinner();
-		spinner_2.setBounds(200, 137, 59, 20);
+		spinner_2.setBounds(200, 173, 59, 20);
 		add(spinner_2);
 		
 		spinner_3 = new JSpinner();
-		spinner_3.setBounds(200, 173, 59, 20);
+		spinner_3.setBounds(200, 204, 59, 20);
 		add(spinner_3);
 		
 		JTextPane textPane = new JTextPane();
-		textPane.setBounds(121, 31, 143, 86);
+		textPane.setBounds(121, 31, 143, 103);
 		add(textPane);
 		
 		UtilDateModel model = new UtilDateModel();
@@ -121,6 +121,15 @@ public class CreateMeeting extends JPanel {
 		datePicker.setBounds(274, 31, 145, 23);
 
 		add(datePicker);
+		
+		JLabel lblPlace = new JLabel("Place: ");
+		lblPlace.setBounds(10, 151, 46, 14);
+		add(lblPlace);
+		
+		textField = new JTextField();
+		textField.setBounds(121, 145, 138, 20);
+		add(textField);
+		textField.setColumns(10);
 		
 //		scrollPane_1 = new JScrollPane();
 //		scrollPane_1.setBounds(274, 103, 132, 86);
