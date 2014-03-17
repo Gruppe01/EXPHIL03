@@ -4,8 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import persistence.MySQLQuery;
-
+import persistence.mysql.MySQLQuery;
 
 public class Meeting {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

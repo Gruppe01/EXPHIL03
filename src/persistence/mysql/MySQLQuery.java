@@ -1,4 +1,4 @@
-package persistence;
+package persistence.mysql;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -95,6 +95,6 @@ public class MySQLQuery {
     public int getNextID(String table){
         ArrayList<HashMap<String, String>> tableInfo = execute("SHOW TABLE STATUS LIKE ?;", new ArrayList(Arrays.asList(table)), true);
 
-        return Integer.parseInt(tableInfo.get(0).get("AUTO_INCREMENT")) + 1;
+        return Integer.parseInt(tableInfo.get(0).get("AUTO_INCREMENT"));
     }
 }

@@ -1,4 +1,4 @@
-package persistence;
+package persistence.server;
 
 import java.io.*;
 import java.net.*;
