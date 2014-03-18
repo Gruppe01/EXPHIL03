@@ -26,12 +26,12 @@ public class Frame extends JPanel{
 		frame = new JFrame();
 		login = new Login(this);
 		createUser = new CreateUser(this);
-		createMeeting = new CreateMeeting();
+		createMeeting = new CreateMeeting(this);
 		editMeeting = new EditMeeting();
-		mainScreen = new MainScreen();
-		showMeeting = new ShowMeeting();
-		weekCalendar = new WeekCalendar();
-		editMembers = new EditMembers();
+		mainScreen = new MainScreen(this);
+		showMeeting = new ShowMeeting(this);
+		weekCalendar = new WeekCalendar(this);
+		editMembers = new EditMembers(this);
 		
 		addExternal = new AddExternal();
 		showMembers = new ShowMembers();
@@ -72,7 +72,7 @@ public class Frame extends JPanel{
 				frame.validate();
 				frame.repaint();
 				curPanel=createMeeting;
-				frame.setSize(600, 300);
+				frame.setSize(600, 350);
 				break;
 			case "editMeeting":
 				frame.remove(curPanel);

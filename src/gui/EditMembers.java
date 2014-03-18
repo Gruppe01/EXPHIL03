@@ -1,5 +1,8 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -16,7 +19,7 @@ public class EditMembers extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public EditMembers() {
+	public EditMembers(final Frame frame) {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		
@@ -43,9 +46,14 @@ public class EditMembers extends JPanel {
 		btnDeleteMember.setBounds(408, 195, 129, 23);
 		add(btnDeleteMember);
 		
-		JButton btnNewButton = new JButton("Done");
-		btnNewButton.setBounds(579, 214, 89, 47);
-		add(btnNewButton);
+		JButton btnDone = new JButton("Done");
+		btnDone.setBounds(579, 214, 89, 47);
+		add(btnDone);
+		btnDone.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("createMeeting");
+			}
+		});
 		
 		JButton button = new JButton(">>");
 		button.setBounds(316, 103, 67, 23);
@@ -73,9 +81,14 @@ public class EditMembers extends JPanel {
 		lblGroupMembers.setHorizontalAlignment(SwingConstants.CENTER);
 		scrollPane_2.setColumnHeaderView(lblGroupMembers);
 		
-		JButton btnNewButton_1 = new JButton("Cancel");
-		btnNewButton_1.setBounds(10, 214, 89, 47);
-		add(btnNewButton_1);
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(10, 214, 89, 47);
+		add(btnCancel);
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("createMeeting");
+			}
+		});
 		
 		JButton btnSelectAll = new JButton("Select all");
 		btnSelectAll.setBounds(187, 195, 89, 23);

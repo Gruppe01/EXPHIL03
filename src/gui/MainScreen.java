@@ -27,7 +27,7 @@ public class MainScreen extends JPanel {
 	/**
 	 * Create the frame.
 	 */
-	public MainScreen() {
+	public MainScreen(final Frame frame) {
 		//setResizable(false);
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 680, 426);
@@ -70,18 +70,29 @@ public class MainScreen extends JPanel {
 		JButton btnShowCalendar = new JButton("Show week calendar");
 		btnShowCalendar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("weekCalendar");
 			}
 		});
 		btnShowCalendar.setBounds(276, 231, 170, 45);
 		add(btnShowCalendar);
 		
-		JButton btnNewMeeting_1 = new JButton("New meeting");
-		btnNewMeeting_1.setBounds(276, 287, 170, 44);
-		add(btnNewMeeting_1);
+		JButton btnNewMeeting = new JButton("New meeting");
+		btnNewMeeting.setBounds(276, 287, 170, 44);
+		add(btnNewMeeting);
+		btnNewMeeting.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("createMeeting");
+			}
+		});
 		
-		JButton btnNewButton = new JButton("Log out");
-		btnNewButton.setBounds(556, 299, 89, 32);
-		add(btnNewButton);
+		JButton btnLogOut = new JButton("Log out");
+		btnLogOut.setBounds(556, 299, 89, 32);
+		add(btnLogOut);
+		btnLogOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("login");
+			}
+		});
 		
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);

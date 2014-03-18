@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -18,6 +20,7 @@ import javax.swing.JScrollBar;
 import javax.swing.DefaultComboBoxModel;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
 import javax.swing.ListSelectionModel;
 
 public class WeekCalendar extends JPanel {
@@ -26,7 +29,7 @@ public class WeekCalendar extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public WeekCalendar() {
+	public WeekCalendar(final Frame frame) {
 		setLayout(null);
 		
 		JButton button = new JButton("<");
@@ -176,6 +179,11 @@ public class WeekCalendar extends JPanel {
 		JButton btnBack = new JButton("Back");
 		btnBack.setBounds(30, 276, 89, 44);
 		add(btnBack);
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("mainScreen");
+			}
+		});
 
 	}
 }

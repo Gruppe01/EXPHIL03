@@ -42,6 +42,7 @@ public class Login extends JPanel {
 		add(loginButton);
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				frame.setFrame("mainScreen");
 			}
 		});
 		
