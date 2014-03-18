@@ -49,6 +49,7 @@ public class Frame extends JPanel{
 	
 	public void setUser(String in){
 		user = in;
+		mainScreen.setUser(in);
 	}
 	
 	public void logout(){
