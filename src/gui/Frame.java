@@ -33,10 +33,6 @@ public class Frame extends JPanel{
 		mainScreen = new MainScreen(this);
 		showMeeting = new ShowMeeting(this);
 		weekCalendar = new WeekCalendar(this);
-		editMembers = new EditMembers(this);
-		
-		addExternal = new AddExternal();
-		showMembers = new ShowMembers();
 		
 		curPanel = login;
 		
@@ -117,14 +113,7 @@ public class Frame extends JPanel{
 				curPanel=weekCalendar;
 				frame.setSize(700, 400);
 				break;
-			case "editMembers":
-				frame.remove(curPanel);
-				frame.add(editMembers);
-				frame.validate();
-				frame.repaint();
-				curPanel=editMembers;
-				frame.setSize(700, 300);
-				break;
+			
 		}
 		
 		

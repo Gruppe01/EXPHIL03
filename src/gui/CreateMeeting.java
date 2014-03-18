@@ -1,5 +1,6 @@
 package gui;
 
+import model.Meeting;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -33,11 +34,13 @@ public class CreateMeeting extends JPanel {
 	private JSpinner spinner_3;
 	private JScrollPane scrollPane_1;
 	private JTextField textField;
+	private Frame frame;
 
 	/**
 	 * Create the panel.
 	 */
-	public CreateMeeting(final Frame frame) {
+	public CreateMeeting(final Frame in) {
+		frame = in;
 		setBounds(100, 100, 584, 347);
 		setLayout(null);
 		
@@ -84,7 +87,8 @@ public class CreateMeeting extends JPanel {
 		add(btnEditMembers);
 		btnEditMembers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.setFrame("editMembers");
+				EditMembers edit = new EditMembers();
+				edit.setVisible(true);
 			}
 		});
 		
@@ -93,7 +97,7 @@ public class CreateMeeting extends JPanel {
 		add(btnCreateMeeting);
 		btnCreateMeeting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.setFrame("mainScreen");
+				
 			}
 		});
 		
@@ -136,7 +140,6 @@ public class CreateMeeting extends JPanel {
 		datePicker.setTextEditable(false);
 		datePicker.setToolTipText("");
 		datePicker.setBounds(274, 31, 145, 23);
-
 		add(datePicker);
 		
 		JLabel lblPlace = new JLabel("Place: ");
@@ -151,5 +154,12 @@ public class CreateMeeting extends JPanel {
 //		scrollPane_1 = new JScrollPane();
 //		scrollPane_1.setBounds(274, 103, 132, 86);
 //		add(scrollPane_1);
+	}
+	
+	private void create(){
+		
+		
+		
+		frame.setFrame("mainScreen");
 	}
 }
