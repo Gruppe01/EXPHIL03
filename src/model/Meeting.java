@@ -3,6 +3,7 @@ package model;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import persistence.mysql.MySQLQuery;
 
@@ -11,7 +12,7 @@ public class Meeting {
 
 	private final int meetingID;
 	private ArrayList<User> admins;
-	private ArrayList<User> members;
+	private HashMap<User, Boolean> members;
     private ArrayList<String> externalMembers;
 	private String starttime;
 	private String endtime;
@@ -21,8 +22,8 @@ public class Meeting {
     private Room room;
 
 	public Meeting(User creator, String starttime, String endtime, String description, int capacity, Room room){
-		admins = new ArrayList<>(); admins.add(creator);
-		members = new ArrayList<>(); members.add(creator);
+		admins = new ArrayList<>();
+		members = new HashMap<>();
 		setStarttime(starttime);
 		setEndtime(endtime);
         setDescription(description);
@@ -30,21 +31,21 @@ public class Meeting {
         setRoom(room);
 		meetingID = new MySQLQuery().getNextID("Meeting");
 
-        System.out.println(DATE_FORMAT.format(new Date()));
-
+        addAdmin(creator);
+        members.put(creator, true);
 	}
 	
 	public Meeting(User creator, String starttime, String endtime, String description, String place){
-		admins = new ArrayList<>(); admins.add(creator);
-		members = new ArrayList<>(); members.add(creator);
+		admins = new ArrayList<>();
+		members = new HashMap<>();
 		setStarttime(starttime);
 		setEndtime(endtime);
         setDescription(description);
         setPlace(place);
 		meetingID = new MySQLQuery().getNextID("Meeting");
 
-        System.out.println(DATE_FORMAT.format(new Date()));
-
+        addAdmin(creator);
+        members.put(creator, true);
 	}
 	
 	public String getPlace(){
@@ -76,21 +77,23 @@ public class Meeting {
 	}
 
 	
-	public ArrayList<User> getMembers() {
+	public HashMap<User, Boolean> getMembers() {
 		return members;
 	}
 	
 
 	public void addMember(User member) {
-		if (members.contains(member)) throw new IllegalArgumentException("The user is allready invited");
-		this.members.add(member);
+        if(members.containsKey(member)){
+            throw new IllegalArgumentException("The user is allready invited");
+        }else{
+            this.members.put(member, null);
+        }
 	}
 	
 	public void deleteMember(User member){
-		if (members.contains(member)){
+		if (members.keySet().contains(member)){
 			this.members.remove(member);
-		}
-		else{
+		}else{
 			throw new IllegalArgumentException("The user is not a current member");
 		}
 	}
@@ -210,7 +213,7 @@ public class Meeting {
 	}
 
     public static void main(String args[]){
-        Meeting meeting = new Meeting(new User("asdasd", "asdasd", "asdasd", "si@df.com", "12345678"), "2014-03-13 11:00:00", "2014-03-13 13:01:00", "Kjempegøy!", 5, new Room(new MySQLQuery().getNextID("MeetingRoom"), 10));
+        Meeting meeting = new Meeting(new User("asdasd", "asdasd", "asdasd", "si@df.com", "12345678"), "2014-03-13 11:00:00", "2014-03-13 13:01:00", "Kjempegøy!", 5, new Room(10));
 
         System.out.println(meeting);
     }

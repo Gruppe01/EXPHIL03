@@ -6,43 +6,54 @@ import java.util.ArrayList;
 
 //User
 public class Users {
-    private ArrayList<UserObject> userObjects;
+    private ArrayList<User> users;
 
-    public Users(ArrayList<UserObject> userObjects){
-        this.userObjects = userObjects;
+    public Users(ArrayList<User> users){
+        populate(users);
     }
 
     public Users(){
-        this.userObjects = null;
-    }
-
-    public ArrayList<UserObject> getUserObjects(){
-        return userObjects;
-    }
-
-    public void addUserObject(UserObject userObject){
-        userObjects.add(userObject);
-    }
-
-    public void deleteUserObject(UserObject userObject){
-        userObjects.remove(userObject);
+        this.users = new ArrayList<>();
     }
 
     public ArrayList<User> getUsers(){
-        ArrayList<User> meetings = new ArrayList<>();
-
-        for(UserObject userObject : userObjects){
-            meetings.add(userObject.getUser());
-        }
-
-        return meetings;
+        return users;
     }
 
-    class UserObject{
-        private User user;
+    public User getUserByUserName(String userName){
+        for(User user : users){
+            if(userName.equals(user.getUsername())) return user;
+        }
 
-        public User getUser(){
-            return user;
+        return null;
+    }
+
+    public int getUserIndex(String userName){
+        for(User user : users){
+            if(userName.equals(user.getUsername())) return users.indexOf(user);
+        }
+
+        return -1;
+    }
+
+    public void addUser(User user){
+        users.add(user);
+    }
+
+    public void removeUser(User user){
+        users.remove(user);
+    }
+
+    public void updateUser(User user){
+        int i = getUserIndex(user.getUsername());
+
+        users.remove(i);
+        users.add(i, user);
+    }
+
+    public void populate(ArrayList<User> users){
+        for(User user : users){
+            users.add(user);
         }
     }
 }

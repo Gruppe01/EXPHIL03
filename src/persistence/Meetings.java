@@ -1,76 +1,59 @@
 package persistence;
 
 import model.Meeting;
-import model.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 //Meeting, ExternalUser, MeetingAdmin, MeetingInvite
 public class Meetings {
-    private ArrayList<MeetingObject> meetingObjects;
+    private ArrayList<Meeting> meetings;
 
-    public Meetings(ArrayList<MeetingObject> meetingObjects){
-        this.meetingObjects = meetingObjects;
+    public Meetings(ArrayList<Meeting> meetings){
+        populate(meetings);
     }
 
     public Meetings(){
-        this.meetingObjects = null;
-    }
-
-    public ArrayList<MeetingObject> getMeetingObjects(){
-        return meetingObjects;
-    }
-
-    public void addMeetingObject(MeetingObject meetingObject){
-        meetingObjects.add(meetingObject);
-    }
-
-    public void deleteMeetingObject(MeetingObject meetingObject){
-        meetingObjects.remove(meetingObject);
+        this.meetings = new ArrayList<>();
     }
 
     public ArrayList<Meeting> getMeetings(){
-        ArrayList<Meeting> meetings = new ArrayList<>();
-
-        for(MeetingObject meetingObject : meetingObjects){
-            meetings.add(meetingObject.getMeeting());
-        }
-
         return meetings;
     }
 
-    class MeetingObject{
-        private Meeting meeting;
-        private HashMap<User, Boolean> invitations;
-
-        public MeetingObject(Meeting meeting, HashMap<User, Boolean> invitations){
-            this.meeting = meeting;
-            this.invitations = invitations;
+    public Meeting getMeetingByID(int meetingID){
+        for(Meeting meeting : meetings){
+            if(meetingID == meeting.getMeetingID()) return meeting;
         }
 
-        public MeetingObject(Meeting meeting){
-            this.meeting = meeting;
+        return null;
+    }
+
+    public int getMeetingIndex(int meetingID){
+        for(Meeting meeting : meetings){
+            if(meetingID == meeting.getMeetingID()) return meetings.indexOf(meeting);
         }
 
-        public Meeting getMeeting(){
-            return meeting;
-        }
+        return -1;
+    }
 
-        public HashMap<User, Boolean> getInvitations(){
-            return invitations;
-        }
+    public void addMeeting(Meeting meeting){
+        meetings.add(meeting);
+    }
 
-        public void addInvitation(User user){
-            invitations.put(user, null);
-        }
+    public void removeMeeting(Meeting meeting){
+        meetings.remove(meeting);
+    }
 
-        public void deleteInvitation(User user){
-            invitations.remove(user);
-        }
+    public void updateMeeting(Meeting meeting){
+        int i = getMeetingIndex(meeting.getMeetingID());
 
-        public void updateInvitation(User user, boolean value){
-            invitations.put(user, value);
+        meetings.remove(i);
+        meetings.add(i, meeting);
+    }
+
+    public void populate(ArrayList<Meeting> meetings){
+        for(Meeting meeting : meetings){
+            meetings.add(meeting);
         }
     }
 }
