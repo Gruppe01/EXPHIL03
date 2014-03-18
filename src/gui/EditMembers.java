@@ -22,8 +22,13 @@ public class EditMembers extends JFrame {
 	 */
 	
 	private JPanel contentPane;
+	private CreateMeeting meeting;
+	private EditMembers working;
 	
-	public EditMembers() {
+	public EditMembers(final CreateMeeting in) {
+		
+		meeting = in;
+		working = this;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(697,335);
@@ -110,7 +115,7 @@ public class EditMembers extends JFrame {
 		contentPane.add(btnAddExternal);
 		btnAddExternal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddExternal addExternal = new AddExternal();
+				AddExternal addExternal = new AddExternal(working);
 				addExternal.setVisible(true);
 			}
 		});
