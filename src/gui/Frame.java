@@ -27,7 +27,7 @@ public class Frame extends JPanel{
 		login = new Login(this);
 		createUser = new CreateUser(this);
 		createMeeting = new CreateMeeting(this);
-		editMeeting = new EditMeeting();
+		editMeeting = new EditMeeting(this);
 		mainScreen = new MainScreen(this);
 		showMeeting = new ShowMeeting(this);
 		weekCalendar = new WeekCalendar(this);

@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -16,6 +18,7 @@ import javax.swing.SwingConstants;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+
 import javax.swing.JTextField;
 
 public class EditMeeting extends JPanel {
@@ -24,8 +27,8 @@ public class EditMeeting extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public EditMeeting() {
-setLayout(null);
+	public EditMeeting(final Frame frame) {
+		setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 54, 110, 168);
@@ -74,18 +77,38 @@ setLayout(null);
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(10, 287, 110, 23);
 		add(btnCancel);
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("mainScreen");
+			}
+		});
 		
-		JButton btnNewButton = new JButton("Edit/Show members");
-		btnNewButton.setBounds(158, 287, 127, 23);
-		add(btnNewButton);
+		JButton btnEditMembers = new JButton("Edit/Show members");
+		btnEditMembers.setBounds(158, 287, 127, 23);
+		add(btnEditMembers);
+		btnEditMembers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("editMembers");
+			}
+		});
 		
 		JButton btnAccept = new JButton("Update meeting");
 		btnAccept.setBounds(517, 287, 123, 23);
 		add(btnAccept);
+		btnAccept.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("mainScreen");
+			}
+		});
 		
 		JButton btnDecline = new JButton("Delete meeting");
 		btnDecline.setBounds(347, 287, 117, 23);
 		add(btnDecline);
+		btnDecline.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("mainScreen");
+			}
+		});
 		
 
 		UtilDateModel model = new UtilDateModel();
