@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Server{
     public static final String HOST = "localhost";
@@ -17,7 +18,7 @@ public class Server{
         try{
             serverSocket = new ServerSocket(PORT);
         }catch(IOException ioe){
-            System.out.println("Could not create server socket on port " + PORT);
+            System.out.println("Could not create server socket on " + HOST + ":" + PORT);
             System.exit(0);
         }
 
@@ -46,14 +47,15 @@ public class Server{
         }
     }
 
-    public void sendMessage(ArrayList<String> tables, Socket socket){
+    public void sendMessage(HashMap<String, ArrayList<String>> changes, String type, Socket socket){
         for(Socket client : clients){
             if(client == socket) continue;
 
             try {
                 ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
-                out.writeObject(tables);
+                out.writeObject(type);
+                out.writeObject(changes);
                 out.flush();
             }catch(IOException e){
                 System.out.println("Could not send to " + client);
@@ -77,9 +79,10 @@ public class Server{
                     System.out.println("Waiting for client");
 
                     try {
-                        ArrayList<String> tables = (ArrayList<String>) in.readObject();
+                        String type = (String) in.readObject();
+                        HashMap<String, ArrayList<String>> changes = (HashMap<String, ArrayList<String>>) in.readObject();
 
-                        sendMessage(tables, socket);
+                        sendMessage(changes, type, socket);
                     }catch(ClassNotFoundException e){
                         System.out.println("Received unapproved item");
                     }
