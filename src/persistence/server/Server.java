@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Server{
     public static final String HOST = "localhost";
@@ -47,7 +46,7 @@ public class Server{
         }
     }
 
-    public void sendMessage(HashMap<String, ArrayList<String>> changes, String type, Socket socket){
+    public void sendMessage(ArrayList<Object> changedObjects, String type, Socket socket){
         for(Socket client : clients){
             if(client == socket) continue;
 
@@ -55,7 +54,7 @@ public class Server{
                 ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
                 out.writeObject(type);
-                out.writeObject(changes);
+                out.writeObject(changedObjects);
                 out.flush();
             }catch(IOException e){
                 System.out.println("Could not send to " + client);
@@ -80,9 +79,9 @@ public class Server{
 
                     try {
                         String type = (String) in.readObject();
-                        HashMap<String, ArrayList<String>> changes = (HashMap<String, ArrayList<String>>) in.readObject();
+                        ArrayList<Object> changedObjects = (ArrayList<Object>) in.readObject();
 
-                        sendMessage(changes, type, socket);
+                        sendMessage(changedObjects, type, socket);
                     }catch(ClassNotFoundException e){
                         System.out.println("Received unapproved item");
                     }
