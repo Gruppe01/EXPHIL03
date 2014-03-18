@@ -73,11 +73,13 @@ public class Login extends JPanel {
 		
 		username = usernameField.getText();
 		password = String.valueOf(passwordField.getPassword());
-		
+		//disabled login check
+		/*
 		if (!query.loginCheck(username, password)){
 			ErrorMessage Error = new ErrorMessage("Error", "Invalid login!");
 			return;
 		};
+		*/
 		
 		frame.setUser(username);
 		
