@@ -3,6 +3,7 @@ package persistence;
 import persistence.server.Client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UpdateHandler{
     Client client;
@@ -12,8 +13,8 @@ public class UpdateHandler{
         client.run();
     }
 
-    public void receiveUpdates(ArrayList<String> tables){
-        for(String table : tables){
+    public void receiveUpdates(HashMap<String, ArrayList<String>> changes, String type){
+        for(String table : changes.keySet()){
             switch(table){
                 case "User":
                     break;
@@ -37,7 +38,11 @@ public class UpdateHandler{
         }
     }
 
-    public void sendUpdates(ArrayList<String> tables){
-        client.sendMessage(tables);
+    public void sendUpdates(HashMap<String, ArrayList<String>> changes, String type){
+        client.sendMessage(changes, type);
+    }
+
+    public static void main(String args[]){
+        new UpdateHandler();
     }
 }
