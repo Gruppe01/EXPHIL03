@@ -1,5 +1,7 @@
 package gui;
 
+import persistence.mysql.MySQLQuery;
+
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
@@ -13,10 +15,12 @@ import java.awt.event.ActionListener;
 public class Login extends JPanel {
 	private JTextField usernameField;
 	private JPasswordField passwordField;
+	private Frame frame;
 	/**
 	 * Create the panel.
 	 */
-	public Login(final Frame frame) {
+	public Login(final Frame in) {
+		frame = in;
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		
@@ -42,7 +46,7 @@ public class Login extends JPanel {
 		add(loginButton);
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.setFrame("mainScreen");
+				
 			}
 		});
 		
@@ -58,6 +62,26 @@ public class Login extends JPanel {
 		JButton FYPButton = new JButton("Forgot your password?");
 		FYPButton.setBounds(121, 154, 200, 28);
 		add(FYPButton);
+	}
+	
+	private void login(){
+		
+		MySQLQuery query = new MySQLQuery();
+		
+		String username;
+		String password;
+		
+		username = usernameField.getText();
+		password = String.valueOf(passwordField.getPassword());
+		
+		if (!query.loginCheck(username, password)){
+			ErrorMessage Error = new ErrorMessage("Error", "Invalid login!");
+			return;
+		};
+		
+		frame.setUser(username);
+		
+		frame.setFrame("mainScreen");
 	}
 
 }

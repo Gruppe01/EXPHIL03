@@ -91,6 +91,7 @@ public class MainScreen extends JPanel {
 		add(btnLogOut);
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.logout();
 				frame.setFrame("login");
 			}
 		});
