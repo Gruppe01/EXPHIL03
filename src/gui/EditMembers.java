@@ -94,9 +94,15 @@ public class EditMembers extends JPanel {
 		btnSelectAll.setBounds(187, 195, 89, 23);
 		add(btnSelectAll);
 		
-		JButton btnNewButton_2 = new JButton("Add external");
-		btnNewButton_2.setBounds(167, 11, 119, 23);
-		add(btnNewButton_2);
+		JButton btnAddExternal = new JButton("Add external");
+		btnAddExternal.setBounds(167, 11, 119, 23);
+		add(btnAddExternal);
+		btnAddExternal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddExternal addExternal = new AddExternal();
+				addExternal.setVisible(true);
+			}
+		});
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Search...", "Simon", "Robin", "Simen", "Sindre", "Peder", "Arne", "Kjell-Elvis"}));

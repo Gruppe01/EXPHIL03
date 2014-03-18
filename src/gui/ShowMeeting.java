@@ -87,9 +87,15 @@ public class ShowMeeting extends JPanel {
 			}
 		});
 		
-		JButton btnNewButton = new JButton("Show members");
-		btnNewButton.setBounds(130, 287, 110, 23);
-		add(btnNewButton);
+		JButton btnShowMembers = new JButton("Show members");
+		btnShowMembers.setBounds(130, 287, 127, 23);
+		add(btnShowMembers);
+		btnShowMembers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ShowMembers showMembers = new ShowMembers();
+				showMembers.setVisible(true);
+			}
+		});
 		
 		JCheckBox chckbxShowInCalendar = new JCheckBox("Show in calendar");
 		chckbxShowInCalendar.setBounds(263, 287, 110, 23);

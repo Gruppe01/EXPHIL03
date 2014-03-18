@@ -62,6 +62,7 @@ public class MainScreen extends JPanel {
 		JButton btnEditShow = new JButton("Edit / Show meeting");
 		btnEditShow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 			}
 		});
 		btnEditShow.setBounds(276, 175, 170, 45);
