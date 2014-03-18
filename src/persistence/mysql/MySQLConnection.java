@@ -35,8 +35,10 @@ public class MySQLConnection {
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            for(int i=0; i<values.size(); i++){
-                preparedStatement.setString(i+1, values.get(i));
+            if(values != null){
+                for(int i=0; i<values.size(); i++){
+                    preparedStatement.setString(i+1, values.get(i));
+                }
             }
 
             ArrayList<HashMap<String, String>> results = null;

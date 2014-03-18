@@ -3,7 +3,6 @@ package persistence.mysql;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import persistence.mysql.MySQLQuery;
 
 import static org.junit.Assert.*;
 
