@@ -19,11 +19,13 @@ public class Frame extends JPanel{
 	private ShowMeeting showMeeting;
 	private ShowMembers showMembers;
 	private WeekCalendar weekCalendar;
+	private String user;
 	private JPanel curPanel;
 	
 	public Frame(){
 		
 		frame = new JFrame();
+		user = null;
 		login = new Login(this);
 		createUser = new CreateUser(this);
 		createMeeting = new CreateMeeting(this);
@@ -43,6 +45,15 @@ public class Frame extends JPanel{
 		frame.setVisible(true);
 		setFrame("login");
 		
+	}
+	
+	public void setUser(String in){
+		user = in;
+		mainScreen.setUser(in);
+	}
+	
+	public void logout(){
+		user = null;
 	}
 	
 	public void setFrame(String panel){

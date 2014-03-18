@@ -5,8 +5,6 @@ import persistence.UpdateHandler;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class Client {
     private static final String HOST = Server.HOST;
@@ -31,9 +29,9 @@ public class Client {
 
                 try{
                     String type = (String) in.readObject();
-                    HashMap<String, ArrayList<String>> changes = (HashMap<String, ArrayList<String>>) in.readObject();
+                    ArrayList<Object> changedObjects = (ArrayList<Object>) in.readObject();
 
-                   updateHandler.receiveUpdates(changes, type);
+                   updateHandler.receiveUpdates(changedObjects, type);
                 }catch(ClassNotFoundException e) {
                     System.out.println(e.getMessage());
                     break;
@@ -54,14 +52,14 @@ public class Client {
         }
     }
 
-    public void sendMessage(HashMap<String, ArrayList<String>> changes, String type){
+    public void sendMessage(ArrayList<Object> changedObjects, String type){
         ObjectOutputStream out;
 
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
 
             out.writeObject(type);
-            out.writeObject(changes);
+            out.writeObject(changedObjects);
             out.flush();
         }catch(IOException e){
             System.out.println("Could not send to " + socket);

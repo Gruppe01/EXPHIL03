@@ -22,7 +22,7 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 public class MainScreen extends JPanel {
 
-	
+	private JLabel lblUsername;
 
 	/**
 	 * Create the frame.
@@ -91,11 +91,12 @@ public class MainScreen extends JPanel {
 		add(btnLogOut);
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.logout();
 				frame.setFrame("login");
 			}
 		});
 		
-		JLabel lblUsername = new JLabel("Username");
+		lblUsername = new JLabel("");
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsername.setBounds(556, 11, 89, 14);
 		add(lblUsername);
@@ -109,5 +110,9 @@ public class MainScreen extends JPanel {
 		datePicker.setBounds(499, 175, 146, 23);
 
 		add(datePicker);
+	}
+	
+	public void setUser(String in){
+		lblUsername.setText(in);
 	}
 }
