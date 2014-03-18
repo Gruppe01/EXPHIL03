@@ -41,7 +41,7 @@ public class Frame extends JPanel{
 		this.setLayout(new BorderLayout());
 		frame.setResizable(false);
 		frame.setVisible(true);
-		setFrame("login");//this is for testing
+		setFrame("login");
 		
 	}
 	
