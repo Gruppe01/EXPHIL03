@@ -14,11 +14,15 @@ public class AddExternal extends JFrame {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
+	private EditMembers editMembers;
 
 	/**
 	 * Create the panel.
 	 */
-	public AddExternal() {
+	public AddExternal(final EditMembers in) {
+		
+		editMembers = in;
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(349,178);
 		contentPane = new JPanel();
