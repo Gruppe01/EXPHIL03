@@ -14,6 +14,7 @@ public class Client {
 
     public Client(UpdateHandler updateHandler){
         this.updateHandler = updateHandler;
+        this.run();
     }
 
     @SuppressWarnings("unchecked")
@@ -31,7 +32,7 @@ public class Client {
                     String type = (String) in.readObject();
                     ArrayList<Object> changedObjects = (ArrayList<Object>) in.readObject();
 
-                   updateHandler.receiveUpdates(changedObjects, type);
+                   updateHandler.receiveChanges(changedObjects, type);
                 }catch(ClassNotFoundException e) {
                     System.out.println(e.getMessage());
                     break;
@@ -52,7 +53,7 @@ public class Client {
         }
     }
 
-    public void sendMessage(ArrayList<Object> changedObjects, String type){
+    public void sendChanges(ArrayList<Object> changedObjects, String type){
         ObjectOutputStream out;
 
         try{

@@ -1,5 +1,7 @@
 package persistence.server;
 
+import persistence.UpdateHandler;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,8 +14,9 @@ public class Server{
     private ServerSocket serverSocket;
     private ArrayList<Socket> clients = new ArrayList<>();
     private boolean serverOn = true;
+    private UpdateHandler updateHandler;
 
-    public Server(){
+    public Server(UpdateHandler updateHandler){
         try{
             serverSocket = new ServerSocket(PORT);
         }catch(IOException ioe){
@@ -22,6 +25,8 @@ public class Server{
         }
 
         System.out.println("Server running on " + HOST + ":" + PORT);
+
+        this.updateHandler = updateHandler;
 
         while(serverOn){
             try{
@@ -46,10 +51,8 @@ public class Server{
         }
     }
 
-    public void sendMessage(ArrayList<Object> changedObjects, String type, Socket socket){
+    public void sendChanges(ArrayList<Object> changedObjects, String type){
         for(Socket client : clients){
-            if(client == socket) continue;
-
             try {
                 ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
@@ -73,15 +76,16 @@ public class Server{
         public void run(){
             try{
                 while(serverOn){
-                    ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                    System.out.println("Waiting for changes");
 
-                    System.out.println("Waiting for client");
+                    ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
                     try {
                         String type = (String) in.readObject();
                         ArrayList<Object> changedObjects = (ArrayList<Object>) in.readObject();
 
-                        sendMessage(changedObjects, type, socket);
+                        updateHandler.receiveChanges(changedObjects, type);
+                        sendChanges(changedObjects, type);
                     }catch(ClassNotFoundException e){
                         System.out.println("Received unapproved item");
                     }
@@ -98,7 +102,14 @@ public class Server{
         }
     }
 
+    public UpdateHandler getUpdateHandler(){
+        return updateHandler;
+    }
+
     public static void main (String[] args){
-        new Server();
+        UpdateHandler updateHandler = new UpdateHandler("server");
+        Server server = new Server(updateHandler);
+
+
     }
 }

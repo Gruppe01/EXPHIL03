@@ -66,7 +66,7 @@ public class MySQLQuery {
     @SuppressWarnings("unchecked")
     public ArrayList<HashMap<String, String>> select(ArrayList<String> tables, ArrayList<String> fields, HashMap conditions, ArrayList<String> selection) {
         String tablesString = StringUtils.join(tables, ", ");
-        String fieldsString = StringUtils.join(fields, ", ");
+        String fieldsString = fields == null ? "*" : StringUtils.join(fields, ", ");
         String whereString = conditions == null ? "" : " WHERE " + StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
         String selectionString = selection == null ? "" : " " + StringUtils.join(selection, " ");
 
@@ -107,5 +107,9 @@ public class MySQLQuery {
         ArrayList<HashMap<String, String>> result = select(new ArrayList<>(Arrays.asList("User")), new ArrayList<>(Arrays.asList("username", "password")), conditions, null);
 
         return result.size() == 1;
+    }
+
+    public ArrayList<HashMap<String, String>> getAllRows(String table){
+        return select(new ArrayList<>(Arrays.asList(table)), null, null, null);
     }
 }

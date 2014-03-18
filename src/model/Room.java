@@ -1,20 +1,18 @@
 package model;
 
+import persistence.mysql.MySQLQuery;
+
 public class Room {
     private int roomNumber;
     private int capacity;
 
-    public Room(int roomNumber, int capacity) {
-        this.roomNumber = roomNumber;
+    public Room(int capacity) {
+        this.roomNumber = new MySQLQuery().getNextID("MeetingRoom");
         this.capacity = capacity;
     }
 
     public int getRoomNumber() {
         return roomNumber;
-    }
-
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
     }
 
     public int getCapacity() {
