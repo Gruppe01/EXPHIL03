@@ -76,6 +76,7 @@ public class AddExternal extends JFrame {
 			}
 		});
 		
+		setResizable(false);
 		setContentPane(contentPane);
 
 	}

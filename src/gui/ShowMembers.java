@@ -51,6 +51,7 @@ public class ShowMembers extends JFrame {
 			}
 		});
 		
+		setResizable(false);
 		setContentPane(contentPane);
 		
 	}

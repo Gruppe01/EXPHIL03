@@ -126,6 +126,7 @@ public class EditMembers extends JFrame {
 		AutoCompleteDecorator.decorate(comboBox);
 		contentPane.add(comboBox);
 		
+		setResizable(false);
 		setContentPane(contentPane);
 	}
 
