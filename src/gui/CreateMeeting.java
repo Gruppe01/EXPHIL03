@@ -15,6 +15,8 @@ import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class CreateMeeting extends JPanel {
 	private JScrollPane scrollPane;
@@ -35,7 +37,7 @@ public class CreateMeeting extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CreateMeeting() {
+	public CreateMeeting(final Frame frame) {
 		setBounds(100, 100, 584, 347);
 		setLayout(null);
 		
@@ -69,16 +71,31 @@ public class CreateMeeting extends JPanel {
 		add(lblSelectTimeEnd);
 		
 		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(10, 287, 113, 31);
+		btnCancel.setBounds(10, 287, 125, 31);
 		add(btnCancel);
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("mainScreen");
+			}
+		});
 		
 		btnEditMembers = new JButton("Edit Members");
-		btnEditMembers.setBounds(232, 280, 113, 45);
+		btnEditMembers.setBounds(239, 287, 113, 31);
 		add(btnEditMembers);
+		btnEditMembers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("editMembers");
+			}
+		});
 		
 		btnCreateMeeting = new JButton("Create meeting");
-		btnCreateMeeting.setBounds(461, 287, 113, 31);
+		btnCreateMeeting.setBounds(449, 287, 125, 31);
 		add(btnCreateMeeting);
+		btnCreateMeeting.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("mainScreen");
+			}
+		});
 		
 		lblParticipants = new JLabel("Participants:");
 		lblParticipants.setBounds(353, 228, 86, 14);

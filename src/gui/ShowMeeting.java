@@ -5,6 +5,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 import javax.swing.JList;
@@ -17,6 +20,7 @@ import javax.swing.border.*;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+
 import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -26,7 +30,7 @@ public class ShowMeeting extends JPanel {
 	private JTable table;
 
 	
-	public ShowMeeting() {
+	public ShowMeeting(final Frame frame) {
 		setLayout(null);
 		
 		JLabel lblDescription = new JLabel("Description:");
@@ -66,10 +70,21 @@ public class ShowMeeting extends JPanel {
 		JButton btnCancel = new JButton("Back");
 		btnCancel.setBounds(10, 287, 89, 23);
 		add(btnCancel);
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("mainScreen");
+			}
+		});
 		
-		JButton btnNewButton = new JButton("Show members");
-		btnNewButton.setBounds(130, 287, 110, 23);
-		add(btnNewButton);
+		JButton btnShowMembers = new JButton("Show members");
+		btnShowMembers.setBounds(130, 287, 127, 23);
+		add(btnShowMembers);
+		btnShowMembers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ShowMembers showMembers = new ShowMembers();
+				showMembers.setVisible(true);
+			}
+		});
 		
 		JCheckBox chckbxShowInCalendar = new JCheckBox("Show in calendar");
 		chckbxShowInCalendar.setBounds(263, 287, 110, 23);
@@ -78,10 +93,20 @@ public class ShowMeeting extends JPanel {
 		JButton btnAccept = new JButton("Accept");
 		btnAccept.setBounds(470, 253, 89, 23);
 		add(btnAccept);
+		btnAccept.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("mainScreen");
+			}
+		});
 		
 		JButton btnDecline = new JButton("Decline");
 		btnDecline.setBounds(470, 287, 89, 23);
 		add(btnDecline);
+		btnDecline.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setFrame("mainScreen");
+			}
+		});
 		
 
 		JComboBox comboBox = new JComboBox();
