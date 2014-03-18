@@ -1,4 +1,4 @@
-package persistence;
+package persistence.mysql;
 
 import org.junit.After;
 import org.junit.Before;
@@ -118,6 +118,12 @@ public class MySQLTest {
         selectMap = new HashMap<>(); selectMap.put("usrname", username);
 
         select(validConnection, selectMap);
+    }
+
+    @Test
+    public void testGetNextID() throws Exception{
+        assertEquals(4, validConnection.getNextID("Meeting"));
+        assertEquals(4, validConnection.getNextID("MeetingRoom"));
     }
 
     private ArrayList<HashMap<String, String>> select(MySQLQuery connection, HashMap<String, String> map) throws Exception {
