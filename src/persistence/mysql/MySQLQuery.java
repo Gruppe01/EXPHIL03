@@ -97,4 +97,15 @@ public class MySQLQuery {
 
         return Integer.parseInt(tableInfo.get(0).get("AUTO_INCREMENT"));
     }
+
+    public boolean loginCheck(String username, String password){
+        HashMap<String, String> conditions = new HashMap<>();
+
+        conditions.put("username", username);
+        conditions.put("password", password);
+
+        ArrayList<HashMap<String, String>> result = select(new ArrayList<>(Arrays.asList("User")), new ArrayList<>(Arrays.asList("username", "password")), conditions, null);
+
+        return result.size() == 1;
+    }
 }

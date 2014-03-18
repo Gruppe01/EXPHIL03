@@ -3,7 +3,6 @@ package persistence;
 import persistence.server.Client;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class UpdateHandler{
     Client client;
@@ -13,33 +12,14 @@ public class UpdateHandler{
         client.run();
     }
 
-    public void receiveUpdates(HashMap<String, ArrayList<String>> changes, String type){
-        for(String table : changes.keySet()){
-            switch(table){
-                case "User":
-                    break;
-                case "Meeting":
-                    break;
-                case "MeetingRoom":
-                    break;
-                case "MeetingInvite":
-                    break;
-                case "Group":
-                    break;
-                case "GroupMembership":
-                    break;
-                case "MeetingAdmin":
-                    break;
-                case "ExternalUser":
-                    break;
-                default:
-                    return;
-            }
+    public void receiveUpdates(ArrayList<Object> changedObjects, String type){
+        for(Object object : changedObjects){
+
         }
     }
 
-    public void sendUpdates(HashMap<String, ArrayList<String>> changes, String type){
-        client.sendMessage(changes, type);
+    public void sendUpdates(ArrayList<Object> changedObjects, String type){
+        client.sendMessage(changedObjects, type);
     }
 
     public static void main(String args[]){
