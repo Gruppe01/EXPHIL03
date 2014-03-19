@@ -11,15 +11,15 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private String phonenumber;
+    private String phoneNumber;
     private String name;
 
-    public User(String username, String password, String name, String email, String phonenumber) throws IllegalArgumentException{
+    public User(String username, String password, String name, String email, String phoneNumber) throws IllegalArgumentException{
         setUsername(username);
         setPassword(password);
         setName(name);
         setEmail(email);
-        setPhonenumber(phonenumber);
+        setPhoneNumber(phoneNumber);
     }
 
     public String getUsername() {
@@ -57,14 +57,14 @@ public class User {
         }
     }
 
-    public String getPhonenumber() {
-        return phonenumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhonenumber(String phonenumber) throws IllegalArgumentException {
+    public void setPhoneNumber(String phonenumber) throws IllegalArgumentException {
         if(!phonenumber.matches(PHONE_PATTERN)) throw new IllegalArgumentException("Invalid phone number.");
 
-        this.phonenumber = phonenumber;
+        this.phoneNumber = phonenumber;
     }
 
     public String getName() {
