@@ -66,7 +66,7 @@ public class User {
     }
 
     public void setName(String name) throws IllegalArgumentException {
-        if(!name.matches(NAME_PATTERN)) throw new IllegalArgumentException("Invalid name");
+        if(!name.matches(NAME_PATTERN) || name.length() == 0 || name.length() > 45) throw new IllegalArgumentException("Invalid name");
 
         this.name = name;
     }

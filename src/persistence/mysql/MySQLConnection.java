@@ -15,7 +15,7 @@ public class MySQLConnection {
 
     protected MySQLConnection() {
         url = "jdbc:mysql://mysql.stud.ntnu.no/";
-        dbName = "simonbo_exphil03_test";
+        dbName = "simonbo_exphil03";
         driver = "com.mysql.jdbc.Driver";
         userName = "simonbo_exphil03";
         password = "drossap";

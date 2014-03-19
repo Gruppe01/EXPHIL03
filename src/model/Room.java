@@ -6,6 +6,11 @@ public class Room {
     private int roomNumber;
     private int capacity;
 
+    public Room(int roomNumber, int capacity) {
+        this.roomNumber = roomNumber;
+        this.capacity = capacity;
+    }
+
     public Room(int capacity) {
         this.roomNumber = new MySQLQuery().getNextID("MeetingRoom");
         this.capacity = capacity;
