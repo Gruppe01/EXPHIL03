@@ -5,7 +5,7 @@ import javax.mail.internet.InternetAddress;
 
 public class User {
     public static final String USERNAME_PATTERN = "^[a-zA-Z0-9_.-]*$";
-    public static final String NAME_PATTERN = "^[a-zA-Z- ]*$";
+    public static final String NAME_PATTERN = "^[a-åA-Å- ]*$";
     public static final String PHONE_PATTERN = "^\\+?[\\(?\\+?(\\d{2})\\)?[ -]?(\\d{0,})[- ]?(\\d{0,})[- ]?(\\d{0,})]{8,16}$";
 
     private String username;
