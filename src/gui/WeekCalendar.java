@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -17,6 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
@@ -41,6 +44,7 @@ public class WeekCalendar extends JPanel {
 	private GregorianCalendar GCalendar;
 	private String date;
 	
+	
 	private void removeSelectedColleague(){
 		model.removeElement(selectedmembers.getSelectedValue());
 	}
@@ -59,13 +63,24 @@ public class WeekCalendar extends JPanel {
 		date = year.toString() + "-" + month.toString() + "-" + day.toString() + " " + hourminsec;
 	}
 	
+	private void checkMonth(int day){
+		month = GCalendar.get(Calendar.MONTH);
+		switch(month){
+		case(0):
+			
+		}
+			
+	}
+	
 	private void lastWeek(){
 		if(week == 1){
 			week = 52;
 			year = year - 1;
+			month = 12;
 		}else{
 			week = week - 1;
 		}
+		day = day - 7;
 		lblWeek.setText("Week " + week.toString());
 		setDate();
 		System.out.println(getDate());
@@ -74,9 +89,12 @@ public class WeekCalendar extends JPanel {
 		if(week == 52){
 			week = 1;
 			year = year + 1;
+			month = 1;
 		}else{
 			week = week + 1;
 		}
+		checkMonth(day);
+		day = day + 7;
 		lblWeek.setText("Week " + week.toString());
 		setDate();
 		System.out.println(getDate());
@@ -159,6 +177,32 @@ public class WeekCalendar extends JPanel {
 		add(scrollPane_1);
 		
 		table = new JTable();
+		ListSelectionModel cellSelectionModel = table.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				String selectedData = null;
+
+		        int[] selectedRow = table.getSelectedRows();
+		        int[] selectedColumns = table.getSelectedColumns();
+
+		        for (int i = 0; i < selectedRow.length; i++) {
+		          for (int j = 0; j < selectedColumns.length; j++) {
+		            selectedData = (String) table.getValueAt(selectedRow[i], selectedColumns[j]);
+		          }
+		        }
+		        System.out.println("Selected: " + selectedData);
+
+
+			}
+		     
+
+		    });
+		
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setCellSelectionEnabled(true);
 		table.setColumnSelectionAllowed(true);
@@ -233,6 +277,8 @@ public class WeekCalendar extends JPanel {
 		table.getColumnModel().getColumn(6).setResizable(false);
 		table.getColumnModel().getColumn(7).setResizable(false);
 		scrollPane_1.setViewportView(table);
+		System.out.println(table.getSelectedColumn());
+		System.out.println(table.getSelectedRow());
 		
 		collegues = new JComboBox();
 		collegues.setModel(new DefaultComboBoxModel(new String[] {"", "Robin Sjøvoll", "Simon Borøy-Johnsen", "Thor Håkon Bredesen", "Simen", "Russel", "Sara", "Susanne"}));
