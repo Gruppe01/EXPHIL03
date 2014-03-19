@@ -1,6 +1,7 @@
 package persistence.server;
 
-import persistence.UpdateHandler;
+import model.User;
+import persistence.ServerDataHandler;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -14,9 +15,9 @@ public class Server{
     private ServerSocket serverSocket;
     private ArrayList<Socket> clients = new ArrayList<>();
     private boolean serverOn = true;
-    private UpdateHandler updateHandler;
+    private ServerDataHandler dataHandler;
 
-    public Server(UpdateHandler updateHandler){
+    public Server(ServerDataHandler dataHandler){
         try{
             serverSocket = new ServerSocket(PORT);
         }catch(IOException ioe){
@@ -26,7 +27,7 @@ public class Server{
 
         System.out.println("Server running on " + HOST + ":" + PORT);
 
-        this.updateHandler = updateHandler;
+        this.dataHandler = dataHandler;
 
         while(serverOn){
             try{
@@ -84,7 +85,8 @@ public class Server{
                         String type = (String) in.readObject();
                         ArrayList<Object> changedObjects = (ArrayList<Object>) in.readObject();
 
-                        updateHandler.receiveChanges(changedObjects, type);
+                        dataHandler.receiveChanges(changedObjects, type);
+                        dataHandler.editDatabase(changedObjects, type);
                         sendChanges(changedObjects, type);
                     }catch(ClassNotFoundException e){
                         System.out.println("Received unapproved item");
@@ -102,14 +104,11 @@ public class Server{
         }
     }
 
-    public UpdateHandler getUpdateHandler(){
-        return updateHandler;
+    public ServerDataHandler getDataHandler(){
+        return dataHandler;
     }
 
     public static void main (String[] args){
-        UpdateHandler updateHandler = new UpdateHandler("server");
-        Server server = new Server(updateHandler);
-
-
+        Server server = new Server(new ServerDataHandler());
     }
 }

@@ -1,4 +1,4 @@
-package persistence;
+package persistence.data;
 
 import model.Meeting;
 

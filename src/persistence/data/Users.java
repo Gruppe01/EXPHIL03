@@ -1,4 +1,4 @@
-package persistence;
+package persistence.data;
 
 import model.User;
 
@@ -28,9 +28,9 @@ public class Users {
         return null;
     }
 
-    public int getUserIndex(String userName){
+    public int getUserIndex(String username){
         for(User user : users){
-            if(userName.equals(user.getUsername())) return users.indexOf(user);
+            if(username.equals(user.getUsername())) return users.indexOf(user);
         }
 
         return -1;

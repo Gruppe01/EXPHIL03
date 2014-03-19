@@ -22,14 +22,14 @@ public class MySQLQuery {
     public void insert(String table, ArrayList<String> fields, ArrayList<String> values) {
         if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
 
-        String fieldsString = StringUtils.join(fields, ", ");
+        String fieldsString = fields == null ? "" : " (" + StringUtils.join(fields, ", ") + ")";
         String valuesString = "?";
 
         for(int i = 1; i<values.size(); i++){
             valuesString += ", ?";
         }
 
-        String insertSQL = "INSERT INTO  " + table + " (" + fieldsString + ") VALUES (" + valuesString + ");";
+        String insertSQL = "INSERT INTO " + table + fieldsString + " VALUES (" + valuesString + ");";
 
         connection.execute(insertSQL, values, false);
     }
