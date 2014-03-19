@@ -1,6 +1,8 @@
 package gui;
 
-
+import persistence.server.Client;
+import persistence.data.*;
+import model.User;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
@@ -19,12 +21,17 @@ public class Frame extends JPanel{
 	private ShowMeeting showMeeting;
 	private ShowMembers showMembers;
 	private WeekCalendar weekCalendar;
-	private String user;
+	private Client client;
+	private User user;
+	private String username;
+	
 	private JPanel curPanel;
 	
 	public Frame(){
 		
 		frame = new JFrame();
+		client = new Client();
+		username = null;
 		user = null;
 		login = new Login(this);
 		createUser = new CreateUser(this);
@@ -44,12 +51,14 @@ public class Frame extends JPanel{
 	}
 	
 	public void setUser(String in){
-		user = in;
+		username = in;
+		user = client.getDataHandler().getDataStorage().getUsers().getUserByUsername(username);
 		mainScreen.setUser(in);
 	}
 	
 	public void logout(){
 		user = null;
+		username = null;
 	}
 	
 	public void setFrame(String panel){
