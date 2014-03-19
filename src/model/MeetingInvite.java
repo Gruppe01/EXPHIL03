@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.time.*;
 
-public class MeetingInvite {
+public class MeetingInvite implements Serializable {
     private int meetingID;
     private String username;
     private Boolean coming;

@@ -1,13 +1,13 @@
 package model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.time.*;
 
-import com.sun.swing.internal.plaf.synth.resources.synth_sv;
 import persistence.mysql.MySQLQuery;
 
-public class Meeting {
+public class Meeting implements Serializable {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private final int meetingID;
@@ -202,6 +202,10 @@ public class Meeting {
 	public int getMeetingID() {
 		return meetingID;
 	}
+
+    public String getCreator(){
+        return creator;
+    }
 
 	@Override
 	public String toString() {

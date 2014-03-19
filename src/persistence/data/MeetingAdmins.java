@@ -2,9 +2,10 @@ package persistence.data;
 
 import model.MeetingAdmin;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MeetingAdmins {
+public class MeetingAdmins implements Serializable {
     private ArrayList<MeetingAdmin> meetingAdmins;
 
     public MeetingAdmins(ArrayList<MeetingAdmin> meetingAdmins){

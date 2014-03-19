@@ -2,9 +2,10 @@ package persistence.data;
 
 import model.Room;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Rooms {
+public class Rooms implements Serializable {
     private ArrayList<Room> rooms;
 
     public Rooms(ArrayList<Room> rooms){

@@ -1,11 +1,10 @@
 package persistence;
 
 import model.*;
-import persistence.server.Client;
 
 import java.util.*;
 
-public class DataHandler {
+public class DataHandler extends Thread{
     protected DataStorage dataStorage;
 
     public DataHandler(DataStorage dataStorage){
@@ -36,7 +35,7 @@ public class DataHandler {
         }
     }
 
-    public void insertObject(ArrayList<Object> changedObjects){
+    private void insertObject(ArrayList<Object> changedObjects){
         for(Object changedObject : changedObjects){
             String table = changedObject.getClass().getSimpleName();
 
@@ -87,7 +86,7 @@ public class DataHandler {
         }
     }
 
-    public void updateObject(ArrayList<Object> changedObjects){
+    private void updateObject(ArrayList<Object> changedObjects){
         for(Object changedObject : changedObjects){
             String table = changedObject.getClass().getSimpleName();
 
@@ -138,7 +137,7 @@ public class DataHandler {
         }
     }
 
-    public void deleteObject(ArrayList<Object> changedObjects){
+    private void deleteObject(ArrayList<Object> changedObjects){
         for(Object changedObject : changedObjects){
             String table = changedObject.getClass().getSimpleName();
 
@@ -191,24 +190,9 @@ public class DataHandler {
 
     public void setDataStorage(DataStorage dataStorage){
         this.dataStorage = dataStorage;
-
-        System.out.println("Number of users: " + dataStorage.getUsers().getUsers().size());
-        System.out.println("Number of groups: " + dataStorage.getGroups().getGroups().size());
-        System.out.println("Number of rooms: " + dataStorage.getRooms().getRooms().size());
-        System.out.println("Number of meetings: " + dataStorage.getMeetings().getMeetings().size());
-        System.out.println("Number of external users: " + dataStorage.getExternalUsers().getExternalUsers().size());
-        System.out.println("Number of group memberships: " + dataStorage.getGroupMemberships().getGroupMemberships().size());
-        System.out.println("Number of meeting invites: " + dataStorage.getMeetingInvites().getMeetingInvites().size());
-        System.out.println("Number of meeting admins: " + dataStorage.getMeetingAdmins().getMeetingAdmins().size());
-        System.out.println();
     }
 
     public DataStorage getDataStorage(){
         return dataStorage;
-    }
-
-    public static void main(String args[]){
-        DataHandler dataHandler = new DataHandler();
-        Client client = new Client(dataHandler);
     }
 }

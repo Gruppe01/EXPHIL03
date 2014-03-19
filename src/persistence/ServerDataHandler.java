@@ -58,7 +58,7 @@ public class ServerDataHandler extends DataHandler {
                 case "Room":
                     Room room = (Room) changedObject;
 
-                    fields = new ArrayList<>(Arrays.asList("roomnumber", "capacity"));
+                    fields = new ArrayList<>(Arrays.asList("roomNumber", "capacity"));
                     values = new ArrayList<>(Arrays.asList(String.valueOf(room.getRoomNumber()), String.valueOf(room.getCapacity())));
 
                     mySQLQuery.insert(table, fields, values);
@@ -66,15 +66,12 @@ public class ServerDataHandler extends DataHandler {
                 case "Meeting":
                     Meeting meeting = (Meeting) changedObject;
 
-                    //String creator = meeting.getAdmins().get(0).getUsername();
-                    String creator = "admin"; //TODO: Fix
-
                     fields = new ArrayList<>(Arrays.asList("meetingID", "startTime", "endTime", "description", "place", "room", "creator"));
-                    values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), creator));
+                    values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), meeting.getCreator()));
 
                     mySQLQuery.insert(table, fields, values);
-                    mySQLQuery.insert("MeetingAdmin", null, new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), creator)));
-                    mySQLQuery.insert("MeetingInvite", null, new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), creator, "true")));
+                    mySQLQuery.insert("MeetingAdmin", null, new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getCreator())));
+                    mySQLQuery.insert("MeetingInvite", null, new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getCreator(), "true")));
                     break;
                 case "ExternalUser":
                     ExternalUser externalUser = (ExternalUser) changedObject;
@@ -144,8 +141,8 @@ public class ServerDataHandler extends DataHandler {
                 case "Room":
                     Room room = (Room) changedObject;
 
-                    map = new HashMap<>(); map.put("roomnumber", String.valueOf(room.getRoomNumber()));
-                    fields = new ArrayList<>(Arrays.asList("roomnumber", "capacity"));
+                    map = new HashMap<>(); map.put("roomNumber", String.valueOf(room.getRoomNumber()));
+                    fields = new ArrayList<>(Arrays.asList("roomNumber", "capacity"));
                     values = new ArrayList<>(Arrays.asList(String.valueOf(room.getRoomNumber()), String.valueOf(room.getCapacity())));
 
                     mySQLQuery.update(table, fields, values, map, null);
@@ -153,12 +150,9 @@ public class ServerDataHandler extends DataHandler {
                 case "Meeting":
                     Meeting meeting = (Meeting) changedObject;
 
-                    //String creator = meeting.getAdmins().get(0).getUsername();
-                    String creator = "admin"; //TODO: Fix
-
                     map = new HashMap<>(); map.put("meetingID", String.valueOf(meeting.getMeetingID()));
-                    fields = new ArrayList<>(Arrays.asList("meetingID", "startTime", "endTime", "description", "place", "room", "creator"));
-                    values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), creator));
+                    fields = new ArrayList<>(Arrays.asList("meetingID", "startTime", "endTime", "description", "place", "minCapacity", "room", "creator"));
+                    values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), String.valueOf(meeting.getMinCapacity()), meeting.getCreator()));
 
                     mySQLQuery.update(table, fields, values, map, null);
                     break;
@@ -228,7 +222,7 @@ public class ServerDataHandler extends DataHandler {
                 case "Room":
                     Room room = (Room) changedObject;
 
-                    map = new HashMap<>(); map.put("roomnumber", String.valueOf(room.getRoomNumber()));
+                    map = new HashMap<>(); map.put("roomNumber", String.valueOf(room.getRoomNumber()));
 
                     mySQLQuery.delete(table, map);
                     break;

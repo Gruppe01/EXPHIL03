@@ -2,9 +2,10 @@ package persistence.data;
 
 import model.MeetingInvite;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MeetingInvites {
+public class MeetingInvites implements Serializable {
     private ArrayList<MeetingInvite> meetingInvites;
 
     public MeetingInvites(ArrayList<MeetingInvite> meetingInvites){

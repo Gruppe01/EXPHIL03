@@ -2,9 +2,10 @@ package persistence.data;
 
 import model.User;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Users {
+public class Users implements Serializable {
     private ArrayList<User> users;
 
     public Users(ArrayList<User> users){
