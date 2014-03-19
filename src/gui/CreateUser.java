@@ -129,6 +129,8 @@ public class CreateUser extends JPanel {
 			return;
 		}
 		
+		frame.createUser(user);
+		
 		frame.setFrame("login");
 	}
 }
