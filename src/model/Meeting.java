@@ -210,10 +210,4 @@ public class Meeting {
 				+  ", endtime=" + endtime + ", duration=" + getDuration()
 				+ ", description=" + description + "]";
 	}
-
-    public static void main(String args[]){
-        Meeting meeting = new Meeting(new User("asdasd", "asdasd", "asdasd", "si@df.com", "12345678"), "2014-03-13 11:00:00", "2014-03-13 13:01:00", "Kjempegøy!", 5, new Room(10));
-
-        System.out.println(meeting);
-    }
 }

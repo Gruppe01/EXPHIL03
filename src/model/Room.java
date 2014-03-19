@@ -19,7 +19,8 @@ public class Room {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setCapacity(int capacity) throws IllegalArgumentException {
+        if(capacity > 0) this.capacity = capacity;
+        else throw new IllegalArgumentException("Room capacity must be more than zero");
     }
 }
