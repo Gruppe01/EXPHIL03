@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.time.*;
 
+import com.sun.swing.internal.plaf.synth.resources.synth_sv;
 import persistence.mysql.MySQLQuery;
 
 public class Meeting {
@@ -25,7 +26,7 @@ public class Meeting {
         setEndtime(endtime);
         setDescription(description);
         setPlace(place);
-        setRoom(room);
+        this.room = room;
         setMinCapacity(minCapacity);
         this.creator = creator;
         this.lastUpdated = lastUpdated;
@@ -125,7 +126,7 @@ public class Meeting {
 	}
 
 	public void setStarttime(String starttime) throws IllegalArgumentException {
-		try {
+        try {
 			this.starttime = LocalDateTime.parse(starttime);
 		}catch (DateTimeException e){
 			throw new IllegalArgumentException("Invalid starttime format.");
@@ -179,7 +180,7 @@ public class Meeting {
     }
 
     public void setMinCapacity(int capacity) throws IllegalArgumentException{
-        if(capacity < 0){
+        if(capacity < 0 && capacity != -1){
             throw new IllegalArgumentException("Capacity cannot be less than zero.");
         }else{
             this.minCapacity = capacity;

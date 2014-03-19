@@ -272,7 +272,6 @@ public class ServerDataHandler extends DataHandler {
         }
     }
 
-    //TODO: Dette blir et helvete!
     public DataStorage getDataStorageFromDatabase(){
         Users users = new Users(getAllUsersFromDatabase());
         Groups groups = new Groups(getAllGroupsFromDatabase());
@@ -282,6 +281,16 @@ public class ServerDataHandler extends DataHandler {
         GroupMemberships groupMemberships = new GroupMemberships(getAllGroupMembershipsFromDatabase());
         MeetingInvites meetingInvites = new MeetingInvites(getAllMeetingInvitesFromDatabase());
         MeetingAdmins meetingAdmins = new MeetingAdmins(getAllMeetingAdminsFromDatabase());
+
+        System.out.println("Number of users: " + users.getUsers().size());
+        System.out.println("Number of groups: " + groups.getGroups().size());
+        System.out.println("Number of rooms: " + rooms.getRooms().size());
+        System.out.println("Number of meetings: " + meetings.getMeetings().size());
+        System.out.println("Number of external users: " + externalUsers.getExternalUsers().size());
+        System.out.println("Number of group memberships: " + groupMemberships.getGroupMemberships().size());
+        System.out.println("Number of meeting invites: " + meetingInvites.getMeetingInvites().size());
+        System.out.println("Number of meeting admins: " + meetingAdmins.getMeetingAdmins().size());
+        System.out.println();
 
         return new DataStorage(users, groups, rooms, meetings, externalUsers, groupMemberships, meetingInvites, meetingAdmins);
     }
@@ -305,13 +314,13 @@ public class ServerDataHandler extends DataHandler {
 
     public ArrayList<Group> getAllGroupsFromDatabase(){
         ArrayList<Group> groups = new ArrayList<>();
-        ArrayList<HashMap<String, String>> groups_raw = mySQLQuery.getAllRows("`Group`");
+        ArrayList<HashMap<String, String>> groups_raw = mySQLQuery.getAllRows("Group");
 
         for(HashMap<String, String> group_raw : groups_raw){
             int groupID = Integer.parseInt(group_raw.get("groupID"));
-            int superGroup = Integer.parseInt(group_raw.get("superGroup"));
+            int supergroup = group_raw.get("supergroup") == null ? -1 : Integer.parseInt(group_raw.get("supergroup"));
 
-            groups.add(new Group(groupID, superGroup));
+            groups.add(new Group(groupID, supergroup));
         }
 
         return groups;
@@ -322,8 +331,8 @@ public class ServerDataHandler extends DataHandler {
         ArrayList<HashMap<String, String>> rooms_raw = mySQLQuery.getAllRows("Room");
 
         for(HashMap<String, String> room_raw : rooms_raw){
-            int roomNumber = Integer.parseInt(room_raw.get("groupID"));
-            int capacity = Integer.parseInt(room_raw.get("superGroup"));
+            int roomNumber = Integer.parseInt(room_raw.get("roomNumber"));
+            int capacity = Integer.parseInt(room_raw.get("capacity"));
 
             rooms.add(new Room(roomNumber, capacity));
         }
@@ -337,14 +346,14 @@ public class ServerDataHandler extends DataHandler {
 
         for(HashMap<String, String> meeting_raw : meetings_raw){
             int meetingID = Integer.parseInt(meeting_raw.get("meetingID"));
-            String startTime = meeting_raw.get("startTime");
-            String endTime = meeting_raw.get("endTime");
+            String startTime = meeting_raw.get("startTime").substring(0, meeting_raw.get("startTime").length()-2).replace(' ', 'T');
+            String endTime = meeting_raw.get("endTime").substring(0, meeting_raw.get("endTime").length()-2).replace(' ', 'T');
             String description = meeting_raw.get("description");
-            String place = meeting_raw.get("place");
-            int room = Integer.parseInt(meeting_raw.get("room"));
-            int minCapacity = Integer.parseInt(meeting_raw.get("minCapacity"));
+            String place = meeting_raw.get("place") == null ? "" : meeting_raw.get("place");
+            int room = meeting_raw.get("room") == null ? -1 : Integer.parseInt(meeting_raw.get("room"));
+            int minCapacity = meeting_raw.get("minCapacity") == null ? -1 : Integer.parseInt(meeting_raw.get("minCapacity"));
             String creator = meeting_raw.get("creator");
-            LocalDateTime lastUpdated = LocalDateTime.parse(meeting_raw.get("lastUpdated"));
+            LocalDateTime lastUpdated = meeting_raw.get("lastUpdated") == null ? null : LocalDateTime.parse(meeting_raw.get("lastUpdated"));
 
             meetings.add(new Meeting(meetingID, startTime, endTime, description, place, room, minCapacity, creator, lastUpdated));
         }

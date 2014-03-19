@@ -4,7 +4,6 @@ import model.Room;
 
 import java.util.*;
 
-//MeetingRoom
 public class Rooms {
     private ArrayList<Room> rooms;
 

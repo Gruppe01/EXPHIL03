@@ -4,7 +4,6 @@ import model.Group;
 
 import java.util.ArrayList;
 
-//Group, GroupMembership
 public class Groups {
     private ArrayList<Group> groups;
 

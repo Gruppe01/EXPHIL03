@@ -1,6 +1,7 @@
 package persistence;
 
 import model.*;
+import persistence.server.Client;
 
 import java.util.*;
 
@@ -15,6 +16,7 @@ public class DataHandler {
         this.dataStorage = new DataStorage();
     }
 
+    @SuppressWarnings("unchecked")
     public void receiveChanges(ArrayList<Object> changedObjects, String type){
         switch (type){
             case "insert":
@@ -25,6 +27,9 @@ public class DataHandler {
                 break;
             case "delete":
                 deleteObject(changedObjects);
+                break;
+            case "populate":
+                setDataStorage((DataStorage) changedObjects.get(0));
                 break;
             default:
                 break;
@@ -186,9 +191,24 @@ public class DataHandler {
 
     public void setDataStorage(DataStorage dataStorage){
         this.dataStorage = dataStorage;
+
+        System.out.println("Number of users: " + dataStorage.getUsers().getUsers().size());
+        System.out.println("Number of groups: " + dataStorage.getGroups().getGroups().size());
+        System.out.println("Number of rooms: " + dataStorage.getRooms().getRooms().size());
+        System.out.println("Number of meetings: " + dataStorage.getMeetings().getMeetings().size());
+        System.out.println("Number of external users: " + dataStorage.getExternalUsers().getExternalUsers().size());
+        System.out.println("Number of group memberships: " + dataStorage.getGroupMemberships().getGroupMemberships().size());
+        System.out.println("Number of meeting invites: " + dataStorage.getMeetingInvites().getMeetingInvites().size());
+        System.out.println("Number of meeting admins: " + dataStorage.getMeetingAdmins().getMeetingAdmins().size());
+        System.out.println();
     }
 
     public DataStorage getDataStorage(){
         return dataStorage;
+    }
+
+    public static void main(String args[]){
+        DataHandler dataHandler = new DataHandler();
+        Client client = new Client(dataHandler);
     }
 }

@@ -4,7 +4,6 @@ import model.Meeting;
 
 import java.util.ArrayList;
 
-//Meeting, ExternalUser, MeetingAdmin, MeetingInvite
 public class Meetings {
     private ArrayList<Meeting> meetings;
 
