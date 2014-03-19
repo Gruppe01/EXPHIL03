@@ -2,7 +2,7 @@ package persistence.data;
 
 import model.Room;
 
-import java.util.ArrayList;
+import java.util.*;
 
 //MeetingRoom
 public class Rooms {

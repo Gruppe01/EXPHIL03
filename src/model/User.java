@@ -5,7 +5,7 @@ import javax.mail.internet.InternetAddress;
 
 public class User {
     public static final String USERNAME_PATTERN = "^[a-zA-Z0-9_.-]*$";
-    public static final String NAME_PATTERN = "^[a-zA-Z- ]*$";
+    public static final String NAME_PATTERN = "^[a-åA-Å- ]*$";
     public static final String PHONE_PATTERN = "^\\+?[\\(?\\+?(\\d{2})\\)?[ -]?(\\d{0,})[- ]?(\\d{0,})[- ]?(\\d{0,})]{8,16}$";
 
     private String username;
@@ -66,7 +66,7 @@ public class User {
     }
 
     public void setName(String name) throws IllegalArgumentException {
-        if(!name.matches(NAME_PATTERN)) throw new IllegalArgumentException("Invalid name");
+        if(!name.matches(NAME_PATTERN) || name.length() < 3 || name.length() > 45) throw new IllegalArgumentException("Invalid name");
 
         this.name = name;
     }
