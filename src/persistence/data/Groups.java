@@ -9,7 +9,7 @@ public class Groups {
     private ArrayList<Group> groups;
 
     public Groups(ArrayList<Group> groups){
-        populate(groups);
+        this.groups = groups;
     }
 
     public Groups(){
@@ -28,7 +28,7 @@ public class Groups {
         return null;
     }
 
-    public int getGroupIndex(int groupID){
+    public int getGroupIndexByGroupID(int groupID){
         for(Group group : groups){
             if(groupID == group.getGroupID()) return groups.indexOf(group);
         }
@@ -45,7 +45,7 @@ public class Groups {
     }
 
     public void updateGroup(Group group){
-        int i = getGroupIndex(group.getGroupID());
+        int i = getGroupIndexByGroupID(group.getGroupID());
 
         groups.remove(i);
         groups.add(i, group);

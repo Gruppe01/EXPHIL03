@@ -8,7 +8,7 @@ public class ExternalUsers {
     private ArrayList<ExternalUser> externalUsers;
 
     public ExternalUsers(ArrayList<ExternalUser> externalUsers){
-        populate(externalUsers);
+        this.externalUsers = externalUsers;
     }
 
     public ExternalUsers(){
@@ -19,7 +19,7 @@ public class ExternalUsers {
         return externalUsers;
     }
 
-    public ExternalUser getExternalUserByEmailAndMeeting(int meetingID, String email){
+    public ExternalUser getExternalUserByEmailAndMeetingID(int meetingID, String email){
         for(ExternalUser externalUser : externalUsers){
             if(meetingID == externalUser.getMeetingID() && email.equals(externalUser.getEmail())) return externalUser;
         }
@@ -27,7 +27,7 @@ public class ExternalUsers {
         return null;
     }
 
-    public int getExternalUserIndex(int meetingID, String email){
+    public int getExternalUserIndexByEmailAndMeetingID(int meetingID, String email){
         for(ExternalUser externalUser : externalUsers){
             if(meetingID == externalUser.getMeetingID() && email.equals(externalUser.getEmail())) return externalUsers.indexOf(externalUser);
         }
@@ -44,7 +44,7 @@ public class ExternalUsers {
     }
 
     public void updateExternalUser(ExternalUser externalUser){
-        int i = getExternalUserIndex(externalUser.getMeetingID(), externalUser.getEmail());
+        int i = getExternalUserIndexByEmailAndMeetingID(externalUser.getMeetingID(), externalUser.getEmail());
 
         externalUsers.remove(i);
         externalUsers.add(i, externalUser);

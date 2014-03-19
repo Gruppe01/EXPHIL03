@@ -8,7 +8,7 @@ public class MeetingAdmins {
     private ArrayList<MeetingAdmin> meetingAdmins;
 
     public MeetingAdmins(ArrayList<MeetingAdmin> meetingAdmins){
-        populate(meetingAdmins);
+        this.meetingAdmins = meetingAdmins;
     }
 
     public MeetingAdmins(){
@@ -19,7 +19,7 @@ public class MeetingAdmins {
         return meetingAdmins;
     }
 
-    public MeetingAdmin getMeetingAdminByUsernameAndMeeting(int meetingAdminID, String username){
+    public MeetingAdmin getMeetingAdminByUsernameAndMeetingID(int meetingAdminID, String username){
         for(MeetingAdmin meetingAdmin : meetingAdmins){
             if(meetingAdminID == meetingAdmin.getMeetingID() && username.equals(meetingAdmin.getUsername())) return meetingAdmin;
         }
@@ -27,7 +27,7 @@ public class MeetingAdmins {
         return null;
     }
 
-    public int getMeetingAdminIndex(int meetingAdminID, String username){
+    public int getMeetingAdminIndexByUsernameAndMeetingID(int meetingAdminID, String username){
         for(MeetingAdmin meetingAdmin : meetingAdmins){
             if(meetingAdminID == meetingAdmin.getMeetingID() && username.equals(meetingAdmin.getUsername())) return meetingAdmins.indexOf(meetingAdmin);
         }
@@ -44,7 +44,7 @@ public class MeetingAdmins {
     }
 
     public void updateMeetingAdmin(MeetingAdmin meetingAdmin){
-        int i = getMeetingAdminIndex(meetingAdmin.getMeetingID(), meetingAdmin.getUsername());
+        int i = getMeetingAdminIndexByUsernameAndMeetingID(meetingAdmin.getMeetingID(), meetingAdmin.getUsername());
 
         meetingAdmins.remove(i);
         meetingAdmins.add(i, meetingAdmin);

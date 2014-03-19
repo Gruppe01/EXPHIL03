@@ -23,8 +23,15 @@ public class DataStorage {
         this.meetingAdmins = meetingAdmins;
     }
 
-    public DataStorage(){
-
+    public DataStorage() {
+        this.users = new Users();
+        this.groups = new Groups();
+        this.rooms = new Rooms();
+        this.meetings = new Meetings();
+        this.externalUsers = new ExternalUsers();
+        this.groupMemberships = new GroupMemberships();
+        this.meetingInvites = new MeetingInvites();
+        this.meetingAdmins = new MeetingAdmins();
     }
 
     public Users getUsers() {
