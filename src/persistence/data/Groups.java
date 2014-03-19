@@ -2,10 +2,10 @@ package persistence.data;
 
 import model.Group;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-//Group, GroupMembership
-public class Groups {
+public class Groups implements Serializable {
     private ArrayList<Group> groups;
 
     public Groups(ArrayList<Group> groups){

@@ -1,6 +1,8 @@
 package model;
 
-public class ExternalUser {
+import java.io.Serializable;
+
+public class ExternalUser implements Serializable {
     private String email;
     private final int meetingID;
     private String name;

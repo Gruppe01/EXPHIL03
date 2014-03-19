@@ -4,7 +4,7 @@ import model.*;
 
 import java.util.*;
 
-public class DataHandler {
+public class DataHandler extends Thread{
     protected DataStorage dataStorage;
 
     public DataHandler(DataStorage dataStorage){
@@ -15,6 +15,7 @@ public class DataHandler {
         this.dataStorage = new DataStorage();
     }
 
+    @SuppressWarnings("unchecked")
     public void receiveChanges(ArrayList<Object> changedObjects, String type){
         switch (type){
             case "insert":
@@ -26,12 +27,15 @@ public class DataHandler {
             case "delete":
                 deleteObject(changedObjects);
                 break;
+            case "populate":
+                setDataStorage((DataStorage) changedObjects.get(0));
+                break;
             default:
                 break;
         }
     }
 
-    public void insertObject(ArrayList<Object> changedObjects){
+    private void insertObject(ArrayList<Object> changedObjects){
         for(Object changedObject : changedObjects){
             String table = changedObject.getClass().getSimpleName();
 
@@ -82,7 +86,7 @@ public class DataHandler {
         }
     }
 
-    public void updateObject(ArrayList<Object> changedObjects){
+    private void updateObject(ArrayList<Object> changedObjects){
         for(Object changedObject : changedObjects){
             String table = changedObject.getClass().getSimpleName();
 
@@ -133,7 +137,7 @@ public class DataHandler {
         }
     }
 
-    public void deleteObject(ArrayList<Object> changedObjects){
+    private void deleteObject(ArrayList<Object> changedObjects){
         for(Object changedObject : changedObjects){
             String table = changedObject.getClass().getSimpleName();
 

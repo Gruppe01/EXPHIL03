@@ -2,9 +2,10 @@ package model;
 
 import persistence.mysql.MySQLQuery;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Group {
+public class Group implements Serializable {
     private final int groupID;
     private int superGroup;
     private ArrayList<User> members;

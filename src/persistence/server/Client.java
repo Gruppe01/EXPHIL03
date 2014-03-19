@@ -7,7 +7,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
-public class Client {
+public class Client extends Thread{
     private static final String HOST = Server.HOST;
     private static final int PORT = Server.PORT;
     private Socket socket;
@@ -15,12 +15,12 @@ public class Client {
 
     public Client(DataHandler dataHandler){
         this.dataHandler = dataHandler;
-        this.run();
+        this.start();
     }
 
     public Client(){
         this.dataHandler = new DataHandler();
-        this.run();
+        this.start();
     }
 
 
