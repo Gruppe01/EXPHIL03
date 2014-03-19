@@ -61,6 +61,10 @@ public class Frame extends JPanel{
 		username = null;
 	}
 	
+	public User getUser(){
+		return user;
+	}
+	
 	public void setFrame(String panel){
 		
 		
