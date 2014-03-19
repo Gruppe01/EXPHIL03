@@ -161,6 +161,7 @@ public class CreateMeeting extends JPanel {
 	}
 	
 	private void create(){
+		
 		/*
 		if (list.isSelectionEmpty()){
 			new Meeting(frame.getUser(), starttime, endtime, description, place)
