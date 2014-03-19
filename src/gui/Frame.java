@@ -52,17 +52,21 @@ public class Frame extends JPanel{
 	
 	public void setUser(String in){
 		username = in;
-		user = client.getDataHandler().getDataStorage().getUsers().getUserByUsername(username);
+		user = client.getDataStorage().getUsers().getUserByUsername(username);
 		mainScreen.setUser(in);
+	}
+	
+	public User getUser(){
+		return user;
+	}
+	
+	public void createUser(User u){
+		client.getDataStorage().getUsers().addUser(u);
 	}
 	
 	public void logout(){
 		user = null;
 		username = null;
-	}
-	
-	public User getUser(){
-		return user;
 	}
 	
 	public void setFrame(String panel){

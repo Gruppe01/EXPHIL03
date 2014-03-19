@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 
 public class CreateMeeting extends JPanel {
 	private JScrollPane scrollPane;
+	private JList list;
 	private JTextField textField_3;
 	private JLabel lblDescription;
 	private JLabel lblSelectTimeStart;
@@ -51,7 +52,7 @@ public class CreateMeeting extends JPanel {
 		scrollPane.setBounds(449, 31, 125, 183);
 		add(scrollPane);
 		
-		JList list = new JList();
+		list = new JList();
 		scrollPane.setViewportView(list);
 		
 		JLabel lblAvail = new JLabel("Available rooms");
@@ -100,7 +101,7 @@ public class CreateMeeting extends JPanel {
 		add(btnCreateMeeting);
 		btnCreateMeeting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				create();
 			}
 		});
 		
@@ -160,9 +161,14 @@ public class CreateMeeting extends JPanel {
 	}
 	
 	private void create(){
-		
-		
-		
+		/*
+		if (list.isSelectionEmpty()){
+			new Meeting(frame.getUser(), starttime, endtime, description, place)
+		}
+		else{
+			new Meeting(frame.getUser(), starttime, endtime, description, capacity, room)
+		}
+		*/
 		frame.setFrame("mainScreen");
 	}
 }
