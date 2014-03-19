@@ -1,6 +1,7 @@
 package persistence.server;
 
 import persistence.DataHandler;
+import persistence.DataStorage;
 
 import java.io.*;
 import java.net.*;
@@ -18,6 +19,7 @@ public class Client {
     }
 
     public Client(){
+        this.dataHandler = new DataHandler();
         this.run();
     }
 
@@ -70,5 +72,17 @@ public class Client {
         }catch(IOException e){
             System.out.println("Could not send to " + socket);
         }
+    }
+
+    public DataStorage getDataStorage(){
+        return dataHandler.getDataStorage();
+    }
+
+    public void setDataHandler(DataHandler dataHandler){
+        this.dataHandler = dataHandler;
+    }
+
+    public DataHandler getDataHandler(){
+        return dataHandler;
     }
 }
