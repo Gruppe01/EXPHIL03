@@ -27,7 +27,7 @@ public class User {
     }
 
     public void setUsername(String username) throws IllegalArgumentException {
-        if(!username.matches(USERNAME_PATTERN)) throw new IllegalArgumentException("Invalid username.\nCan only use alphanumeric characters, '.', '_' and '-'.");
+        if(!username.matches(USERNAME_PATTERN)) throw new IllegalArgumentException("Invalid username.\nCan only use alphanumeric characters, '.', '_' and '-'");
 
         this.username = username;
     }
@@ -37,7 +37,7 @@ public class User {
     }
 
     public void setPassword(String password) throws IllegalArgumentException {
-        if(password.length() < 6 || password.length() > 32) throw new IllegalArgumentException("Password must be between 6 and 32 characters long.");
+        if(password.length() < 6 || password.length() > 32) throw new IllegalArgumentException("Password must be between 6 and 32 characters long");
 
         this.password = password;
     }
@@ -47,14 +47,8 @@ public class User {
     }
 
     public void setEmail(String email) throws IllegalArgumentException {
-        try {
-            InternetAddress verifyEmail = new InternetAddress(email);
-            verifyEmail.validate();
-
-            this.email = email;
-        } catch (AddressException ex) {
-            throw new IllegalArgumentException("Invalid email");
-        }
+        if(validEmail(email)) this.email = email;
+        else throw new IllegalArgumentException("Invalid email");
     }
 
     public String getPhoneNumber() {
@@ -62,7 +56,7 @@ public class User {
     }
 
     public void setPhoneNumber(String phonenumber) throws IllegalArgumentException {
-        if(!phonenumber.matches(PHONE_PATTERN)) throw new IllegalArgumentException("Invalid phone number.");
+        if(!phonenumber.matches(PHONE_PATTERN)) throw new IllegalArgumentException("Invalid phone number");
 
         this.phoneNumber = phonenumber;
     }
@@ -72,9 +66,20 @@ public class User {
     }
 
     public void setName(String name) throws IllegalArgumentException {
-        if(!name.matches(NAME_PATTERN)) throw new IllegalArgumentException("Invalid name.");
+        if(!name.matches(NAME_PATTERN)) throw new IllegalArgumentException("Invalid name");
 
         this.name = name;
+    }
+
+    public static boolean validEmail(String email){
+        try {
+            InternetAddress verifyEmail = new InternetAddress(email);
+            verifyEmail.validate();
+
+            return true;
+        } catch (AddressException ex) {
+            return false;
+        }
     }
 
     public String toString() {

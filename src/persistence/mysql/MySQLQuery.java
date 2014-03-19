@@ -15,7 +15,7 @@ public class MySQLQuery {
         connection = new MySQLConnection(url, dbName, driver, userName, password);
     }
 
-    protected ArrayList<HashMap<String, String>> execute(String sql, ArrayList<String> values, boolean returns){
+    public ArrayList<HashMap<String, String>> execute(String sql, ArrayList<String> values, boolean returns){
         return connection.execute(sql, values, returns);
     }
 

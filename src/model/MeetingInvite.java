@@ -1,13 +1,13 @@
 package model;
 
-import java.util.Date;
+import java.time.*;
 
 public class MeetingInvite {
     private int meetingID;
     private String username;
     private boolean coming;
-    private Date alarm;
-    private Date lastUpdated;
+    private LocalDateTime alarm;
+    private LocalDateTime lastUpdated;
 
     public MeetingInvite(int meetingID, String username, boolean coming) {
         this.meetingID = meetingID;
@@ -39,19 +39,19 @@ public class MeetingInvite {
         this.coming = coming;
     }
 
-    public Date getAlarm() {
-        return alarm;
+    public String getAlarm() {
+        return alarm.toString();
     }
 
-    public void setAlarm(Date alarm) {
-        this.alarm = alarm;
+    public void setAlarm(String alarm) throws IllegalArgumentException{
+        this.alarm = LocalDateTime.parse(alarm);
     }
 
-    public Date getLastUpdated() {
-        return lastUpdated;
+    public String getLastUpdated() {
+        return lastUpdated.toString();
     }
 
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setLastUpdated(String lastUpdated) throws IllegalArgumentException{
+        this.lastUpdated = LocalDateTime.parse(lastUpdated);
     }
 }
