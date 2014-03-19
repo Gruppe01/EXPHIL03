@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -15,17 +16,30 @@ import javax.swing.DefaultComboBoxModel;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
-public class EditMembers extends JPanel {
+public class EditMembers extends JFrame {
 	/**
 	 * Create the panel.
 	 */
-	public EditMembers(final Frame frame) {
-		setBorder(new EmptyBorder(5, 5, 5, 5));
-		setLayout(null);
+	
+	private JPanel contentPane;
+	private CreateMeeting meeting;
+	private EditMembers working;
+	
+	public EditMembers(final CreateMeeting in) {
+		
+		meeting = in;
+		working = this;
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setSize(697,335);
+		contentPane = new JPanel();
+		
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(408, 45, 260, 139);
-		add(scrollPane);
+		contentPane.add(scrollPane);
 		
 		JList list = new JList();
 		scrollPane.setViewportView(list);
@@ -36,32 +50,33 @@ public class EditMembers extends JPanel {
 		
 		JButton btnMakeAdmin = new JButton("Make admin");
 		btnMakeAdmin.setBounds(408, 11, 119, 23);
-		add(btnMakeAdmin);
+		contentPane.add(btnMakeAdmin);
 		
 		JButton btnDeleteAdmin = new JButton("Delete admin");
 		btnDeleteAdmin.setBounds(549, 11, 119, 23);
-		add(btnDeleteAdmin);
+		contentPane.add(btnDeleteAdmin);
 		
 		JButton btnDeleteMember = new JButton("Delete member");
 		btnDeleteMember.setBounds(408, 195, 129, 23);
-		add(btnDeleteMember);
+		contentPane.add(btnDeleteMember);
 		
 		JButton btnDone = new JButton("Done");
 		btnDone.setBounds(579, 214, 89, 47);
-		add(btnDone);
+		contentPane.add(btnDone);
 		btnDone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.setFrame("createMeeting");
+				setVisible(false);
+				dispose();
 			}
 		});
 		
 		JButton button = new JButton(">>");
 		button.setBounds(316, 103, 67, 23);
-		add(button);
+		contentPane.add(button);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 45, 136, 139);
-		add(scrollPane_1);
+		contentPane.add(scrollPane_1);
 		
 		JList list_1 = new JList();
 		scrollPane_1.setViewportView(list_1);
@@ -72,7 +87,7 @@ public class EditMembers extends JPanel {
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBounds(156, 45, 141, 139);
-		add(scrollPane_2);
+		contentPane.add(scrollPane_2);
 		
 		JList list_2 = new JList();
 		scrollPane_2.setViewportView(list_2);
@@ -83,23 +98,24 @@ public class EditMembers extends JPanel {
 		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(10, 214, 89, 47);
-		add(btnCancel);
+		contentPane.add(btnCancel);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.setFrame("createMeeting");
+				setVisible(false);
+				dispose();
 			}
 		});
 		
 		JButton btnSelectAll = new JButton("Select all");
 		btnSelectAll.setBounds(187, 195, 89, 23);
-		add(btnSelectAll);
+		contentPane.add(btnSelectAll);
 		
 		JButton btnAddExternal = new JButton("Add external");
 		btnAddExternal.setBounds(167, 11, 119, 23);
-		add(btnAddExternal);
+		contentPane.add(btnAddExternal);
 		btnAddExternal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddExternal addExternal = new AddExternal();
+				AddExternal addExternal = new AddExternal(working);
 				addExternal.setVisible(true);
 			}
 		});
@@ -108,7 +124,10 @@ public class EditMembers extends JPanel {
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Search...", "Simon", "Robin", "Simen", "Sindre", "Peder", "Arne", "Kjell-Elvis"}));
 		comboBox.setBounds(27, 12, 104, 20);
 		AutoCompleteDecorator.decorate(comboBox);
-		add(comboBox);
+		contentPane.add(comboBox);
+		
+		setResizable(false);
+		setContentPane(contentPane);
 	}
 
 }

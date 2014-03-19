@@ -1,6 +1,7 @@
 package persistence.server;
 
-import persistence.UpdateHandler;
+import persistence.DataHandler;
+import persistence.DataStorage;
 
 import java.io.*;
 import java.net.*;
@@ -10,11 +11,18 @@ public class Client {
     private static final String HOST = Server.HOST;
     private static final int PORT = Server.PORT;
     private Socket socket;
-    private UpdateHandler updateHandler;
+    private DataHandler dataHandler;
 
-    public Client(UpdateHandler updateHandler){
-        this.updateHandler = updateHandler;
+    public Client(DataHandler dataHandler){
+        this.dataHandler = dataHandler;
+        this.run();
     }
+
+    public Client(){
+        this.dataHandler = new DataHandler();
+        this.run();
+    }
+
 
     @SuppressWarnings("unchecked")
     public void run(){
@@ -31,7 +39,7 @@ public class Client {
                     String type = (String) in.readObject();
                     ArrayList<Object> changedObjects = (ArrayList<Object>) in.readObject();
 
-                   updateHandler.receiveUpdates(changedObjects, type);
+                   dataHandler.receiveChanges(changedObjects, type);
                 }catch(ClassNotFoundException e) {
                     System.out.println(e.getMessage());
                     break;
@@ -52,7 +60,7 @@ public class Client {
         }
     }
 
-    public void sendMessage(ArrayList<Object> changedObjects, String type){
+    public void sendChanges(ArrayList<Object> changedObjects, String type){
         ObjectOutputStream out;
 
         try{
@@ -64,5 +72,17 @@ public class Client {
         }catch(IOException e){
             System.out.println("Could not send to " + socket);
         }
+    }
+
+    public DataStorage getDataStorage(){
+        return dataHandler.getDataStorage();
+    }
+
+    public void setDataHandler(DataHandler dataHandler){
+        this.dataHandler = dataHandler;
+    }
+
+    public DataHandler getDataHandler(){
+        return dataHandler;
     }
 }
