@@ -1,8 +1,9 @@
 package persistence.data;
 
 import model.User;
+import persistence.mysql.MySQLQuery;
 
-import java.util.ArrayList;
+import java.util.*;
 
 //User
 public class Users {

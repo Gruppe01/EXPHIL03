@@ -5,9 +5,15 @@ import java.time.*;
 public class MeetingInvite {
     private int meetingID;
     private String username;
-    private boolean coming;
+    private Boolean coming;
     private LocalDateTime alarm;
     private LocalDateTime lastUpdated;
+
+    public MeetingInvite(int meetingID, String username) {
+        this.meetingID = meetingID;
+        this.username = username;
+        this.coming = null;
+    }
 
     public MeetingInvite(int meetingID, String username, boolean coming) {
         this.meetingID = meetingID;

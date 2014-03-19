@@ -21,7 +21,7 @@ public class MySQLTest {
 
     @Before
     public void setUp() throws Exception {
-        validConnection = new MySQLQuery();
+        validConnection = TEST_CONNECTION();
 
         username = newTestUser();
 
@@ -104,6 +104,11 @@ public class MySQLTest {
         select(invalidConnection, selectMap);
     }
 
+    @Test
+    public void testConnectToDatabase() throws Exception{
+        MySQLQuery testConnectToDatabaseQuery = new MySQLQuery();
+    }
+
     @Test(expected=IllegalArgumentException.class)
     public void testDuplicateEntries() throws Exception{
         validConnection.insert("User", userFields, userValuesBefore);
@@ -176,5 +181,15 @@ public class MySQLTest {
         validConnection.execute("DELETE FROM Meeting WHERE '1'='1';", new ArrayList<String>(), false);
         validConnection.execute("DELETE FROM User WHERE '1'='1';", new ArrayList<String>(), false);
         validConnection.execute("DELETE FROM MeetingRoom WHERE '1'='1';", new ArrayList<String>(), false);
+    }
+
+    public static MySQLQuery TEST_CONNECTION(){
+        String url = "jdbc:mysql://mysql.stud.ntnu.no/";
+        String dbName = "simonbo_exphil03_test";
+        String driver = "com.mysql.jdbc.Driver";
+        String userName = "simonbo_exphil03";
+        String password = "drossap";
+
+        return new MySQLQuery(url, dbName, driver, userName, password);
     }
 }

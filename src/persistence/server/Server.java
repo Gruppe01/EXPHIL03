@@ -17,7 +17,9 @@ public class Server{
     private boolean serverOn = true;
     private ServerDataHandler dataHandler;
 
-    public Server(ServerDataHandler dataHandler){
+    public Server(){
+        this.dataHandler = new ServerDataHandler();
+
         try{
             serverSocket = new ServerSocket(PORT);
         }catch(IOException ioe){
@@ -26,8 +28,6 @@ public class Server{
         }
 
         System.out.println("Server running on " + HOST + ":" + PORT);
-
-        this.dataHandler = dataHandler;
 
         while(serverOn){
             try{
@@ -109,6 +109,6 @@ public class Server{
     }
 
     public static void main (String[] args){
-        Server server = new Server(new ServerDataHandler());
+        Server server = new Server();
     }
 }

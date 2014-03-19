@@ -66,7 +66,7 @@ public class MySQLQuery {
     @SuppressWarnings("unchecked")
     public ArrayList<HashMap<String, String>> select(ArrayList<String> tables, ArrayList<String> fields, HashMap conditions, ArrayList<String> selection) {
         String tablesString = StringUtils.join(tables, ", ");
-        String fieldsString = fields == null ? "*" : StringUtils.join(fields, ", ");
+        String fieldsString = fields == null ? "*" : "`" + StringUtils.join(fields, "`, `") + "`";
         String whereString = conditions == null ? "" : " WHERE " + StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
         String selectionString = selection == null ? "" : " " + StringUtils.join(selection, " ");
 
@@ -75,6 +75,13 @@ public class MySQLQuery {
         ArrayList<String> queryValues = conditions == null ? null : new ArrayList<String>(conditions.values());
 
         return connection.execute(selectSQL, queryValues, true);
+    }
+
+    @SuppressWarnings("unchecked")
+    public int getNextID(String table){
+        ArrayList<HashMap<String, String>> tableInfo = execute("SHOW TABLE STATUS LIKE ?;", new ArrayList(Arrays.asList(table)), true);
+
+        return Integer.parseInt(tableInfo.get(0).get("AUTO_INCREMENT"));
     }
 
     @SuppressWarnings("unchecked")
@@ -91,14 +98,7 @@ public class MySQLQuery {
         return rooms;
     }
 
-    @SuppressWarnings("unchecked")
-    public int getNextID(String table){
-        ArrayList<HashMap<String, String>> tableInfo = execute("SHOW TABLE STATUS LIKE ?;", new ArrayList(Arrays.asList(table)), true);
-
-        return Integer.parseInt(tableInfo.get(0).get("AUTO_INCREMENT"));
-    }
-
-    public boolean loginCheck(String username, String password){
+    public boolean checkLogin(String username, String password){
         HashMap<String, String> conditions = new HashMap<>();
 
         conditions.put("username", username);
