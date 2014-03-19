@@ -1,9 +1,8 @@
 package model;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
+import java.time.*;
 
 import persistence.mysql.MySQLQuery;
 
@@ -14,8 +13,8 @@ public class Meeting {
 	private ArrayList<User> admins;
 	private HashMap<User, Boolean> members;
     private ArrayList<String> externalMembers;
-	private String starttime;
-	private String endtime;
+	private LocalDateTime starttime;
+	private LocalDateTime endtime;
 	private String description;
     private int minCapacity;
     private String place;
@@ -119,30 +118,30 @@ public class Meeting {
     }
 	
 	public String getStarttime() {
-		return starttime;
+		return starttime.toString();
 	}
 	
 	
 	
 
 	public void setStarttime(String starttime) throws IllegalArgumentException {
-		if (true) {
-			this.starttime = starttime;
-		}else{
+		try {
+			this.starttime = LocalDateTime.parse(starttime);
+		}catch (DateTimeException e){
 			throw new IllegalArgumentException("Invalid starttime format.");
 		}
 	}
 	
 	public String getEndtime() {
-		return endtime;
+		return endtime.toString();
 	}
 	
 	
 
 	public void setEndtime(String endtime) throws IllegalArgumentException {
-		if (true) {
-			this.endtime = endtime;
-		}else{
+        try {
+			this.endtime = LocalDateTime.parse(endtime);
+        }catch (DateTimeException e){
 			throw new IllegalArgumentException("Invalid endtime format.");
 		}
 	}
@@ -152,8 +151,8 @@ public class Meeting {
         long hours;
 
         try {
-            Date startTime = DATE_FORMAT.parse(starttime);
-            Date endTime = DATE_FORMAT.parse(endtime);
+            Date startTime = DATE_FORMAT.parse(starttime.toString());
+            Date endTime = DATE_FORMAT.parse(endtime.toString());
 
             long diff = endTime.getTime() - startTime.getTime();
 
@@ -194,7 +193,7 @@ public class Meeting {
     }
 
     public void setRoom(Room room) throws IllegalArgumentException {
-        if(new MySQLQuery().getAvailableRooms(starttime, endtime, minCapacity).contains(room.getRoomNumber())){
+        if(new MySQLQuery().getAvailableRooms(starttime.toString(), endtime.toString(), minCapacity).contains(room.getRoomNumber())){
             this.room = room;
         }else{
             throw new IllegalArgumentException("Selected room not available.");
