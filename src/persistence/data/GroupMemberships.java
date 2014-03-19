@@ -8,7 +8,7 @@ public class GroupMemberships {
     private ArrayList<GroupMembership> groupMemberships;
 
     public GroupMemberships(ArrayList<GroupMembership> groupMemberships){
-        populate(groupMemberships);
+        this.groupMemberships = groupMemberships;
     }
 
     public GroupMemberships(){
@@ -19,7 +19,7 @@ public class GroupMemberships {
         return groupMemberships;
     }
 
-    public GroupMembership getGroupMembershipByUsernameAndGroup(int groupMembershipID, String username){
+    public GroupMembership getGroupMembershipByUsernameAndGroupID(int groupMembershipID, String username){
         for(GroupMembership groupMembership : groupMemberships){
             if(groupMembershipID == groupMembership.getGroupID() && username.equals(groupMembership.getUsername())) return groupMembership;
         }
@@ -27,7 +27,7 @@ public class GroupMemberships {
         return null;
     }
 
-    public int getGroupMembershipIndex(int groupMembershipID, String username){
+    public int getGroupMembershipIndexByUsernameAndGroupID(int groupMembershipID, String username){
         for(GroupMembership groupMembership : groupMemberships){
             if(groupMembershipID == groupMembership.getGroupID() && username.equals(groupMembership.getUsername())) return groupMemberships.indexOf(groupMembership);
         }
@@ -44,7 +44,7 @@ public class GroupMemberships {
     }
 
     public void updateGroupMembership(GroupMembership groupMembership){
-        int i = getGroupMembershipIndex(groupMembership.getGroupID(), groupMembership.getUsername());
+        int i = getGroupMembershipIndexByUsernameAndGroupID(groupMembership.getGroupID(), groupMembership.getUsername());
 
         groupMemberships.remove(i);
         groupMemberships.add(i, groupMembership);

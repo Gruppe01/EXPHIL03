@@ -9,7 +9,7 @@ public class Rooms {
     private ArrayList<Room> rooms;
 
     public Rooms(ArrayList<Room> rooms){
-        populate(rooms);
+        this.rooms = rooms;
     }
 
     public Rooms(){
@@ -20,7 +20,7 @@ public class Rooms {
         return rooms;
     }
 
-    public Room getRoomByID(int roomID){
+    public Room getRoomByNumber(int roomID){
         for(Room room : rooms){
             if(roomID == room.getRoomNumber()) return room;
         }
@@ -28,9 +28,9 @@ public class Rooms {
         return null;
     }
 
-    public int getRoomIndex(int roomID){
+    public int getRoomIndexByNumber(int roomNumber){
         for(Room room : rooms){
-            if(roomID == room.getRoomNumber()) return rooms.indexOf(room);
+            if(roomNumber == room.getRoomNumber()) return rooms.indexOf(room);
         }
 
         return -1;
@@ -45,7 +45,7 @@ public class Rooms {
     }
 
     public void updateRoom(Room room){
-        int i = getRoomIndex(room.getRoomNumber());
+        int i = getRoomIndexByNumber(room.getRoomNumber());
 
         rooms.remove(i);
         rooms.add(i, room);

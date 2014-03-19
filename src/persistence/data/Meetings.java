@@ -9,7 +9,7 @@ public class Meetings {
     private ArrayList<Meeting> meetings;
 
     public Meetings(ArrayList<Meeting> meetings){
-        populate(meetings);
+        this.meetings = meetings;
     }
 
     public Meetings(){
@@ -28,7 +28,7 @@ public class Meetings {
         return null;
     }
 
-    public int getMeetingIndex(int meetingID){
+    public int getMeetingIndexByID(int meetingID){
         for(Meeting meeting : meetings){
             if(meetingID == meeting.getMeetingID()) return meetings.indexOf(meeting);
         }
@@ -45,7 +45,7 @@ public class Meetings {
     }
 
     public void updateMeeting(Meeting meeting){
-        int i = getMeetingIndex(meeting.getMeetingID());
+        int i = getMeetingIndexByID(meeting.getMeetingID());
 
         meetings.remove(i);
         meetings.add(i, meeting);

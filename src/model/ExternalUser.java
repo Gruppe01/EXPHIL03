@@ -4,6 +4,7 @@ public class ExternalUser {
     private String email;
     private int meetingID;
     private String name;
+    private String phoneNumber;
 
     public ExternalUser(String email, int meetingID, String name) {
         this.email = email;
@@ -33,6 +34,14 @@ public class ExternalUser {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String toString(){

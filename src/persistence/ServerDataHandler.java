@@ -10,7 +10,7 @@ public class ServerDataHandler extends DataHandler {
 
     public ServerDataHandler(){
         mySQLQuery = new MySQLQuery();
-        dataStorage = new DataStorage();
+        dataStorage = getDataStorageFromDatabase();
     }
 
     public void editDatabase(ArrayList<Object> changedObjects, String type){
@@ -41,7 +41,7 @@ public class ServerDataHandler extends DataHandler {
                    User user = (User) changedObject;
 
                     fields = new ArrayList<>(Arrays.asList("username", "password", "name", "email", "phonenumber"));
-                    values = new ArrayList<>(Arrays.asList(user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.getPhonenumber()));
+                    values = new ArrayList<>(Arrays.asList(user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.getPhoneNumber()));
 
                     mySQLQuery.insert(table, fields, values);
                     break;
@@ -125,7 +125,7 @@ public class ServerDataHandler extends DataHandler {
 
                     map = new HashMap<>(); map.put("username", user.getUsername());
                     fields = new ArrayList<>(Arrays.asList("username", "password", "name", "email", "phonenumber"));
-                    values = new ArrayList<>(Arrays.asList(user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.getPhonenumber()));
+                    values = new ArrayList<>(Arrays.asList(user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.getPhoneNumber()));
 
                     mySQLQuery.update(table, fields, values, map, null);
                     break;
@@ -201,8 +201,6 @@ public class ServerDataHandler extends DataHandler {
     }
 
     public void delete(ArrayList<Object> changedObjects){
-        ArrayList<String> fields;
-        ArrayList<String> values;
         HashMap<String, String> map;
 
         for(Object changedObject : changedObjects){
@@ -271,7 +269,9 @@ public class ServerDataHandler extends DataHandler {
     }
 
     //TODO: Dette blir et helvete!
-    public void populate(){
+    public DataStorage getDataStorageFromDatabase(){
 
+
+        return null;
     }
 }

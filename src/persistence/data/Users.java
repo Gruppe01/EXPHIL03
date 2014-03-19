@@ -9,7 +9,7 @@ public class Users {
     private ArrayList<User> users;
 
     public Users(ArrayList<User> users){
-        populate(users);
+        this.users = users;
     }
 
     public Users(){
@@ -20,7 +20,7 @@ public class Users {
         return users;
     }
 
-    public User getUserByUserName(String userName){
+    public User getUserByUsername(String userName){
         for(User user : users){
             if(userName.equals(user.getUsername())) return user;
         }
@@ -28,7 +28,7 @@ public class Users {
         return null;
     }
 
-    public int getUserIndex(String username){
+    public int getUserIndexByUsername(String username){
         for(User user : users){
             if(username.equals(user.getUsername())) return users.indexOf(user);
         }
@@ -45,7 +45,7 @@ public class Users {
     }
 
     public void updateUser(User user){
-        int i = getUserIndex(user.getUsername());
+        int i = getUserIndexByUsername(user.getUsername());
 
         users.remove(i);
         users.add(i, user);
