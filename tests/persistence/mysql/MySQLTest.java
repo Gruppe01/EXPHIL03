@@ -159,10 +159,10 @@ public class MySQLTest {
 
         Iterator<String> iterator = results.get(0).values().iterator();
 
-        assertEquals(iterator.next(), username);
-        assertEquals(iterator.next(), "testUser@exphil03.com");
-        assertEquals(iterator.next(), "test user");
         assertEquals(iterator.next(), "password");
+        assertEquals(iterator.next(), "test user");
+        assertEquals(iterator.next(), "testUser@exphil03.com");
+        assertEquals(iterator.next(), username);
     }
 
     public void testDelete() throws Exception {
