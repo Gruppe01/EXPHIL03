@@ -1,6 +1,7 @@
 package gui;
 
 import model.Meeting;
+import model.MeetingInvite;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
@@ -313,6 +314,18 @@ public class CreateMeeting extends JPanel {
 		}
 		
 		frame.getClient().sendChanges(meeting, "insert");
+		
+		ArrayList<Object> tempMembers = new ArrayList<>();
+		
+		for (String i:admin){
+			members.add(i);
+		}
+		
+		for (String i:members){
+			frame.getClient().sendChanges(new MeetingInvite(, username), "insert");
+		}
+		
+		
 		
 		frame.setFrame("mainScreen");
 	}
