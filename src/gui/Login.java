@@ -70,7 +70,7 @@ public class Login extends JPanel {
 		password = String.valueOf(passwordField.getPassword());
 
         try {
-            if (!Frame.client.getDataStorage().users().checkLogin(username, password)){
+            if (!Frame.getClient().getDataStorage().users().checkLogin(username, password)){
                 new ErrorMessage("Error", "Invalid login!");
                 return;
             }

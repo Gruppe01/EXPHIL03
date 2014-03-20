@@ -50,4 +50,14 @@ public class Groups implements Serializable {
         groups.remove(i);
         groups.add(i, group);
     }
+
+    public int getNextGroupID(){
+        int largestID = -1;
+
+        for(Group group : groups){
+            if(group.getGroupID() > largestID) largestID = group.getGroupID();
+        }
+
+        return largestID + 1;
+    }
 }
