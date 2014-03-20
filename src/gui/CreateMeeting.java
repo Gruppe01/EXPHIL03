@@ -70,6 +70,7 @@ public class CreateMeeting extends JPanel {
 		scrollPane.setBounds(449, 31, 125, 183);
 		add(scrollPane);
 		
+		listModel = new DefaultListModel<>();
 		list = new JList(listModel);
 		scrollPane.setViewportView(list);
 		
