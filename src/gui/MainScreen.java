@@ -164,6 +164,10 @@ public class MainScreen extends JPanel {
 		}
 	}
 	
+	public void setNotifications(){
+		
+	}
+	
 	public void setUser(String in){
 		lblUsername.setText(in);
 	}
