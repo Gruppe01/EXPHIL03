@@ -8,21 +8,34 @@ import java.net.*;
 import java.util.ArrayList;
 
 public class Client extends Thread{
-    private static final String HOST = Server.HOST;
-    private static final int PORT = Server.PORT;
+    private static String HOST;
+    private static int PORT;
     private Socket socket;
     private DataHandler dataHandler;
 
     public Client(DataHandler dataHandler){
+        HOST = Server.HOST;
+        PORT = Server.PORT;
+
         this.dataHandler = dataHandler;
         this.start();
     }
 
     public Client(){
+        HOST = Server.HOST;
+        PORT = Server.PORT;
+
         this.dataHandler = new DataHandler();
         this.start();
     }
 
+    public Client(String host, int port){
+        HOST = host;
+        PORT = port;
+
+        this.dataHandler = new DataHandler();
+        this.start();
+    }
 
     @SuppressWarnings("unchecked")
     public void run(){
