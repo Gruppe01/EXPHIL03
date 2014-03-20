@@ -31,7 +31,7 @@ public class Login extends JPanel {
 		passwordField.setBounds(121, 89, 200, 20);
 		add(passwordField);
 		passwordField.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
+		    public void actionPerformed(ActionEvent evt) {
 		    	login();
 		    }
 		});
