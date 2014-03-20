@@ -1,6 +1,10 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -12,13 +16,24 @@ import javax.swing.DefaultComboBoxModel;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
-public class EditMembers extends JPanel {
-	private JPanel contentPane;
+public class EditMembers extends JFrame {
 	/**
 	 * Create the panel.
 	 */
-	public EditMembers() {
+	
+	private JPanel contentPane;
+	private CreateMeeting meeting;
+	private EditMembers working;
+	
+	public EditMembers(final CreateMeeting in) {
+		
+		meeting = in;
+		working = this;
+		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setSize(697,335);
 		contentPane = new JPanel();
+		
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		
@@ -34,20 +49,26 @@ public class EditMembers extends JPanel {
 		scrollPane.setColumnHeaderView(lblMeetingMembers);
 		
 		JButton btnMakeAdmin = new JButton("Make admin");
-		btnMakeAdmin.setBounds(418, 11, 104, 23);
+		btnMakeAdmin.setBounds(408, 11, 119, 23);
 		contentPane.add(btnMakeAdmin);
 		
 		JButton btnDeleteAdmin = new JButton("Delete admin");
-		btnDeleteAdmin.setBounds(564, 11, 104, 23);
+		btnDeleteAdmin.setBounds(549, 11, 119, 23);
 		contentPane.add(btnDeleteAdmin);
 		
 		JButton btnDeleteMember = new JButton("Delete member");
-		btnDeleteMember.setBounds(418, 195, 119, 23);
+		btnDeleteMember.setBounds(408, 195, 129, 23);
 		contentPane.add(btnDeleteMember);
 		
-		JButton btnNewButton = new JButton("Done");
-		btnNewButton.setBounds(579, 214, 89, 47);
-		contentPane.add(btnNewButton);
+		JButton btnDone = new JButton("Done");
+		btnDone.setBounds(579, 214, 89, 47);
+		contentPane.add(btnDone);
+		btnDone.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();
+			}
+		});
 		
 		JButton button = new JButton(">>");
 		button.setBounds(316, 103, 67, 23);
@@ -75,23 +96,38 @@ public class EditMembers extends JPanel {
 		lblGroupMembers.setHorizontalAlignment(SwingConstants.CENTER);
 		scrollPane_2.setColumnHeaderView(lblGroupMembers);
 		
-		JButton btnNewButton_1 = new JButton("Cancel");
-		btnNewButton_1.setBounds(10, 214, 89, 47);
-		contentPane.add(btnNewButton_1);
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(10, 214, 89, 47);
+		contentPane.add(btnCancel);
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();
+			}
+		});
 		
 		JButton btnSelectAll = new JButton("Select all");
 		btnSelectAll.setBounds(187, 195, 89, 23);
 		contentPane.add(btnSelectAll);
 		
-		JButton btnNewButton_2 = new JButton("Add external");
-		btnNewButton_2.setBounds(167, 11, 119, 23);
-		contentPane.add(btnNewButton_2);
+		JButton btnAddExternal = new JButton("Add external");
+		btnAddExternal.setBounds(167, 11, 119, 23);
+		contentPane.add(btnAddExternal);
+		btnAddExternal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddExternal addExternal = new AddExternal(working);
+				addExternal.setVisible(true);
+			}
+		});
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Search...", "Simon", "Robin", "Simen", "Sindre", "Peder", "Arne", "Kjell-Elvis"}));
 		comboBox.setBounds(27, 12, 104, 20);
 		AutoCompleteDecorator.decorate(comboBox);
 		contentPane.add(comboBox);
+		
+		setResizable(false);
+		setContentPane(contentPane);
 	}
 
 }

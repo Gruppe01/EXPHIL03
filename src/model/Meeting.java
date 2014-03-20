@@ -1,142 +1,88 @@
 package model;
 
-import com.sun.swing.internal.plaf.synth.resources.synth_sv;
-
-import java.text.DateFormat;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.time.*;
 
-public class Meeting {
+import persistence.mysql.MySQLQuery;
+
+public class Meeting implements Serializable {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private final int meetingID;
-	private ArrayList<User> admins;
-	private ArrayList<User> members;
-    private ArrayList<String> externalMembers;
-	private String starttime;
-	private String endtime;
+	private LocalDateTime starttime;
+	private LocalDateTime endtime;
 	private String description;
-    private int room;
+    private String place = null;
+    private int room = -1;
+    private int minCapacity = -1;
+    private String creator;
+    private LocalDateTime lastUpdated = null;
 
-	public Meeting(User creator, String starttime, String endtime, String description, int room){
-		admins = new ArrayList<User>();
-		members = new ArrayList<User>();
-		admins.add(creator);
-		members.add(creator);
+    public Meeting(int meetingID, String starttime, String endtime, String description, String place, int room, int minCapacity, String creator, String lastUpdated){
+        this.meetingID = meetingID;
+        setStarttime(starttime);
+        setEndtime(endtime);
+        setDescription(description);
+        setPlace(place);
+        this.room = room;
+        setMinCapacity(minCapacity);
+        this.creator = creator;
+        setLastUpdated(lastUpdated);
+    }
+
+	public Meeting(String starttime, String endtime, String description, int room, int minCapacity, String creator){
+        this.meetingID = new MySQLQuery().getNextID("Meeting");
 		setStarttime(starttime);
 		setEndtime(endtime);
         setDescription(description);
         setRoom(room);
-		meetingID = 0;
-
-        System.out.println(DATE_FORMAT.format(new Date()));
+        setMinCapacity(minCapacity);
+        this.creator = creator;
 	}
 	
-	public ArrayList<User> getAdmins() {
-		return admins;
+	public Meeting(String starttime, String endtime, String description, String place, String creator){
+        meetingID = new MySQLQuery().getNextID("Meeting");
+		setStarttime(starttime);
+		setEndtime(endtime);
+        setDescription(description);
+        setPlace(place);
+        this.creator = creator;
 	}
 	
-	public void addAdmin(User admin) {
-		if (admins.contains(admin)){
-            throw new IllegalArgumentException("The user is already an admin");
-        }else{
-            this.admins.add(admin);
-        }
+	public String getPlace(){
+		return place;
 	}
 	
-	public void deleteAdmin(User admin){
-		if (!admins.contains(admin)){
-            throw new IllegalArgumentException("The user is not an current admin");
-        }else{
-            this.admins.remove(admin);
-        }
+	public void setPlace(String place){
+		this.place = place;
 	}
-	
-	public ArrayList<User> getMembers() {
-		return members;
-	}
-	
-	public void addMember(User member) {
-		if (members.contains(member)){
-            throw new IllegalArgumentException("The user is allready invited");
-        }else{
-            this.members.add(member);
-        }
-	}
-	
-	public void deleteMember(User member){
-		if (!members.contains(member)){
-            throw new IllegalArgumentException("The user is not a current member");
-        }else{
-            this.members.remove(member);
-        }
-	}
-
-    public ArrayList<String> getExternalMembers() {
-        return externalMembers;
-    }
-
-    public void addExternalMember(String member) {
-        if (externalMembers.contains(member)){
-            throw new IllegalArgumentException("The email is allready invited");
-        }else{
-            this.externalMembers.add(member);
-        }
-    }
-
-    public void deleteExternalMember(String member){
-        if (!externalMembers.contains(member)){
-            throw new IllegalArgumentException("The email is not a current member");
-        }else{
-            this.externalMembers.remove(member);
-        }
-    }
 	
 	public String getStarttime() {
-		return starttime;
+		return starttime.toString();
 	}
-	
-	public void setStarttime(String starttime) {
-		if (true) {
-			this.starttime = starttime;
-		}else{
+
+	public void setStarttime(String starttime) throws IllegalArgumentException {
+        try {
+			this.starttime = LocalDateTime.parse(starttime);
+		}catch (DateTimeException e){
 			throw new IllegalArgumentException("Invalid starttime format.");
 		}
 	}
 	
 	public String getEndtime() {
-		return endtime;
+		return endtime.toString();
 	}
-	
-	public void setEndtime(String endtime) {
-		if (true) {
-			this.endtime = endtime;
-		}else{
+
+	public void setEndtime(String endtime) throws IllegalArgumentException {
+        try {
+			this.endtime = LocalDateTime.parse(endtime);
+        }catch (DateTimeException e){
 			throw new IllegalArgumentException("Invalid endtime format.");
 		}
 	}
 	
-	public String getDuration() {
-        long minutes = -1;
-        long hours = -1;
-
-        try {
-            Date startTime = DATE_FORMAT.parse(starttime);
-            Date endTime = DATE_FORMAT.parse(endtime);
-
-            long diff = endTime.getTime() - startTime.getTime();
-
-            minutes = diff / (60 * 1000) % 60;
-            hours = diff / (60 * 60 * 1000) % 24;
-        }catch (Exception e){
-            throw new IllegalArgumentException("Error parsing dates.");
-        }
-
-        String hourString = (hours > 0 ? hours + (hours > 1 ? " hours" : " hour") : "");
-        String minuteString = (minutes > 0 ? minutes + (minutes > 1 ? " minutes" : " minute") : "");
-
-        return (hourString.equals("") ? minuteString : hourString + (minuteString.equals("") ? "" : ", " + minuteString));
-	}
 	
 	public String getDescription() {
 		return description;
@@ -146,11 +92,23 @@ public class Meeting {
 		this.description = description;
 	}
 
+    public int getMinCapacity() {
+        return minCapacity;
+    }
+
+    public void setMinCapacity(int capacity) throws IllegalArgumentException{
+        if(capacity < 0 && capacity != -1){
+            throw new IllegalArgumentException("Capacity cannot be less than zero.");
+        }else{
+            this.minCapacity = capacity;
+        }
+    }
+
     public int getRoom() {
         return room;
     }
 
-    public void setRoom(int room) {
+    public void setRoom(int room) throws IllegalArgumentException {
         this.room = room;
     }
 	
@@ -158,16 +116,29 @@ public class Meeting {
 		return meetingID;
 	}
 
+    public String getCreator(){
+        return creator;
+    }
+
+    public String getLastUpdated() {
+        return lastUpdated.toString();
+    }
+
+    public void setLastUpdated(String lastUpdated) throws IllegalArgumentException {
+        if(lastUpdated == null) this.lastUpdated = null;
+        else{
+            try {
+                this.lastUpdated = LocalDateTime.parse(lastUpdated);
+            }catch (DateTimeException e){
+                throw new IllegalArgumentException("Invalid lastUpdated format.");
+            }
+        }
+    }
+
 	@Override
 	public String toString() {
-		return "Meeting [members=" + members + ", starttime=" + starttime
-				+ ", endtime=" + endtime + ", duration=" + getDuration()
-				+ ", description=" + description + "]";
+		return "Members: " + /*getMembers().length +*/ "\r\nstarttime: " + starttime
+				+  "\r\nendtime: " + endtime
+				+ "\r\nPlace:  " + place;
 	}
-
-    public static void main(String args[]){
-        Meeting meeting = new Meeting(new User("asdasd", "asdasd", "asdasd", "si@df.com", "12345678"), "2014-03-13 11:00:00", "2014-03-13 13:01:00", "Kjempegøy!", 1);
-
-        System.out.println(meeting);
-    }
 }

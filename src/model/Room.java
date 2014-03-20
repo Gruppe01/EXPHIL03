@@ -1,6 +1,10 @@
 package model;
 
-public class Room {
+import persistence.mysql.MySQLQuery;
+
+import java.io.Serializable;
+
+public class Room implements Serializable {
     private int roomNumber;
     private int capacity;
 
@@ -9,19 +13,21 @@ public class Room {
         this.capacity = capacity;
     }
 
-    public int getRoomNumber() {
-        return roomNumber;
+    public Room(int capacity) {
+        this.roomNumber = new MySQLQuery().getNextID("MeetingRoom");
+        this.capacity = capacity;
     }
 
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
+    public int getRoomNumber() {
+        return roomNumber;
     }
 
     public int getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setCapacity(int capacity) throws IllegalArgumentException {
+        if(capacity > 0) this.capacity = capacity;
+        else throw new IllegalArgumentException("Room capacity must be more than zero");
     }
 }
