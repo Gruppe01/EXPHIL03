@@ -144,6 +144,15 @@ public class DataStorage implements Serializable{
         for(MeetingInvite meetingInvite : meetingInvites){
             Meeting meeting = meetings().getMeetingByID(meetingInvite.getMeetingID());
 
+            LocalDateTime lastUpdated = meeting.getLastUpdatedAsLocalDateTime();
+            LocalDateTime lastSeen = meetingInvite.getLastSeenAsLocalDateTime();
+
+            if(lastUpdated == null) continue;
+            if(lastSeen == null){
+                meetings.add(meeting);
+                continue;
+            }
+
             if(meeting.getLastUpdatedAsLocalDateTime().isAfter(meetingInvite.getLastSeenAsLocalDateTime())) meetings.add(meeting);
         }
 
