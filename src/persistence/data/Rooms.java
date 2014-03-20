@@ -51,4 +51,14 @@ public class Rooms implements Serializable {
         rooms.remove(i);
         rooms.add(i, room);
     }
+
+    public int getNextRoomNumber(){
+        int largestID = -1;
+
+        for(Room room : rooms){
+            if(room.getRoomNumber() > largestID) largestID = room.getRoomNumber();
+        }
+
+        return largestID + 1;
+    }
 }
