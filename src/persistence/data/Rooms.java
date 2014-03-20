@@ -1,10 +1,8 @@
 package persistence.data;
 
-import model.Meeting;
 import model.Room;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class Rooms implements Serializable {

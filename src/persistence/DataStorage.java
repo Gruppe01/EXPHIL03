@@ -114,7 +114,11 @@ public class DataStorage implements Serializable{
         for(Meeting meeting : meetings){
             int room = meeting.getRoom();
 
-            if(LocalDateTime.parse(meeting.getEndtime()).isBefore(LocalDateTime.parse(startTime)) || LocalDateTime.parse(meeting.getStarttime()).isAfter(LocalDateTime.parse(endTime)) && !availableRooms.contains(room) && rooms().getRoomByNumber(room).getCapacity() >= capacity) availableRooms.add(room);
+            if(room == -1) continue;
+            if(availableRooms.contains(room)) continue;
+            if(!(LocalDateTime.parse(meeting.getEndtime()).isBefore(LocalDateTime.parse(startTime)) && LocalDateTime.parse(meeting.getStarttime()).isAfter(LocalDateTime.parse(endTime)))) continue;
+
+            if(rooms().getRoomByNumber(room).getCapacity() >= capacity) availableRooms.add(room);
         }
 
         return availableRooms;
