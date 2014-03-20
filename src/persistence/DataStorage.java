@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 public class DataStorage implements Serializable{
@@ -135,6 +137,40 @@ public class DataStorage implements Serializable{
         }
 
         return meetingInvited;
+    }
+
+    public ArrayList<MeetingInvite> getActiveMeetingInvitesByUsernameAndWeek(String username, String stringDate){
+        ArrayList<MeetingInvite> meetingInvitesReturn = new ArrayList<>();
+        LocalDate date = LocalDate.parse(stringDate);
+
+        switch(date.getDayOfWeek()){
+           case TUESDAY:
+                date = date.minusDays(1);
+                break;
+            case WEDNESDAY:
+                date = date.minusDays(2);
+                break;
+            case THURSDAY:
+                date = date.minusDays(3);
+                break;
+            case FRIDAY:
+                date = date.minusDays(4);
+                break;
+            case SATURDAY:
+                date = date.minusDays(5);
+                break;
+            case SUNDAY:
+                date = date.minusDays(6);
+                break;
+            default:
+                break;
+        }
+
+        for(MeetingInvite meetingInvite : meetingInvites().getMeetingInvitesByUsername(username)){
+            if(meetings().getMeetingByID(meetingInvite.getMeetingID()).getStartTimeAsLocalDateTime().toLocalDate().isEqual(date)) meetingInvitesReturn.add(meetingInvite);
+        }
+
+        return meetingInvitesReturn;
     }
 
     public ArrayList<Meeting> getMeetingNotificationsByUsername(String username){
