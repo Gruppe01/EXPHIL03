@@ -12,6 +12,10 @@ public class Meetings implements Serializable {
         this.meetings = meetings;
     }
 
+    public Meetings(){
+        this.meetings = new ArrayList<>();
+    }
+
     public ArrayList<Meeting> getMeetings(){
         return meetings;
     }

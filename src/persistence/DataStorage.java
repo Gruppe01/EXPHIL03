@@ -35,8 +35,8 @@ public class DataStorage implements Serializable{
         this.meetingAdmins = new MeetingAdmins();
         this.users = new Users();
         this.groups = new Groups();
-        this.rooms = new Rooms(new ArrayList<Room>());
-        this.meetings = new Meetings(new ArrayList<Meeting>());
+        this.rooms = new Rooms();
+        this.meetings = new Meetings();
         this.externalUsers = new ExternalUsers();
     }
 

@@ -14,6 +14,11 @@ public class Rooms implements Serializable {
         this.rooms = rooms;
     }
 
+    public Rooms(){
+        this.rooms = new ArrayList<>();
+    }
+
+
     public ArrayList<Room> getRooms(){
         return rooms;
     }
