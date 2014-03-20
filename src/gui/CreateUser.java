@@ -4,6 +4,7 @@ import model.User;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -122,15 +123,17 @@ public class CreateUser extends JPanel {
 		}
 		
 		try{
-		user = new User(username, password, name, email, phonenumber);
-		}
-		catch(IllegalArgumentException e){
+		    user = new User(username, password, name, email, phonenumber);
+
+            ArrayList<Object> changedObject = new ArrayList<>(); changedObject.add(user);
+
+            Frame.client.sendChanges(changedObject, "insert");
+		}catch(IllegalArgumentException e){
 			ErrorMessage error = new ErrorMessage("Error", e.getMessage());
 			return;
 		}
 		
 		frame.createUser(user);
-		
 		frame.setFrame("login");
 	}
 }

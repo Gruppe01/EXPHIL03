@@ -82,6 +82,8 @@ public class Server{
                 out.writeObject(type);
                 out.writeObject(changedObjects);
                 out.flush();
+
+                System.out.println("Data send to " + client);
             }catch(IOException e){
                 System.out.println("Could not send to " + client);
             }
@@ -118,6 +120,7 @@ public class Server{
                 System.out.println("Disconnected from " + socket);
             }finally{
                 try{
+                    clients.remove(socket);
                     socket.close();
                 }catch(Exception e){
                     e.printStackTrace();
