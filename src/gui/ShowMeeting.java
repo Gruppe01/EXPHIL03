@@ -138,4 +138,9 @@ public class ShowMeeting extends JPanel {
 		
 
 	}
+	
+	public void refresh(){
+		this.revalidate();
+		this.repaint();
+	}
 }

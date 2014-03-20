@@ -102,6 +102,11 @@ public class CreateUser extends JPanel {
 		});
 	}
 	
+	public void refresh(){
+		this.revalidate();
+		this.repaint();
+	}
+	
 	private void create(){
 		String username;
 		String password;

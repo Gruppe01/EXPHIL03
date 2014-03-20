@@ -294,6 +294,11 @@ public class WeekCalendar extends JPanel {
 		
 	}
 	
+	public void refresh(){
+		this.revalidate();
+		this.repaint();
+	}
+	
 	public void setCollegues(){
 		ArrayList<String> collegues = Frame.getClient().getDataStorage().users().getAllUsers();
 		colleguesModel.removeAllElements();
