@@ -55,6 +55,8 @@ public class CreateMeeting extends JPanel {
 	private JTextField placeTextField;
 	private CreateMeeting working;
 	private Frame frame;
+	private ArrayList<String> members = new ArrayList<>();
+	private ArrayList<String> admin = new ArrayList<>();
 
 	/**
 	 * Create the panel.
@@ -107,6 +109,7 @@ public class CreateMeeting extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				EditMembers edit = new EditMembers(working);
 				edit.setVisible(true);
+				btnEditMembers.setEnabled(false);
 			}
 		});
 		
@@ -232,6 +235,18 @@ public class CreateMeeting extends JPanel {
 //		scrollPane_1 = new JScrollPane();
 //		scrollPane_1.setBounds(274, 103, 132, 86);
 //		add(scrollPane_1);
+	}
+	
+	public void setAdmins(ArrayList<String> in){
+		admin = in;
+	}
+	
+	public void setMembers(ArrayList<String> in){
+		members = in;
+	}
+	
+	public void enableEditButton(){
+		btnEditMembers.setEnabled(true);
 	}
 	
 	private void roomLoader(){
