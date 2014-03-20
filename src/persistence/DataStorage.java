@@ -175,36 +175,36 @@ public class DataStorage implements Serializable{
         meetingAdmins().addMeetingAdmin(new MeetingAdmin(meetingID, username));
     }
 
-    public void deleteAdmin(int meetingID, String username){
+    public void deleteMeetingAdmin(int meetingID, String username){
         if(meetingAdmins().getMeetingAdminByUsernameAndMeetingID(meetingID, username) == null) throw new IllegalArgumentException("The user is not an admin");
 
         meetingAdmins().removeMeetingAdminByMeetingIDAndUsername(meetingID, username);
     }
 
-    public ArrayList<MeetingInvite> getMembers(int meetingID) {
+    public ArrayList<MeetingInvite> getMeetingMembers(int meetingID) {
         return meetingInvites().getMeetingInvitesByMeetingID(meetingID);
     }
 
-    public void addMember(int meetingID, String username) {
+    public void addMeetingMember(int meetingID, String username) {
         if(meetingInvites().getMeetingInviteByUsernameAndMeetingID(meetingID, username) != null) throw new IllegalArgumentException("The user is already invited");
         else meetingInvites().addMeetingInvite(new MeetingInvite(meetingID, username));
     }
 
-    public void deleteMember(int meetingID, String username){
+    public void deleteMeetingMember(int meetingID, String username){
         if(meetingInvites().getMeetingInviteByUsernameAndMeetingID(meetingID, username) == null) throw new IllegalArgumentException("The user is not invited");
         else meetingInvites().removeMeetingInviteByMeetingIDAndUsername(meetingID, username);
     }
 
-    public ArrayList<String> getExternalMembers(int meetingID) {
+    public ArrayList<String> getExternalMeetingMembers(int meetingID) {
         return externalUsers().getExternalUsersByMeetingID(meetingID);
     }
 
-    public void addExternalMember(int meetingID, String email, String name, String phonenumber) throws IllegalArgumentException {
+    public void addExternaMeetinglMember(int meetingID, String email, String name, String phonenumber) throws IllegalArgumentException {
         if(externalUsers().getExternalUsersByMeetingID(meetingID).contains(email)) throw new IllegalArgumentException("The user is already invited");
         else externalUsers().addExternalUser(new ExternalUser(email, meetingID, name, phonenumber));
     }
 
-    public void deleteExternalMember(int meetingID, String email) throws IllegalArgumentException {
+    public void deleteExternalMeetingMember(int meetingID, String email) throws IllegalArgumentException {
         if(!externalUsers().getExternalUsersByMeetingID(meetingID).contains(email)) throw new IllegalArgumentException("The user is not invited");
         else externalUsers().removeExternalUserByMeetingIDAndEmail(meetingID, email);
     }
