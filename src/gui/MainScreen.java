@@ -102,6 +102,7 @@ public class MainScreen extends JPanel {
 		btnShowCalendar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setFrame("weekCalendar");
+				frame.getWeekCalendar().setCollegues();
 			}
 		});
 		btnShowCalendar.setBounds(276, 231, 170, 45);

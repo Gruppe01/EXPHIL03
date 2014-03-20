@@ -65,6 +65,10 @@ public class Frame extends JPanel{
 		return user;
 	}
 	
+	public WeekCalendar getWeekCalendar(){
+		return weekCalendar;
+	}
+	
 	public void createUser(User u){
 		client.getDataStorage().users().addUser(u);
 	}
