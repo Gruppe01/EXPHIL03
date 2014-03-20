@@ -2,7 +2,10 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,6 +19,8 @@ import javax.swing.DefaultComboBoxModel;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
+import com.sun.glass.events.WindowEvent;
+
 public class EditMembers extends JFrame {
 	/**
 	 * Create the panel.
@@ -24,6 +29,12 @@ public class EditMembers extends JFrame {
 	private JPanel contentPane;
 	private CreateMeeting meeting;
 	private EditMembers working;
+	private JList meetingList;
+	private DefaultListModel listModelMembers;
+	private JList groupMembersList;
+	private DefaultListModel listModelgroupMembers;
+	private ArrayList<String> members = new ArrayList<>();
+	private ArrayList<String> admin = new ArrayList<>();
 	
 	public EditMembers(final CreateMeeting in) {
 		
@@ -32,6 +43,8 @@ public class EditMembers extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(697,335);
+		listModelgroupMembers = new DefaultListModel<>();
+		listModelMembers = new DefaultListModel<>();
 		contentPane = new JPanel();
 		
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -41,7 +54,7 @@ public class EditMembers extends JFrame {
 		scrollPane.setBounds(408, 45, 260, 139);
 		contentPane.add(scrollPane);
 		
-		JList meetingList = new JList();
+		meetingList = new JList(listModelMembers);
 		scrollPane.setViewportView(meetingList);
 		
 		JLabel lblMeetingMembers = new JLabel("Meeting members");
@@ -51,20 +64,80 @@ public class EditMembers extends JFrame {
 		JButton btnMakeAdmin = new JButton("Make admin");
 		btnMakeAdmin.setBounds(408, 11, 119, 23);
 		contentPane.add(btnMakeAdmin);
+		btnMakeAdmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedIndex = meetingList.getSelectedIndex();
+				if (selectedIndex != -1) {
+					String selected = (String) meetingList.getSelectedValue();
+					selected = selected.replaceAll(" (Admin)", "");
+					for ( int i = 0;  i < members.size(); i++){
+			            String tempName = members.get(i);
+			            if(tempName.equals(selected)){
+			                admin.add(members.get(i));
+			            	members.remove(i);
+			            }
+			        }
+					updateMembersList();
+				}
+			}
+		});
 		
 		JButton btnDeleteAdmin = new JButton("Delete admin");
 		btnDeleteAdmin.setBounds(549, 11, 119, 23);
 		contentPane.add(btnDeleteAdmin);
+		btnDeleteAdmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedIndex = meetingList.getSelectedIndex();
+				if (selectedIndex != -1) {
+					String selected = (String) meetingList.getSelectedValue();
+					selected = selected.replaceAll(" (Admin)", "");
+					for ( int i = 0;  i < admin.size(); i++){
+			            String tempName = admin.get(i);
+			            if(tempName.equals(selected)){
+			                admin.remove(i);
+			                members.add(admin.get(i));
+			            }
+			        }
+					updateMembersList();
+				}
+			}
+		});
+		
 		
 		JButton btnDeleteMember = new JButton("Delete member");
 		btnDeleteMember.setBounds(408, 195, 129, 23);
 		contentPane.add(btnDeleteMember);
+		btnDeleteMember.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedIndex = meetingList.getSelectedIndex();
+				if (selectedIndex != -1) {
+					String selected = (String) meetingList.getSelectedValue();
+					selected = selected.replaceAll(" (Admin)", "");
+					for ( int i = 0;  i < admin.size(); i++){
+			            String tempName = admin.get(i);
+			            if(tempName.equals(selected)){
+			                admin.remove(i);
+			            }
+			        }
+					for ( int i = 0;  i < members.size(); i++){
+			            String tempName = members.get(i);
+			            if(tempName.equals(selected)){
+			                members.remove(i);
+			            }
+			        }
+					updateMembersList();
+				}
+			}
+		});
 		
 		JButton btnDone = new JButton("Done");
 		btnDone.setBounds(579, 214, 89, 47);
 		contentPane.add(btnDone);
 		btnDone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				meeting.setMembers(members);
+				meeting.setAdmins(admin);
+				meeting.enableEditButton();
 				setVisible(false);
 				dispose();
 			}
@@ -73,6 +146,16 @@ public class EditMembers extends JFrame {
 		JButton btnAdd = new JButton(">>");
 		btnAdd.setBounds(316, 103, 67, 23);
 		contentPane.add(btnAdd);
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedIndex = groupMembersList.getSelectedIndex();
+				if (selectedIndex != -1) {
+					String selected = (String) groupMembersList.getSelectedValue();
+					members.add(selected);
+			        }
+					updateMembersList();
+				}
+		});
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 45, 136, 139);
@@ -89,7 +172,7 @@ public class EditMembers extends JFrame {
 		scrollPane_2.setBounds(156, 45, 141, 139);
 		contentPane.add(scrollPane_2);
 		
-		JList groupMembersList = new JList();
+		groupMembersList = new JList(listModelgroupMembers);
 		scrollPane_2.setViewportView(groupMembersList);
 		
 		JLabel lblGroupMembers = new JLabel("Group members");
@@ -101,6 +184,7 @@ public class EditMembers extends JFrame {
 		contentPane.add(btnCancel);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				meeting.enableEditButton();
 				setVisible(false);
 				dispose();
 			}
@@ -128,6 +212,22 @@ public class EditMembers extends JFrame {
 		
 		setResizable(false);
 		setContentPane(contentPane);
+		
+		this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+            	meeting.enableEditButton();
+            }
+        });
+	}
+	
+	private void updateMembersList(){
+		listModelMembers.removeAllElements();
+		for (String i:admin){
+			listModelMembers.addElement(i+" (Admin)");
+		}
+		for (String i:members){
+			listModelMembers.addElement(i);
+		}
 	}
 
 }

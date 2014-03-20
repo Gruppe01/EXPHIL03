@@ -30,6 +30,11 @@ public class Login extends JPanel {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(121, 89, 200, 20);
 		add(passwordField);
+		passwordField.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent evt) {
+		    	login();
+		    }
+		});
 		
 		JLabel usernameLabel = new JLabel("Username:");
 		usernameLabel.setBounds(22, 56, 89, 17);
@@ -74,9 +79,10 @@ public class Login extends JPanel {
                 new ErrorMessage("Error", "Invalid login!");
                 return;
             }
-
+            
             frame.setUser(username);
             frame.setFrame("mainScreen");
+            frame.getMainScreen().setNotifications();
         }catch (IllegalArgumentException e){
             new ErrorMessage("Error", e.getMessage());
             return;

@@ -61,26 +61,25 @@ public class Server{
 
     public void populateClient(Socket client){
         try{
-            ArrayList<Object> arrayList = new ArrayList<>();
-            arrayList.add(dataHandler.getDataStorage());
+            Object object = dataHandler.getDataStorage();
 
             ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
             out.writeObject("populate");
-            out.writeObject(arrayList);
+            out.writeObject(object);
             out.flush();
         }catch (IOException e){
             throw new IllegalArgumentException(e.getMessage());
         }
     }
 
-    public void sendChanges(ArrayList<Object> changedObjects, String type){
+    public void sendChanges(Object changedObject, String type){
         for(Socket client : clients){
             try {
                 ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
                 out.writeObject(type);
-                out.writeObject(changedObjects);
+                out.writeObject(changedObject);
                 out.flush();
 
                 System.out.println("Data send to " + client);
@@ -107,11 +106,11 @@ public class Server{
 
                     try {
                         String type = (String) in.readObject();
-                        ArrayList<Object> changedObjects = (ArrayList<Object>) in.readObject();
+                        Object changedObject = in.readObject();
 
-                        dataHandler.receiveChanges(changedObjects, type);
-                        dataHandler.editDatabase(changedObjects, type);
-                        sendChanges(changedObjects, type);
+                        dataHandler.receiveChanges(changedObject, type);
+                        dataHandler.editDatabase(changedObject, type);
+                        sendChanges(changedObject, type);
                     }catch(ClassNotFoundException e){
                         System.out.println("Received unapproved item");
                     }

@@ -1,16 +1,12 @@
 package model;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.*;
 import java.time.*;
 
 import persistence.mysql.MySQLQuery;
 
 public class Meeting implements Serializable {
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-	private final int meetingID;
+    private final int meetingID;
 	private LocalDateTime starttime;
 	private LocalDateTime endtime;
 	private String description;
@@ -56,7 +52,7 @@ public class Meeting implements Serializable {
 	}
 	
 	public void setPlace(String place){
-		this.place = place;
+		this.place = place == null ? "" : place;
 	}
 	
 	public String getStarttime() {
@@ -71,7 +67,7 @@ public class Meeting implements Serializable {
         try {
 			this.starttime = LocalDateTime.parse(starttime);
 		}catch (DateTimeException e){
-			throw new IllegalArgumentException("Invalid starttime format.");
+			throw new IllegalArgumentException("Invalid starttime format: " + starttime);
 		}
 	}
 	
@@ -129,7 +125,7 @@ public class Meeting implements Serializable {
     }
 
     public String getLastUpdated() {
-        return lastUpdated.toString();
+        return lastUpdated == null ? null : lastUpdated.toString();
     }
 
     public LocalDateTime getLastUpdatedAsLocalDateTime() {

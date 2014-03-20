@@ -65,6 +65,10 @@ public class Frame extends JPanel{
 		return user;
 	}
 	
+	public WeekCalendar getWeekCalendar(){
+		return weekCalendar;
+	}
+	
 	public void createUser(User u){
 		client.getDataStorage().users().addUser(u);
 	}
@@ -72,6 +76,10 @@ public class Frame extends JPanel{
 	public void logout(){
 		user = null;
 		username = null;
+	}
+	
+	public MainScreen getMainScreen(){
+		return mainScreen;
 	}
 	
 	public void setFrame(String panel){
@@ -122,7 +130,7 @@ public class Frame extends JPanel{
 				frame.validate();
 				frame.repaint();
 				curPanel=showMeeting;
-				frame.setSize(600, 400);
+				frame.setSize(600, 360);
 				break;
 			case "weekCalendar":
 				frame.remove(curPanel);
