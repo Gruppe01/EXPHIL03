@@ -41,8 +41,8 @@ public class EditMembers extends JFrame {
 		scrollPane.setBounds(408, 45, 260, 139);
 		contentPane.add(scrollPane);
 		
-		JList list = new JList();
-		scrollPane.setViewportView(list);
+		JList meetingList = new JList();
+		scrollPane.setViewportView(meetingList);
 		
 		JLabel lblMeetingMembers = new JLabel("Meeting members");
 		lblMeetingMembers.setHorizontalAlignment(SwingConstants.CENTER);
@@ -70,16 +70,16 @@ public class EditMembers extends JFrame {
 			}
 		});
 		
-		JButton button = new JButton(">>");
-		button.setBounds(316, 103, 67, 23);
-		contentPane.add(button);
+		JButton btnAdd = new JButton(">>");
+		btnAdd.setBounds(316, 103, 67, 23);
+		contentPane.add(btnAdd);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 45, 136, 139);
 		contentPane.add(scrollPane_1);
 		
-		JList list_1 = new JList();
-		scrollPane_1.setViewportView(list_1);
+		JList GroupsList = new JList();
+		scrollPane_1.setViewportView(GroupsList);
 		
 		JLabel lblGroups = new JLabel("Groups");
 		lblGroups.setHorizontalAlignment(SwingConstants.CENTER);
@@ -89,8 +89,8 @@ public class EditMembers extends JFrame {
 		scrollPane_2.setBounds(156, 45, 141, 139);
 		contentPane.add(scrollPane_2);
 		
-		JList list_2 = new JList();
-		scrollPane_2.setViewportView(list_2);
+		JList groupMembersList = new JList();
+		scrollPane_2.setViewportView(groupMembersList);
 		
 		JLabel lblGroupMembers = new JLabel("Group members");
 		lblGroupMembers.setHorizontalAlignment(SwingConstants.CENTER);
