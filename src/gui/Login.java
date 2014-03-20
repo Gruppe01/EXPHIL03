@@ -30,6 +30,11 @@ public class Login extends JPanel {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(121, 89, 200, 20);
 		add(passwordField);
+		passwordField.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent evt) {
+		    	login();
+		    }
+		});
 		
 		JLabel usernameLabel = new JLabel("Username:");
 		usernameLabel.setBounds(22, 56, 89, 17);
