@@ -17,7 +17,9 @@ public class Server{
     private boolean serverOn = true;
     private ServerDataHandler dataHandler;
 
-    public Server(ServerDataHandler dataHandler){
+    public Server(){
+        this.dataHandler = new ServerDataHandler();
+
         try{
             serverSocket = new ServerSocket(PORT);
         }catch(IOException ioe){
@@ -27,11 +29,10 @@ public class Server{
 
         System.out.println("Server running on " + HOST + ":" + PORT);
 
-        this.dataHandler = dataHandler;
-
         while(serverOn){
             try{
                 Socket clientSocket = serverSocket.accept();
+                populateClient(clientSocket);
                 clients.add(clientSocket);
 
                 System.out.println(clientSocket + " connected to server");
@@ -49,6 +50,21 @@ public class Server{
         }catch(Exception e){
             System.out.println("Problem stopping server socket");
             System.exit(0);
+        }
+    }
+
+    public void populateClient(Socket client){
+        try{
+            ArrayList<Object> arrayList = new ArrayList<>();
+            arrayList.add(dataHandler.getDataStorage());
+
+            ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
+
+            out.writeObject("populate");
+            out.writeObject(arrayList);
+            out.flush();
+        }catch (IOException e){
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -109,6 +125,6 @@ public class Server{
     }
 
     public static void main (String[] args){
-        Server server = new Server(new ServerDataHandler());
+        Server server = new Server();
     }
 }

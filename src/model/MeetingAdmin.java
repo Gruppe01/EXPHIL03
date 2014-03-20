@@ -1,6 +1,8 @@
 package model;
 
-public class MeetingAdmin {
+import java.io.Serializable;
+
+public class MeetingAdmin implements Serializable {
     private int meetingID;
     private String username;
 

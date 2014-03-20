@@ -21,7 +21,7 @@ public class MySQLTest {
 
     @Before
     public void setUp() throws Exception {
-        validConnection = new MySQLQuery();
+        validConnection = TEST_CONNECTION();
 
         username = newTestUser();
 
@@ -60,12 +60,12 @@ public class MySQLTest {
 
     @Test
     public void testGetAvailableRooms() throws Exception{
-        validConnection.execute("ALTER TABLE MeetingRoom AUTO_INCREMENT = 1", new ArrayList<String>(), false);
+        validConnection.execute("ALTER TABLE Room AUTO_INCREMENT = 1", new ArrayList<String>(), false);
         validConnection.execute("ALTER TABLE Meeting AUTO_INCREMENT = 1", new ArrayList<String>(), false);
 
-        validConnection.execute("INSERT INTO MeetingRoom (capacity) VALUES (10);", new ArrayList<String>(), false);
-        validConnection.execute("INSERT INTO MeetingRoom (capacity) VALUES (10);", new ArrayList<String>(), false);
-        validConnection.execute("INSERT INTO MeetingRoom (capacity) VALUES (5);", new ArrayList<String>(), false);
+        validConnection.execute("INSERT INTO Room (capacity) VALUES (10);", new ArrayList<String>(), false);
+        validConnection.execute("INSERT INTO Room (capacity) VALUES (10);", new ArrayList<String>(), false);
+        validConnection.execute("INSERT INTO Room (capacity) VALUES (5);", new ArrayList<String>(), false);
 
         validConnection.execute("INSERT INTO User (username, password, name, email) VALUES ('testUserRoom', '', '', '');", new ArrayList<String>(), false);
 
@@ -104,6 +104,11 @@ public class MySQLTest {
         select(invalidConnection, selectMap);
     }
 
+    @Test
+    public void testConnectToDatabase() throws Exception{
+        MySQLQuery testConnectToDatabaseQuery = new MySQLQuery();
+    }
+
     @Test(expected=IllegalArgumentException.class)
     public void testDuplicateEntries() throws Exception{
         validConnection.insert("User", userFields, userValuesBefore);
@@ -120,7 +125,7 @@ public class MySQLTest {
     @Test
     public void testGetNextID() throws Exception{
         assertEquals(4, validConnection.getNextID("Meeting"));
-        assertEquals(4, validConnection.getNextID("MeetingRoom"));
+        assertEquals(4, validConnection.getNextID("Meeting"));
     }
 
     private ArrayList<HashMap<String, String>> select(MySQLQuery connection, HashMap<String, String> map) throws Exception {
@@ -175,6 +180,16 @@ public class MySQLTest {
     public void deleteAll(){
         validConnection.execute("DELETE FROM Meeting WHERE '1'='1';", new ArrayList<String>(), false);
         validConnection.execute("DELETE FROM User WHERE '1'='1';", new ArrayList<String>(), false);
-        validConnection.execute("DELETE FROM MeetingRoom WHERE '1'='1';", new ArrayList<String>(), false);
+        validConnection.execute("DELETE FROM Room WHERE '1'='1';", new ArrayList<String>(), false);
+    }
+
+    public static MySQLQuery TEST_CONNECTION(){
+        String url = "jdbc:mysql://mysql.stud.ntnu.no/";
+        String dbName = "simonbo_exphil03_test";
+        String driver = "com.mysql.jdbc.Driver";
+        String userName = "simonbo_exphil03";
+        String password = "drossap";
+
+        return new MySQLQuery(url, dbName, driver, userName, password);
     }
 }

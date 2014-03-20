@@ -3,7 +3,12 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -13,6 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
@@ -25,25 +32,110 @@ import javax.swing.ListSelectionModel;
 
 public class WeekCalendar extends JPanel {
 	private JTable table;
+	private Integer week;
+	private Integer year;
+	private Integer month;
+	private Integer day;
+	private String hourminsec;
+	private JLabel lblWeek;
+	private JList selectedmembers;
+	private JComboBox collegues;
+	private DefaultListModel model;
+	private GregorianCalendar GCalendar;
+	private String date;
+	
+	
+	private void removeSelectedColleague(){
+		model.removeElement(selectedmembers.getSelectedValue());
+	}
 
+	private void addSelectedColleague(){
+		if(!model.contains(collegues.getSelectedItem())){
+			model.addElement(collegues.getSelectedItem());
+		}
+	}
+	
+	public String getDate(){
+		return date;
+	}
+	
+	private void setDate(){
+		date = year.toString() + "-" + month.toString() + "-" + day.toString() + " " + hourminsec;
+	}
+	
+	private void checkMonth(int day){
+		month = GCalendar.get(Calendar.MONTH);
+		switch(month){
+		case(0):
+			
+		}
+			
+	}
+	
+	private void lastWeek(){
+		if(week == 1){
+			week = 52;
+			year = year - 1;
+			month = 12;
+		}else{
+			week = week - 1;
+		}
+		day = day - 7;
+		lblWeek.setText("Week " + week.toString());
+		setDate();
+		System.out.println(getDate());
+	}
+	private void nextWeek(){
+		if(week == 52){
+			week = 1;
+			year = year + 1;
+			month = 1;
+		}else{
+			week = week + 1;
+		}
+		checkMonth(day);
+		day = day + 7;
+		lblWeek.setText("Week " + week.toString());
+		setDate();
+		System.out.println(getDate());
+	}
+	
+	
 	/**
 	 * Create the panel.
 	 */
 	public WeekCalendar(final Frame frame) {
 		setLayout(null);
 		
-		JButton button = new JButton("<");
-		button.setBounds(165, 22, 55, 23);
-		add(button);
+		GCalendar = new GregorianCalendar();
+		week = GCalendar.get(Calendar.WEEK_OF_YEAR);
+		year = GCalendar.get(Calendar.YEAR);
+		month = GCalendar.get(Calendar.MONTH);
+		day = GCalendar.get(Calendar.DAY_OF_MONTH);
 		
-		JButton button_1 = new JButton(">");
-		button_1.setBounds(398, 22, 55, 23);
-		add(button_1);
-		
-		JLabel lblWeek = new JLabel("Week *");
+		lblWeek = new JLabel("Week " + week.toString());
 		lblWeek.setHorizontalAlignment(SwingConstants.CENTER);
 		lblWeek.setBounds(230, 23, 158, 21);
 		add(lblWeek);
+		
+		JButton nextweek_button = new JButton(">");
+		nextweek_button.setBounds(398, 22, 55, 23);
+		add(nextweek_button);
+		nextweek_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				nextWeek();	
+			}
+		});
+		
+		JButton lastweek_button = new JButton("<");
+		lastweek_button.setBounds(165, 22, 55, 23);
+		add(lastweek_button);
+		lastweek_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lastWeek();	
+			}
+		});
+		
 		
 		JLabel lblNewLabel = new JLabel("Colleagues calendar:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -51,29 +143,66 @@ public class WeekCalendar extends JPanel {
 		add(lblNewLabel);
 		
 		JButton btnAdd = new JButton("Add");
-		btnAdd.setBounds(513, 102, 117, 23);
+		btnAdd.setBounds(522, 104, 117, 23);
 		add(btnAdd);
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addSelectedColleague();	
+			}
+		});
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(513, 136, 117, 129);
+		scrollPane.setBounds(513, 136, 140, 129);
 		add(scrollPane);
 		
 		JLabel lblSelected = new JLabel("Selected members");
 		lblSelected.setHorizontalAlignment(SwingConstants.CENTER);
 		scrollPane.setColumnHeaderView(lblSelected);
 		
-		JList list = new JList();
-		scrollPane.setViewportView(list);
+		model = new DefaultListModel();
+		selectedmembers = new JList(model);
+		scrollPane.setViewportView(selectedmembers);
 		
 		JButton btnRemove = new JButton("Remove");
-		btnRemove.setBounds(513, 276, 117, 23);
+		btnRemove.setBounds(522, 276, 117, 23);
 		add(btnRemove);
+		btnRemove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeSelectedColleague();	
+			}
+		});
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(129, 56, 374, 226);
 		add(scrollPane_1);
 		
 		table = new JTable();
+		ListSelectionModel cellSelectionModel = table.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				String selectedData = null;
+
+		        int[] selectedRow = table.getSelectedRows();
+		        int[] selectedColumns = table.getSelectedColumns();
+
+		        for (int i = 0; i < selectedRow.length; i++) {
+		          for (int j = 0; j < selectedColumns.length; j++) {
+		            selectedData = (String) table.getValueAt(selectedRow[i], selectedColumns[j]);
+		          }
+		        }
+		        System.out.println("Selected: " + selectedData);
+
+
+			}
+		     
+
+		    });
+		
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setCellSelectionEnabled(true);
 		table.setColumnSelectionAllowed(true);
@@ -148,12 +277,14 @@ public class WeekCalendar extends JPanel {
 		table.getColumnModel().getColumn(6).setResizable(false);
 		table.getColumnModel().getColumn(7).setResizable(false);
 		scrollPane_1.setViewportView(table);
+		System.out.println(table.getSelectedColumn());
+		System.out.println(table.getSelectedRow());
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Arne", "Simon", "Robin", "Simen", "Russel", "Sara", "Susanne"}));
-		comboBox.setBounds(513, 73, 117, 20);
-		AutoCompleteDecorator.decorate(comboBox);
-		add(comboBox);
+		collegues = new JComboBox();
+		collegues.setModel(new DefaultComboBoxModel(new String[] {"", "Robin Sjøvoll", "Simon Borøy-Johnsen", "Thor Håkon Bredesen", "Simen", "Russel", "Sara", "Susanne"}));
+		collegues.setBounds(513, 73, 140, 20);
+		AutoCompleteDecorator.decorate(collegues);
+		add(collegues);
 		
 		JLabel lblStatus = new JLabel("Status:");
 		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
@@ -167,11 +298,6 @@ public class WeekCalendar extends JPanel {
 		add(txtpnInvitedAttendingDeclined);
 		
 		JButton btnRemoveSche = new JButton("Remove meeting from my schedule");
-//		btnRemoveSche.setLayout(new BorderLayout());
-//		JLabel label1 = new JLabel("Remove meeting");
-//		JLabel label2 = new JLabel("from my schedule");
-//		btnRemoveSche.add(BorderLayout.NORTH, label1);
-//		btnRemoveSche.add(BorderLayout.SOUTH, label2);
 		btnRemoveSche.setToolTipText("");
 		btnRemoveSche.setBounds(165, 293, 288, 31);
 		add(btnRemoveSche);

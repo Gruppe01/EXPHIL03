@@ -22,6 +22,7 @@ public class MySQLQuery {
     public void insert(String table, ArrayList<String> fields, ArrayList<String> values) {
         if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
 
+        String tableString = "`" + table + "`";
         String fieldsString = fields == null ? "" : " (" + StringUtils.join(fields, ", ") + ")";
         String valuesString = "?";
 
@@ -29,7 +30,7 @@ public class MySQLQuery {
             valuesString += ", ?";
         }
 
-        String insertSQL = "INSERT INTO " + table + fieldsString + " VALUES (" + valuesString + ");";
+        String insertSQL = "INSERT INTO " + tableString + fieldsString + " VALUES (" + valuesString + ");";
 
         connection.execute(insertSQL, values, false);
     }
@@ -38,11 +39,12 @@ public class MySQLQuery {
     public void update(String table, ArrayList<String> fields, ArrayList<String> values, HashMap conditions, ArrayList<String> selection) {
         if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
 
+        String tableString = "`" + table + "`";
         String setString = StringUtils.join(fields, " = ?, ") + " = ?";
         String whereString = StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
         String selectionString = selection == null ? "" : " " + StringUtils.join(selection, " ");
 
-        String updateSQL = "UPDATE " + table + " SET " + setString + " WHERE " + whereString + selectionString + ";";
+        String updateSQL = "UPDATE " + tableString + " SET " + setString + " WHERE " + whereString + selectionString + ";";
 
         ArrayList<String> queryValues = new ArrayList<>();
 
@@ -54,9 +56,10 @@ public class MySQLQuery {
 
     @SuppressWarnings("unchecked")
     public void delete(String table, HashMap conditions) {
+        String tableString = "`" + table + "`";
         String whereString = StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
 
-        String deleteSQL = "DELETE FROM " + table + " WHERE " + whereString + ";";
+        String deleteSQL = "DELETE FROM " + tableString + " WHERE " + whereString + ";";
 
         ArrayList<String> queryValues = new ArrayList<String>(conditions.values());
 
@@ -65,12 +68,12 @@ public class MySQLQuery {
 
     @SuppressWarnings("unchecked")
     public ArrayList<HashMap<String, String>> select(ArrayList<String> tables, ArrayList<String> fields, HashMap conditions, ArrayList<String> selection) {
-        String tablesString = StringUtils.join(tables, ", ");
-        String fieldsString = fields == null ? "*" : StringUtils.join(fields, ", ");
+        String tablesString = "`" + StringUtils.join(tables, "`, `") + "`";
+        String fieldsString = fields == null ? "*" : "`" + StringUtils.join(fields, "`, `") + "`";
         String whereString = conditions == null ? "" : " WHERE " + StringUtils.join(conditions.keySet(), " = ? AND ") + " = ?";
         String selectionString = selection == null ? "" : " " + StringUtils.join(selection, " ");
 
-        String selectSQL = "SELECT " + fieldsString + " FROM " + tablesString + whereString  + selectionString + ";";
+        String selectSQL = "SELECT " + fieldsString + " FROM " + tablesString + whereString + selectionString + ";";
 
         ArrayList<String> queryValues = conditions == null ? null : new ArrayList<String>(conditions.values());
 
@@ -78,35 +81,10 @@ public class MySQLQuery {
     }
 
     @SuppressWarnings("unchecked")
-    public ArrayList<Integer> getAvailableRooms(String startTime, String endTime, int capacity){
-        String query = "SELECT * FROM MeetingRoom WHERE roomNumber NOT IN (SELECT room FROM Meeting WHERE NOT (endTime <= ? OR startTime >= ?)) AND capacity >= ? ORDER BY roomNumber ASC";
-
-        ArrayList<HashMap<String, String>> roomsHashMap = connection.execute(query, new ArrayList(Arrays.asList(startTime, endTime, Integer.toString(capacity))), true);
-        ArrayList<Integer> rooms = new ArrayList<>();
-
-        for(HashMap<String, String> room : roomsHashMap){
-            rooms.add(Integer.parseInt(room.get("roomNumber")));
-        }
-
-        return rooms;
-    }
-
-    @SuppressWarnings("unchecked")
     public int getNextID(String table){
         ArrayList<HashMap<String, String>> tableInfo = execute("SHOW TABLE STATUS LIKE ?;", new ArrayList(Arrays.asList(table)), true);
 
         return Integer.parseInt(tableInfo.get(0).get("AUTO_INCREMENT"));
-    }
-
-    public boolean loginCheck(String username, String password){
-        HashMap<String, String> conditions = new HashMap<>();
-
-        conditions.put("username", username);
-        conditions.put("password", password);
-
-        ArrayList<HashMap<String, String>> result = select(new ArrayList<>(Arrays.asList("User")), new ArrayList<>(Arrays.asList("username", "password")), conditions, null);
-
-        return result.size() == 1;
     }
 
     public ArrayList<HashMap<String, String>> getAllRows(String table){

@@ -2,9 +2,16 @@ package model;
 
 import persistence.mysql.MySQLQuery;
 
-public class Room {
+import java.io.Serializable;
+
+public class Room implements Serializable {
     private int roomNumber;
     private int capacity;
+
+    public Room(int roomNumber, int capacity) {
+        this.roomNumber = roomNumber;
+        this.capacity = capacity;
+    }
 
     public Room(int capacity) {
         this.roomNumber = new MySQLQuery().getNextID("MeetingRoom");

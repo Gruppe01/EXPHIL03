@@ -2,10 +2,10 @@ package persistence.data;
 
 import model.User;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.*;
 
-//User
-public class Users {
+public class Users implements Serializable {
     private ArrayList<User> users;
 
     public Users(ArrayList<User> users){
@@ -51,9 +51,7 @@ public class Users {
         users.add(i, user);
     }
 
-    public void populate(ArrayList<User> users){
-        for(User user : users){
-            users.add(user);
-        }
+    public boolean checkLogin(String username, String password){
+        return getUserByUsername(username).getPassword().equals(password);
     }
 }
