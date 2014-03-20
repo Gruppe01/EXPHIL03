@@ -307,6 +307,9 @@ public class CreateMeeting extends JPanel {
 		ArrayList<Object> meeting = new ArrayList<>();
 
 		if (list.isSelectionEmpty()){
+            if(place.equals("")){
+                new ErrorMessage("Error", "You must either choose place or room");
+            }
 
 			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null));
 		}
