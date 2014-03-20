@@ -153,6 +153,11 @@ public class MainScreen extends JPanel {
 		setNotifications();
 	}
 	
+	public void refresh(){
+		this.revalidate();
+		this.repaint();
+	}
+	
 	private void setDatePicked(){
 		int thismonth = model.getMonth() + 1;
 		String month = thismonth<10 ? "0" + thismonth : "" + thismonth;

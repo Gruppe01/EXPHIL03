@@ -238,6 +238,11 @@ public class CreateMeeting extends JPanel {
 //		scrollPane_1.setBounds(274, 103, 132, 86);
 //		add(scrollPane_1);
 	}
+	
+	public void refresh(){
+		this.revalidate();
+		this.repaint();
+	}
 
 	public void setAdmins(ArrayList<String> in){
 		admin = in;

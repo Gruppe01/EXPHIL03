@@ -67,6 +67,11 @@ public class Login extends JPanel {
 		add(FYPButton);
 	}
 	
+	public void refresh(){
+		this.revalidate();
+		this.repaint();
+	}
+	
 	private void login(){
 		String username;
 		String password;

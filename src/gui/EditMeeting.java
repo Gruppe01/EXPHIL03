@@ -140,4 +140,9 @@ public class EditMeeting extends JPanel {
 		add(textField);
 		textField.setColumns(10);
 	}
+	
+	public void refresh(){
+		this.revalidate();
+		this.repaint();
+	}
 }
