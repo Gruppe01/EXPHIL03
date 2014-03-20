@@ -47,10 +47,18 @@ public class Frame extends JPanel{
 		
 	}
 	
+	public Client getClient(){
+		return client;
+	}
+	
 	public void setUser(String in){
 		username = in;
 		user = client.getDataStorage().users().getUserByUsername(username);
 		mainScreen.setUser(in);
+	}
+	
+	public String getUserName(){
+		return username;
 	}
 	
 	public User getUser(){
