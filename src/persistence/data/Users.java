@@ -52,6 +52,10 @@ public class Users implements Serializable {
     }
 
     public boolean checkLogin(String username, String password){
-        return getUserByUsername(username).getPassword().equals(password);
+        User user = getUserByUsername(username);
+
+        if(user == null) throw new IllegalArgumentException("User not found");
+
+        return user.getPassword().equals(password);
     }
 }

@@ -1,7 +1,5 @@
 package gui;
 
-import persistence.mysql.MySQLQuery;
-
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
@@ -65,25 +63,23 @@ public class Login extends JPanel {
 	}
 	
 	private void login(){
-		
-		MySQLQuery query = new MySQLQuery();
-		
 		String username;
 		String password;
 		
 		username = usernameField.getText();
 		password = String.valueOf(passwordField.getPassword());
-		//disabled login check
-		/*
-		if (!query.loginCheck(username, password)){
-			ErrorMessage Error = new ErrorMessage("Error", "Invalid login!");
-			return;
-		};
-		*/
-		
-		frame.setUser(username);
-		
-		frame.setFrame("mainScreen");
-	}
 
+        try {
+            if (!Frame.client.getDataStorage().users().checkLogin(username, password)){
+                new ErrorMessage("Error", "Invalid login!");
+                return;
+            }
+
+            frame.setUser(username);
+            frame.setFrame("mainScreen");
+        }catch (IllegalArgumentException e){
+            new ErrorMessage("Error", e.getMessage());
+            return;
+        }
+	}
 }
