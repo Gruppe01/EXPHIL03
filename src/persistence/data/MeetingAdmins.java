@@ -20,9 +20,9 @@ public class MeetingAdmins implements Serializable {
         return meetingAdmins;
     }
 
-    public MeetingAdmin getMeetingAdminByUsernameAndMeetingID(int meetingAdminID, String username){
+    public MeetingAdmin getMeetingAdminByUsernameAndMeetingID(int meetingID, String username){
         for(MeetingAdmin meetingAdmin : meetingAdmins){
-            if(meetingAdminID == meetingAdmin.getMeetingID() && username.equals(meetingAdmin.getUsername())) return meetingAdmin;
+            if(meetingID == meetingAdmin.getMeetingID() && username.equals(meetingAdmin.getUsername())) return meetingAdmin;
         }
 
         return null;
@@ -44,16 +44,17 @@ public class MeetingAdmins implements Serializable {
         meetingAdmins.remove(meetingAdmin);
     }
 
+    public void removeMeetingAdminByMeetingIDAndUsername(int meetingID, String username){
+        MeetingAdmin meetingAdmin = getMeetingAdminByUsernameAndMeetingID(meetingID, username);
+
+        if(meetingAdmin == null) throw new IllegalArgumentException("User is not an admin");
+        else meetingAdmins.remove(meetingAdmin);
+    }
+
     public void updateMeetingAdmin(MeetingAdmin meetingAdmin){
         int i = getMeetingAdminIndexByUsernameAndMeetingID(meetingAdmin.getMeetingID(), meetingAdmin.getUsername());
 
         meetingAdmins.remove(i);
         meetingAdmins.add(i, meetingAdmin);
-    }
-
-    public void populate(ArrayList<MeetingAdmin> meetingAdmins){
-        for(MeetingAdmin meetingAdmin : meetingAdmins){
-            meetingAdmins.add(meetingAdmin);
-        }
     }
 }

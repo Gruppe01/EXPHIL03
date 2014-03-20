@@ -5,38 +5,38 @@ import persistence.data.*;
 import java.io.Serializable;
 
 public class DataStorage implements Serializable{
+    private GroupMemberships groupMemberships;
+    private MeetingInvites meetingInvites;
+    private MeetingAdmins meetingAdmins;
     private Users users;
     private Groups groups;
     private Rooms rooms;
     private Meetings meetings;
     private ExternalUsers externalUsers;
-    private GroupMemberships groupMemberships;
-    private MeetingInvites meetingInvites;
-    private MeetingAdmins meetingAdmins;
 
     public DataStorage(Users users, Groups groups, Rooms rooms, Meetings meetings, ExternalUsers externalUsers, GroupMemberships groupMemberships, MeetingInvites meetingInvites, MeetingAdmins meetingAdmins) {
+        this.groupMemberships = groupMemberships;
+        this.meetingInvites = meetingInvites;
+        this.meetingAdmins = meetingAdmins;
         this.users = users;
         this.groups = groups;
         this.rooms = rooms;
         this.meetings = meetings;
         this.externalUsers = externalUsers;
-        this.groupMemberships = groupMemberships;
-        this.meetingInvites = meetingInvites;
-        this.meetingAdmins = meetingAdmins;
     }
 
     public DataStorage() {
+        this.groupMemberships = new GroupMemberships();
+        this.meetingInvites = new MeetingInvites();
+        this.meetingAdmins = new MeetingAdmins();
         this.users = new Users();
         this.groups = new Groups();
         this.rooms = new Rooms();
         this.meetings = new Meetings();
         this.externalUsers = new ExternalUsers();
-        this.groupMemberships = new GroupMemberships();
-        this.meetingInvites = new MeetingInvites();
-        this.meetingAdmins = new MeetingAdmins();
     }
 
-    public Users getUsers() {
+    public Users users() {
         return users;
     }
 
@@ -44,7 +44,7 @@ public class DataStorage implements Serializable{
         this.users = users;
     }
 
-    public Groups getGroups() {
+    public Groups groups() {
         return groups;
     }
 
@@ -52,7 +52,7 @@ public class DataStorage implements Serializable{
         this.groups = groups;
     }
 
-    public Rooms getRooms() {
+    public Rooms rooms() {
         return rooms;
     }
 
@@ -60,7 +60,7 @@ public class DataStorage implements Serializable{
         this.rooms = rooms;
     }
 
-    public Meetings getMeetings() {
+    public Meetings meetings() {
         return meetings;
     }
 
@@ -68,7 +68,7 @@ public class DataStorage implements Serializable{
         this.meetings = meetings;
     }
 
-    public ExternalUsers getExternalUsers() {
+    public ExternalUsers externalUsers() {
         return externalUsers;
     }
 
@@ -76,7 +76,7 @@ public class DataStorage implements Serializable{
         this.externalUsers = externalUsers;
     }
 
-    public GroupMemberships getGroupMemberships() {
+    public GroupMemberships groupMemberships() {
         return groupMemberships;
     }
 
@@ -84,7 +84,7 @@ public class DataStorage implements Serializable{
         this.groupMemberships = groupMemberships;
     }
 
-    public MeetingInvites getMeetingInvites() {
+    public MeetingInvites meetingInvites() {
         return meetingInvites;
     }
 
@@ -92,7 +92,7 @@ public class DataStorage implements Serializable{
         this.meetingInvites = meetingInvites;
     }
 
-    public MeetingAdmins getMeetingAdmins() {
+    public MeetingAdmins meetingAdmins() {
         return meetingAdmins;
     }
 

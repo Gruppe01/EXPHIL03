@@ -50,10 +50,4 @@ public class Groups implements Serializable {
         groups.remove(i);
         groups.add(i, group);
     }
-
-    public void populate(ArrayList<Group> groups){
-        for(Group group : groups){
-            groups.add(group);
-        }
-    }
 }

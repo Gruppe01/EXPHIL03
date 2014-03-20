@@ -51,9 +51,7 @@ public class Users implements Serializable {
         users.add(i, user);
     }
 
-    public void populate(ArrayList<User> users){
-        for(User user : users){
-            users.add(user);
-        }
+    public boolean checkLogin(String username, String password){
+        return getUserByUsername(username).getPassword().equals(password);
     }
 }
