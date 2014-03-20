@@ -130,7 +130,7 @@ public class Frame extends JPanel{
 				frame.validate();
 				frame.repaint();
 				curPanel=showMeeting;
-				frame.setSize(600, 400);
+				frame.setSize(600, 360);
 				break;
 			case "weekCalendar":
 				frame.remove(curPanel);
