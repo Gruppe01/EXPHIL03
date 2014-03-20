@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -48,6 +49,7 @@ public class WeekCalendar extends JPanel {
 	private String date;
 	private DefaultTableModel tablemodel;
 	private Meeting selectedData;
+	private DefaultComboBoxModel<String> colleguesModel;
 	
 	public String getDate(){
 		return date;
@@ -55,7 +57,7 @@ public class WeekCalendar extends JPanel {
 	
 	private void setDate(){
 		GCalendar.set(year, month, day);
-		date = GCalendar.get(Calendar.YEAR) + "-" + GCalendar.get(Calendar.MONTH) + "-" + GCalendar.get(Calendar.DAY_OF_MONTH) + " " + hourminsec;
+		date = GCalendar.get(Calendar.YEAR) + "-" + GCalendar.get(Calendar.MONTH) + "-" + GCalendar.get(Calendar.DAY_OF_MONTH);
 	}
 	
 	
@@ -253,8 +255,10 @@ public class WeekCalendar extends JPanel {
 		table.getColumnModel().getColumn(6).setResizable(false);
 		table.getColumnModel().getColumn(7).setResizable(false);
 		scrollPane_1.setViewportView(table);
+		
+		colleguesModel = new DefaultComboBoxModel(new String[] {""});
 		collegues = new JComboBox();
-		collegues.setModel(new DefaultComboBoxModel(new String[] {""}));
+		collegues.setModel(colleguesModel);
 		collegues.setBounds(10, 67, 160, 20);
 		AutoCompleteDecorator.decorate(collegues);
 		add(collegues);
@@ -287,5 +291,15 @@ public class WeekCalendar extends JPanel {
 			}
 		});
 		addMeetingtoCalendar(new Meeting("2014-03-14T08:00:00", "2014-03-14T10:00:00", "Fylla", 4, 2, "Robin"), "2014-03-14T08:00:00", "2014-03-14T10:00:00", 2);
+		
+	}
+	
+	public void setCollegues(){
+		ArrayList<String> collegues = Frame.getClient().getDataStorage().users().getAllUsers();
+		colleguesModel.removeAllElements();
+		colleguesModel.addElement("");
+		for(String collegue : collegues){
+			colleguesModel.addElement(collegue);
+		}
 	}
 }

@@ -37,7 +37,10 @@ public class MainScreen extends JPanel {
 	private JDatePickerImpl datePicker;
 	private String pickedDate;
 	private JList meetingslist;
-	private DefaultListModel listmodel;
+	private DefaultListModel meetingListModel;
+	private JList notifications;
+	private DefaultListModel notiflistModel;
+	private ArrayList<Integer> notifmeetings = new ArrayList<Integer>();
 	/**
 	 * Create the frame.
 	 */
@@ -58,8 +61,8 @@ public class MainScreen extends JPanel {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		scrollPane.setColumnHeaderView(lblNewLabel);
 		
-		listmodel = new DefaultListModel();
-		meetingslist = new JList(listmodel);
+		meetingListModel = new DefaultListModel();
+		meetingslist = new JList(meetingListModel);
 		scrollPane.setViewportView(meetingslist);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -71,7 +74,8 @@ public class MainScreen extends JPanel {
 		lblNotifications.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		scrollPane_1.setColumnHeaderView(lblNotifications);
 		
-		JList notifications = new JList();
+		notiflistModel = new DefaultListModel<>();
+		notifications = new JList(notiflistModel);
 		scrollPane_1.setViewportView(notifications);
 		
 		JButton btnEditShow = new JButton("Edit / Show meeting");
@@ -98,6 +102,7 @@ public class MainScreen extends JPanel {
 		btnShowCalendar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setFrame("weekCalendar");
+				frame.getWeekCalendar().setCollegues();
 			}
 		});
 		btnShowCalendar.setBounds(276, 231, 170, 45);
@@ -145,6 +150,7 @@ public class MainScreen extends JPanel {
 		});
 
 		add(datePicker);
+		setNotifications();
 	}
 	
 	private void setDatePicked(){
@@ -157,15 +163,21 @@ public class MainScreen extends JPanel {
 	}
 	
 	public void setNewsfeed(){
-		listmodel.removeAllElements();
+		meetingListModel.removeAllElements();
 		ArrayList<MeetingInvite> meetings = Frame.getClient().getDataStorage().getMeetingInvitesByUsernameAndDate(Frame.getUserName(), LocalDate.parse(pickedDate));
 		for(MeetingInvite meetingInvite : meetings){
-			listmodel.addElement(Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID()).getDescription());
+			meetingListModel.addElement(Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID()).getDescription());
 		}
 	}
 	
 	public void setNotifications(){
-		
+		ArrayList<Meeting> notif = Frame.getClient().getDataStorage().getMeetingNotificationsByUsername(Frame.getUserName());
+		for(Meeting meeting : notif){
+			if(!notifmeetings.contains(meeting.getMeetingID())){
+				notiflistModel.addElement(meeting.getDescription() + " has been updated.");
+				notifmeetings.add(meeting.getMeetingID());
+			}
+		}
 	}
 	
 	public void setUser(String in){
