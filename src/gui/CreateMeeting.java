@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.SpinnerNumberModel;
@@ -33,8 +34,9 @@ import persistence.data.Rooms;
 public class CreateMeeting extends JPanel {
 	private JScrollPane scrollPane;
 	private DefaultListModel listModel;
+	private UtilDateModel model;
 	private JList list;
-	private JTextField ParticipantsTextField;
+	private JTextPane textPane;
 	private JLabel lblDescription;
 	private JLabel lblSelectTimeStart;
 	private JLabel lblSelectTimeEnd;
@@ -48,6 +50,7 @@ public class CreateMeeting extends JPanel {
 	private JSpinner startm;
 	private JSpinner endh;
 	private JSpinner endm;
+	private JSpinner participantsSpinner;
 	private JScrollPane scrollPane_1;
 	private JTextField placeTextField;
 	private CreateMeeting working;
@@ -74,16 +77,6 @@ public class CreateMeeting extends JPanel {
 		lblAvail.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblAvail.setHorizontalAlignment(SwingConstants.CENTER);
 		scrollPane.setColumnHeaderView(lblAvail);
-		
-		ParticipantsTextField = new JTextField();
-		ParticipantsTextField.setBounds(449, 225, 125, 20);
-		add(ParticipantsTextField);
-		ParticipantsTextField.setColumns(10);
-		ParticipantsTextField.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent e) {
-				roomLoader();
-			}
-		});
 		
 		lblDescription = new JLabel("Description:");
 		lblDescription.setBounds(10, 66, 101, 14);
@@ -187,12 +180,24 @@ public class CreateMeeting extends JPanel {
 			}
 		});
 		
+		participantsSpinner = new JSpinner();
+		participantsSpinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
+		participantsSpinner.setBounds(449, 227, 125, 20);
+		add(participantsSpinner);
+		participantsSpinner.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				roomLoader();
+			}
+		});
 		
-		JTextPane textPane = new JTextPane();
+		
+		textPane = new JTextPane();
 		textPane.setBounds(121, 31, 143, 103);
 		add(textPane);
 		
-		UtilDateModel model = new UtilDateModel();
+		model = new UtilDateModel();
 		JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
 		datePicker.getJFormattedTextField().setText("Choose date here");
@@ -219,6 +224,8 @@ public class CreateMeeting extends JPanel {
 		add(placeTextField);
 		placeTextField.setColumns(10);
 		
+		
+		
 		roomLoader();
 		
 //		scrollPane_1 = new JScrollPane();
@@ -228,10 +235,20 @@ public class CreateMeeting extends JPanel {
 	
 	private void roomLoader(){
 		
-		Rooms rooms = frame.getClient().getDataStorage().getRooms();
+		listModel.removeAllElements();
 		
-		for (int i=1; i<x; i++){
-			
+		String startTime;
+		String endTime;
+		int capacity;
+		
+		startTime = Integer.toString(model.getYear())+"-"+Integer.toString(model.getMonth())+"-"+Integer.toString(model.getDay())+" "+starth.getValue()+":"+startm.getValue()+":00";
+		endTime = Integer.toString(model.getYear())+"-"+Integer.toString(model.getMonth())+"-"+Integer.toString(model.getDay())+" "+endh.getValue()+":"+endm.getValue()+":00";
+		capacity = (Integer)participantsSpinner.getValue();
+		
+		ArrayList<Integer> room = frame.getClient().getDataStorage().getAvailableRooms(startTime, endTime, capacity);
+		
+		for (int i:room){
+			listModel.addElement(room);
 		}
 		
 		
@@ -241,14 +258,30 @@ public class CreateMeeting extends JPanel {
 		
 		String starttime;
 		String endtime;
+		int capacity;
 		String description;
+		String place;
+		String roomS;
+		int room;
+		
+		description = textPane.getText();
+		starttime = Integer.toString(model.getYear())+"-"+Integer.toString(model.getMonth())+"-"+Integer.toString(model.getDay())+" "+starth.getValue()+":"+startm.getValue()+":00";
+		endtime = Integer.toString(model.getYear())+"-"+Integer.toString(model.getMonth())+"-"+Integer.toString(model.getDay())+" "+endh.getValue()+":"+endm.getValue()+":00";
+		capacity = (Integer)participantsSpinner.getValue();
+		roomS = list.getSelectedValue().toString();
+		room = Integer.parseInt(roomS);
+		place = placeTextField.getText();
+		ArrayList<Object> meeting = new ArrayList<>();
 		
 		if (list.isSelectionEmpty()){
-			new Meeting(frame.getUser(), starttime, endtime, description, place);
+
+			meeting.add(new Meeting(starttime, endtime, description, place, frame.getUserName()));
 		}
 		else{
-			new Meeting(frame.getUser(), starttime, endtime, description, capacity, room);
+			meeting.add(new Meeting(starttime, endtime, description, room, capacity, frame.getUserName()));
 		}
+		
+		frame.getClient().sendChanges(meeting, "insert");
 		
 		frame.setFrame("mainScreen");
 	}

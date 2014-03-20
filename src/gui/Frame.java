@@ -57,6 +57,10 @@ public class Frame extends JPanel{
 		mainScreen.setUser(in);
 	}
 	
+	public String getUserName(){
+		return username;
+	}
+	
 	public User getUser(){
 		return user;
 	}
