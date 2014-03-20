@@ -17,251 +17,267 @@ public class ServerDataHandler extends DataHandler {
     public void editDatabase(ArrayList<Object> changedObjects, String type){
         switch(type){
             case "insert":
-                insert(changedObjects);
+                for(Object changedObject : changedObjects){
+                    insert(changedObject);
+                }
                 break;
             case "update":
-                update(changedObjects);
+                for(Object changedObject : changedObjects){
+                    update(changedObject);
+                }
                 break;
             case "delete":
-                delete(changedObjects);
+                for(Object changedObject : changedObjects){
+                    delete(changedObject);
+                }
                 break;
             default:
                 break;
         }
     }
 
-    public void insert(ArrayList<Object> changedObjects){
-        ArrayList<String> fields;
-        ArrayList<String> values;
-
-        for(Object changedObject : changedObjects){
-            String table = changedObject.getClass().getSimpleName();
-
-            switch(table){
-                case "User":
-                   User user = (User) changedObject;
-
-                    fields = new ArrayList<>(Arrays.asList("username", "password", "name", "email", "phonenumber"));
-                    values = new ArrayList<>(Arrays.asList(user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.getPhoneNumber()));
-
-                    mySQLQuery.insert(table, fields, values);
-                    break;
-                case "Group":
-                    Group group = (Group) changedObject;
-
-                    fields = new ArrayList<>(Arrays.asList("groupID", "supergroup"));
-                    values = new ArrayList<>(Arrays.asList(String.valueOf(group.getGroupID()), String.valueOf(group.getSuperGroup())));
-
-                    mySQLQuery.insert(table, fields, values);
-                    break;
-                case "Room":
-                    Room room = (Room) changedObject;
-
-                    fields = new ArrayList<>(Arrays.asList("roomNumber", "capacity"));
-                    values = new ArrayList<>(Arrays.asList(String.valueOf(room.getRoomNumber()), String.valueOf(room.getCapacity())));
-
-                    mySQLQuery.insert(table, fields, values);
-                    break;
-                case "Meeting":
-                    Meeting meeting = (Meeting) changedObject;
-
-                    fields = new ArrayList<>(Arrays.asList("meetingID", "startTime", "endTime", "description", "place", "room", "minCapacity", "creator", "lastUpdated"));
-                    values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), String.valueOf(meeting.getMinCapacity()), meeting.getCreator(), meeting.getLastUpdated()));
-
-                    mySQLQuery.insert(table, fields, values);
-                    mySQLQuery.insert("MeetingAdmin", null, new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getCreator())));
-                    mySQLQuery.insert("MeetingInvite", null, new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getCreator(), "true")));
-                    break;
-                case "ExternalUser":
-                    ExternalUser externalUser = (ExternalUser) changedObject;
-
-                    fields = new ArrayList<>(Arrays.asList("email", "meetingID", "name", "phonenumber"));
-                    values = new ArrayList<>(Arrays.asList(externalUser.getEmail(), String.valueOf(externalUser.getMeetingID()), externalUser.getName(), externalUser.getPhoneNumber()));
-
-                    mySQLQuery.insert(table, fields, values);
-                    break;
-                case "GroupMembership":
-                    GroupMembership groupMembership = (GroupMembership) changedObject;
-
-                    fields = new ArrayList<>(Arrays.asList("username", "groupID"));
-                    values = new ArrayList<>(Arrays.asList(groupMembership.getUsername(), String.valueOf(groupMembership.getGroupID())));
-
-                    mySQLQuery.insert(table, fields, values);
-                    break;
-                case "MeetingInvite":
-                    MeetingInvite meetingInvite = (MeetingInvite) changedObject;
-
-                    fields = new ArrayList<>(Arrays.asList("username", "meetingID", "coming", "alarm", "lastSeen"));
-                    values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID()), String.valueOf(meetingInvite.isComing()), meetingInvite.getAlarm(), meetingInvite.getLastSeen()));
-
-                    mySQLQuery.insert(table, fields, values);
-                    break;
-                case "MeetingAdmin":
-                    MeetingAdmin meetingAdmin = (MeetingAdmin) changedObject;
-
-                    fields = new ArrayList<>(Arrays.asList("username", "meetingID"));
-                    values = new ArrayList<>(Arrays.asList(meetingAdmin.getUsername(), String.valueOf(meetingAdmin.getMeetingID())));
-
-                    mySQLQuery.insert(table, fields, values);
-                    break;
-                default:
-                    break;
-            }
+    public void editDatabase(Object changedObject, String type){
+        switch(type){
+            case "insert":
+                insert(changedObject);
+                break;
+            case "update":
+                update(changedObject);
+                break;
+            case "delete":
+                delete(changedObject);
+                break;
+            default:
+                break;
         }
     }
 
-    public void update(ArrayList<Object> changedObjects){
+    public void insert(Object changedObject){
+        ArrayList<String> fields;
+        ArrayList<String> values;
+
+        String table = changedObject.getClass().getSimpleName();
+
+        switch(table){
+            case "User":
+               User user = (User) changedObject;
+
+                fields = new ArrayList<>(Arrays.asList("username", "password", "name", "email", "phonenumber"));
+                values = new ArrayList<>(Arrays.asList(user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.getPhoneNumber()));
+
+                mySQLQuery.insert(table, fields, values);
+                break;
+            case "Group":
+                Group group = (Group) changedObject;
+
+                fields = new ArrayList<>(Arrays.asList("groupID", "supergroup"));
+                values = new ArrayList<>(Arrays.asList(String.valueOf(group.getGroupID()), String.valueOf(group.getSuperGroup())));
+
+                mySQLQuery.insert(table, fields, values);
+                break;
+            case "Room":
+                Room room = (Room) changedObject;
+
+                fields = new ArrayList<>(Arrays.asList("roomNumber", "capacity"));
+                values = new ArrayList<>(Arrays.asList(String.valueOf(room.getRoomNumber()), String.valueOf(room.getCapacity())));
+
+                mySQLQuery.insert(table, fields, values);
+                break;
+            case "Meeting":
+                Meeting meeting = (Meeting) changedObject;
+
+                fields = new ArrayList<>(Arrays.asList("meetingID", "startTime", "endTime", "description", "place", "room", "minCapacity", "creator", "lastUpdated"));
+                values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), String.valueOf(meeting.getMinCapacity()), meeting.getCreator(), meeting.getLastUpdated()));
+
+                mySQLQuery.insert(table, fields, values);
+                mySQLQuery.insert("MeetingAdmin", null, new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getCreator())));
+                mySQLQuery.insert("MeetingInvite", null, new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getCreator(), "true")));
+                break;
+            case "ExternalUser":
+                ExternalUser externalUser = (ExternalUser) changedObject;
+
+                fields = new ArrayList<>(Arrays.asList("email", "meetingID", "name", "phonenumber"));
+                values = new ArrayList<>(Arrays.asList(externalUser.getEmail(), String.valueOf(externalUser.getMeetingID()), externalUser.getName(), externalUser.getPhoneNumber()));
+
+                mySQLQuery.insert(table, fields, values);
+                break;
+            case "GroupMembership":
+                GroupMembership groupMembership = (GroupMembership) changedObject;
+
+                fields = new ArrayList<>(Arrays.asList("username", "groupID"));
+                values = new ArrayList<>(Arrays.asList(groupMembership.getUsername(), String.valueOf(groupMembership.getGroupID())));
+
+                mySQLQuery.insert(table, fields, values);
+                break;
+            case "MeetingInvite":
+                MeetingInvite meetingInvite = (MeetingInvite) changedObject;
+
+                fields = new ArrayList<>(Arrays.asList("username", "meetingID", "coming", "alarm", "lastSeen"));
+                values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID()), String.valueOf(meetingInvite.isComing()), meetingInvite.getAlarm(), meetingInvite.getLastSeen()));
+
+                mySQLQuery.insert(table, fields, values);
+                break;
+            case "MeetingAdmin":
+                MeetingAdmin meetingAdmin = (MeetingAdmin) changedObject;
+
+                fields = new ArrayList<>(Arrays.asList("username", "meetingID"));
+                values = new ArrayList<>(Arrays.asList(meetingAdmin.getUsername(), String.valueOf(meetingAdmin.getMeetingID())));
+
+                mySQLQuery.insert(table, fields, values);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void update(Object changedObject){
         ArrayList<String> fields;
         ArrayList<String> values;
         HashMap<String, String> map;
 
-        for(Object changedObject : changedObjects){
-            String table = changedObject.getClass().getSimpleName();
+        String table = changedObject.getClass().getSimpleName();
 
-            switch(table){
-                case "User":
-                    User user = (User) changedObject;
+        switch(table){
+            case "User":
+                User user = (User) changedObject;
 
-                    map = new HashMap<>(); map.put("username", user.getUsername());
-                    fields = new ArrayList<>(Arrays.asList("username", "password", "name", "email", "phonenumber"));
-                    values = new ArrayList<>(Arrays.asList(user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.getPhoneNumber()));
+                map = new HashMap<>(); map.put("username", user.getUsername());
+                fields = new ArrayList<>(Arrays.asList("username", "password", "name", "email", "phonenumber"));
+                values = new ArrayList<>(Arrays.asList(user.getUsername(), user.getPassword(), user.getName(), user.getEmail(), user.getPhoneNumber()));
 
-                    mySQLQuery.update(table, fields, values, map, null);
-                    break;
-                case "Group":
-                    Group group = (Group) changedObject;
+                mySQLQuery.update(table, fields, values, map, null);
+                break;
+            case "Group":
+                Group group = (Group) changedObject;
 
-                    map = new HashMap<>(); map.put("groupID", String.valueOf(group.getGroupID()));
-                    fields = new ArrayList<>(Arrays.asList("groupID", "supergroup"));
-                    values = new ArrayList<>(Arrays.asList(String.valueOf(group.getGroupID()), String.valueOf(group.getSuperGroup())));
+                map = new HashMap<>(); map.put("groupID", String.valueOf(group.getGroupID()));
+                fields = new ArrayList<>(Arrays.asList("groupID", "supergroup"));
+                values = new ArrayList<>(Arrays.asList(String.valueOf(group.getGroupID()), String.valueOf(group.getSuperGroup())));
 
-                    mySQLQuery.update(table, fields, values, map, null);
-                    break;
-                case "Room":
-                    Room room = (Room) changedObject;
+                mySQLQuery.update(table, fields, values, map, null);
+                break;
+            case "Room":
+                Room room = (Room) changedObject;
 
-                    map = new HashMap<>(); map.put("roomNumber", String.valueOf(room.getRoomNumber()));
-                    fields = new ArrayList<>(Arrays.asList("roomNumber", "capacity"));
-                    values = new ArrayList<>(Arrays.asList(String.valueOf(room.getRoomNumber()), String.valueOf(room.getCapacity())));
+                map = new HashMap<>(); map.put("roomNumber", String.valueOf(room.getRoomNumber()));
+                fields = new ArrayList<>(Arrays.asList("roomNumber", "capacity"));
+                values = new ArrayList<>(Arrays.asList(String.valueOf(room.getRoomNumber()), String.valueOf(room.getCapacity())));
 
-                    mySQLQuery.update(table, fields, values, map, null);
-                    break;
-                case "Meeting":
-                    Meeting meeting = (Meeting) changedObject;
+                mySQLQuery.update(table, fields, values, map, null);
+                break;
+            case "Meeting":
+                Meeting meeting = (Meeting) changedObject;
 
-                    map = new HashMap<>(); map.put("meetingID", String.valueOf(meeting.getMeetingID()));
-                    fields = new ArrayList<>(Arrays.asList("meetingID", "startTime", "endTime", "description", "place", "room", "minCapacity", "creator", "lastUpdated"));
-                    values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), String.valueOf(meeting.getMinCapacity()), meeting.getCreator(), meeting.getLastUpdated()));
+                map = new HashMap<>(); map.put("meetingID", String.valueOf(meeting.getMeetingID()));
+                fields = new ArrayList<>(Arrays.asList("meetingID", "startTime", "endTime", "description", "place", "room", "minCapacity", "creator", "lastUpdated"));
+                values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), String.valueOf(meeting.getMinCapacity()), meeting.getCreator(), meeting.getLastUpdated()));
 
-                    mySQLQuery.update(table, fields, values, map, null);
-                    break;
-                case "ExternalUser":
-                    ExternalUser externalUser = (ExternalUser) changedObject;
+                mySQLQuery.update(table, fields, values, map, null);
+                break;
+            case "ExternalUser":
+                ExternalUser externalUser = (ExternalUser) changedObject;
 
-                    map = new HashMap<>(); map.put("email", String.valueOf(externalUser.getEmail())); map.put("meetingID", String.valueOf(externalUser.getMeetingID()));
-                    fields = new ArrayList<>(Arrays.asList("email", "meetingID", "name", "phonenumber"));
-                    values = new ArrayList<>(Arrays.asList(externalUser.getEmail(), String.valueOf(externalUser.getMeetingID()), externalUser.getName(), externalUser.getPhoneNumber()));
+                map = new HashMap<>(); map.put("email", String.valueOf(externalUser.getEmail())); map.put("meetingID", String.valueOf(externalUser.getMeetingID()));
+                fields = new ArrayList<>(Arrays.asList("email", "meetingID", "name", "phonenumber"));
+                values = new ArrayList<>(Arrays.asList(externalUser.getEmail(), String.valueOf(externalUser.getMeetingID()), externalUser.getName(), externalUser.getPhoneNumber()));
 
-                    mySQLQuery.update(table, fields, values, map, null);
-                    break;
-                case "GroupMembership":
-                    GroupMembership groupMembership = (GroupMembership) changedObject;
+                mySQLQuery.update(table, fields, values, map, null);
+                break;
+            case "GroupMembership":
+                GroupMembership groupMembership = (GroupMembership) changedObject;
 
-                    map = new HashMap<>(); map.put("username", String.valueOf(groupMembership.getUsername())); map.put("groupID", String.valueOf(groupMembership.getGroupID()));
-                    fields = new ArrayList<>(Arrays.asList("username", "groupID"));
-                    values = new ArrayList<>(Arrays.asList(groupMembership.getUsername(), String.valueOf(groupMembership.getGroupID())));
+                map = new HashMap<>(); map.put("username", String.valueOf(groupMembership.getUsername())); map.put("groupID", String.valueOf(groupMembership.getGroupID()));
+                fields = new ArrayList<>(Arrays.asList("username", "groupID"));
+                values = new ArrayList<>(Arrays.asList(groupMembership.getUsername(), String.valueOf(groupMembership.getGroupID())));
 
-                    mySQLQuery.update(table, fields, values, map, null);
-                    break;
-                case "MeetingInvite":
-                    MeetingInvite meetingInvite = (MeetingInvite) changedObject;
+                mySQLQuery.update(table, fields, values, map, null);
+                break;
+            case "MeetingInvite":
+                MeetingInvite meetingInvite = (MeetingInvite) changedObject;
 
-                    map = new HashMap<>(); map.put("meetingID", String.valueOf(meetingInvite.getMeetingID())); map.put("username", String.valueOf(meetingInvite.getUsername()));
-                    fields = new ArrayList<>(Arrays.asList("username", "meetingID", "coming", "alarm", "lastSeen"));
-                    values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID()), String.valueOf(meetingInvite.isComing()), meetingInvite.getAlarm(), meetingInvite.getLastSeen()));
+                map = new HashMap<>(); map.put("meetingID", String.valueOf(meetingInvite.getMeetingID())); map.put("username", String.valueOf(meetingInvite.getUsername()));
+                fields = new ArrayList<>(Arrays.asList("username", "meetingID", "coming", "alarm", "lastSeen"));
+                values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID()), String.valueOf(meetingInvite.isComing()), meetingInvite.getAlarm(), meetingInvite.getLastSeen()));
 
-                    mySQLQuery.update(table, fields, values, map, null);
-                    break;
-                case "MeetingAdmin":
-                    MeetingAdmin meetingAdmin = (MeetingAdmin) changedObject;
+                mySQLQuery.update(table, fields, values, map, null);
+                break;
+            case "MeetingAdmin":
+                MeetingAdmin meetingAdmin = (MeetingAdmin) changedObject;
 
-                    map = new HashMap<>(); map.put("meetingID", String.valueOf(meetingAdmin.getMeetingID())); map.put("username", String.valueOf(meetingAdmin.getUsername()));
-                    fields = new ArrayList<>(Arrays.asList("username", "meetingID"));
-                    values = new ArrayList<>(Arrays.asList(meetingAdmin.getUsername(), String.valueOf(meetingAdmin.getMeetingID())));
+                map = new HashMap<>(); map.put("meetingID", String.valueOf(meetingAdmin.getMeetingID())); map.put("username", String.valueOf(meetingAdmin.getUsername()));
+                fields = new ArrayList<>(Arrays.asList("username", "meetingID"));
+                values = new ArrayList<>(Arrays.asList(meetingAdmin.getUsername(), String.valueOf(meetingAdmin.getMeetingID())));
 
-                    mySQLQuery.update(table, fields, values, map, null);
-                    break;
-                default:
-                    break;
-            }
+                mySQLQuery.update(table, fields, values, map, null);
+                break;
+            default:
+                break;
         }
     }
 
-    public void delete(ArrayList<Object> changedObjects){
+    public void delete(Object changedObject){
         HashMap<String, String> map;
 
-        for(Object changedObject : changedObjects){
-            String table = changedObject.getClass().getSimpleName();
+        String table = changedObject.getClass().getSimpleName();
 
-            switch(table){
-                case "User":
-                    User user = (User) changedObject;
+        switch(table){
+            case "User":
+                User user = (User) changedObject;
 
-                    map = new HashMap<>(); map.put("username", user.getUsername());
+                map = new HashMap<>(); map.put("username", user.getUsername());
 
-                    mySQLQuery.delete(table, map);
-                    break;
-                case "Group":
-                    Group group = (Group) changedObject;
+                mySQLQuery.delete(table, map);
+                break;
+            case "Group":
+                Group group = (Group) changedObject;
 
-                    map = new HashMap<>(); map.put("groupID", String.valueOf(group.getGroupID()));
+                map = new HashMap<>(); map.put("groupID", String.valueOf(group.getGroupID()));
 
-                    mySQLQuery.delete(table, map);
-                    break;
-                case "Room":
-                    Room room = (Room) changedObject;
+                mySQLQuery.delete(table, map);
+                break;
+            case "Room":
+                Room room = (Room) changedObject;
 
-                    map = new HashMap<>(); map.put("roomNumber", String.valueOf(room.getRoomNumber()));
+                map = new HashMap<>(); map.put("roomNumber", String.valueOf(room.getRoomNumber()));
 
-                    mySQLQuery.delete(table, map);
-                    break;
-                case "Meeting":
-                    Meeting meeting = (Meeting) changedObject;
+                mySQLQuery.delete(table, map);
+                break;
+            case "Meeting":
+                Meeting meeting = (Meeting) changedObject;
 
-                    map = new HashMap<>(); map.put("meetingID", String.valueOf(meeting.getMeetingID()));
+                map = new HashMap<>(); map.put("meetingID", String.valueOf(meeting.getMeetingID()));
 
-                    mySQLQuery.delete(table, map);
-                    break;
-                case "ExternalUser":
-                    ExternalUser externalUser = (ExternalUser) changedObject;
+                mySQLQuery.delete(table, map);
+                break;
+            case "ExternalUser":
+                ExternalUser externalUser = (ExternalUser) changedObject;
 
-                    map = new HashMap<>(); map.put("email", String.valueOf(externalUser.getEmail())); map.put("meetingID", String.valueOf(externalUser.getMeetingID()));
+                map = new HashMap<>(); map.put("email", String.valueOf(externalUser.getEmail())); map.put("meetingID", String.valueOf(externalUser.getMeetingID()));
 
-                    mySQLQuery.delete(table, map);
-                    break;
-                case "GroupMembership":
-                    GroupMembership groupMembership = (GroupMembership) changedObject;
+                mySQLQuery.delete(table, map);
+                break;
+            case "GroupMembership":
+                GroupMembership groupMembership = (GroupMembership) changedObject;
 
-                    map = new HashMap<>(); map.put("username", String.valueOf(groupMembership.getUsername())); map.put("groupID", String.valueOf(groupMembership.getGroupID()));
+                map = new HashMap<>(); map.put("username", String.valueOf(groupMembership.getUsername())); map.put("groupID", String.valueOf(groupMembership.getGroupID()));
 
-                    mySQLQuery.delete(table, map);
-                    break;
-                case "MeetingInvite":
-                    MeetingInvite meetingInvite = (MeetingInvite) changedObject;
+                mySQLQuery.delete(table, map);
+                break;
+            case "MeetingInvite":
+                MeetingInvite meetingInvite = (MeetingInvite) changedObject;
 
-                    map = new HashMap<>(); map.put("meetingID", String.valueOf(meetingInvite.getMeetingID())); map.put("username", String.valueOf(meetingInvite.getUsername()));
-                    mySQLQuery.delete(table, map);
-                    break;
-                case "MeetingAdmin":
-                    MeetingAdmin meetingAdmin = (MeetingAdmin) changedObject;
+                map = new HashMap<>(); map.put("meetingID", String.valueOf(meetingInvite.getMeetingID())); map.put("username", String.valueOf(meetingInvite.getUsername()));
+                mySQLQuery.delete(table, map);
+                break;
+            case "MeetingAdmin":
+                MeetingAdmin meetingAdmin = (MeetingAdmin) changedObject;
 
-                    map = new HashMap<>(); map.put("meetingID", String.valueOf(meetingAdmin.getMeetingID())); map.put("username", String.valueOf(meetingAdmin.getUsername()));
+                map = new HashMap<>(); map.put("meetingID", String.valueOf(meetingAdmin.getMeetingID())); map.put("username", String.valueOf(meetingAdmin.getUsername()));
 
-                    mySQLQuery.delete(table, map);
-                    break;
-                default:
-                    break;
-            }
+                mySQLQuery.delete(table, map);
+                break;
+            default:
+                break;
         }
     }
 
