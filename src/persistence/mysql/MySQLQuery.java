@@ -20,7 +20,7 @@ public class MySQLQuery {
     }
 
     public void insert(String table, ArrayList<String> fields, ArrayList<String> values) {
-        if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
+        if(fields != null) if(fields.size() != values.size()) throw new IllegalArgumentException("The number of fields and values must correspond.");
 
         String tableString = "`" + table + "`";
         String fieldsString = fields == null ? "" : " (" + StringUtils.join(fields, ", ") + ")";
