@@ -137,7 +137,8 @@ public class MainScreen extends JPanel {
 	}
 	
 	private void setDatePicked(){
-		String month = model.getMonth()<10 ? "0" + model.getMonth() : "" + model.getMonth();
+		int thismonth = model.getMonth() + 1;
+		String month = thismonth<10 ? "0" + thismonth : "" + thismonth;
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
 		
 		pickedDate = model.getYear() + "-" + month + "-" + day;
@@ -145,6 +146,7 @@ public class MainScreen extends JPanel {
 	}
 	
 	public void setNewsfeed(){
+		System.out.println("before");
 		ArrayList<MeetingInvite> meetings = Frame.getClient().getDataStorage().getMeetingInvitesByUsernameAndDate(Frame.getUserName(), LocalDate.parse(pickedDate));
 		for(MeetingInvite meetingInvite : meetings){
 			listmodel.addElement(Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID()).getDescription());

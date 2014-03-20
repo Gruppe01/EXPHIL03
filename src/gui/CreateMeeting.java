@@ -297,7 +297,7 @@ public class CreateMeeting extends JPanel {
 			meeting.add(new Meeting(starttime, endtime, description, room, capacity, frame.getUserName()));
 		}
 		
-		frame.getClient().sendChanges(meeting, "insert");
+		Frame.getClient().sendChanges(meeting, "insert");
 		
 		frame.setFrame("mainScreen");
 	}
