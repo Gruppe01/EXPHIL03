@@ -2,7 +2,9 @@ package persistence;
 
 import persistence.data.*;
 
-public class DataStorage {
+import java.io.Serializable;
+
+public class DataStorage implements Serializable{
     private Users users;
     private Groups groups;
     private Rooms rooms;

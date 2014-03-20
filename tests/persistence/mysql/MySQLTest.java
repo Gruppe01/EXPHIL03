@@ -60,12 +60,12 @@ public class MySQLTest {
 
     @Test
     public void testGetAvailableRooms() throws Exception{
-        validConnection.execute("ALTER TABLE MeetingRoom AUTO_INCREMENT = 1", new ArrayList<String>(), false);
+        validConnection.execute("ALTER TABLE Room AUTO_INCREMENT = 1", new ArrayList<String>(), false);
         validConnection.execute("ALTER TABLE Meeting AUTO_INCREMENT = 1", new ArrayList<String>(), false);
 
-        validConnection.execute("INSERT INTO MeetingRoom (capacity) VALUES (10);", new ArrayList<String>(), false);
-        validConnection.execute("INSERT INTO MeetingRoom (capacity) VALUES (10);", new ArrayList<String>(), false);
-        validConnection.execute("INSERT INTO MeetingRoom (capacity) VALUES (5);", new ArrayList<String>(), false);
+        validConnection.execute("INSERT INTO Room (capacity) VALUES (10);", new ArrayList<String>(), false);
+        validConnection.execute("INSERT INTO Room (capacity) VALUES (10);", new ArrayList<String>(), false);
+        validConnection.execute("INSERT INTO Room (capacity) VALUES (5);", new ArrayList<String>(), false);
 
         validConnection.execute("INSERT INTO User (username, password, name, email) VALUES ('testUserRoom', '', '', '');", new ArrayList<String>(), false);
 
@@ -125,7 +125,7 @@ public class MySQLTest {
     @Test
     public void testGetNextID() throws Exception{
         assertEquals(4, validConnection.getNextID("Meeting"));
-        assertEquals(4, validConnection.getNextID("MeetingRoom"));
+        assertEquals(4, validConnection.getNextID("Meeting"));
     }
 
     private ArrayList<HashMap<String, String>> select(MySQLQuery connection, HashMap<String, String> map) throws Exception {
@@ -180,7 +180,7 @@ public class MySQLTest {
     public void deleteAll(){
         validConnection.execute("DELETE FROM Meeting WHERE '1'='1';", new ArrayList<String>(), false);
         validConnection.execute("DELETE FROM User WHERE '1'='1';", new ArrayList<String>(), false);
-        validConnection.execute("DELETE FROM MeetingRoom WHERE '1'='1';", new ArrayList<String>(), false);
+        validConnection.execute("DELETE FROM Room WHERE '1'='1';", new ArrayList<String>(), false);
     }
 
     public static MySQLQuery TEST_CONNECTION(){

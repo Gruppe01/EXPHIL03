@@ -1,12 +1,11 @@
 package persistence.data;
 
 import model.User;
-import persistence.mysql.MySQLQuery;
 
+import java.io.Serializable;
 import java.util.*;
 
-//User
-public class Users {
+public class Users implements Serializable {
     private ArrayList<User> users;
 
     public Users(ArrayList<User> users){

@@ -2,9 +2,10 @@ package persistence.data;
 
 import model.ExternalUser;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ExternalUsers {
+public class ExternalUsers implements Serializable {
     private ArrayList<ExternalUser> externalUsers;
 
     public ExternalUsers(ArrayList<ExternalUser> externalUsers){
