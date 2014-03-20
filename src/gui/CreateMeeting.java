@@ -310,10 +310,10 @@ public class CreateMeeting extends JPanel {
 		
 		if (list.isSelectionEmpty()){
 
-			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, -1, -1, frame.getUserName(), null));
+			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null));
 		}
 		else{
-			meeting.add(new Meeting(meetingid, starttime, endtime, description, null, room, capacity, frame.getUserName(), null));
+			meeting.add(new Meeting(meetingid, starttime, endtime, description, null, room, capacity, Frame.getUserName(), null));
 		}
 		
 		Frame.getClient().sendChanges(meeting, "insert");
