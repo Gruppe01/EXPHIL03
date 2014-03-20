@@ -20,17 +20,17 @@ public class Server{
     public Server(){
         this.dataHandler = new ServerDataHandler();
 
+        try {
+        	HOST = InetAddress.getLocalHost().getHostAddress();
+        }catch (Exception e){
+        	HOST = "localhost";
+        }
+        
         try{
             serverSocket = new ServerSocket(PORT);
         }catch(IOException ioe){
             System.out.println("Could not create server socket on " + HOST + ":" + PORT);
             System.exit(0);
-        }
-
-        try {
-            HOST = InetAddress.getLocalHost().getHostAddress();
-        }catch (Exception e){
-            HOST = "localhost";
         }
 
         System.out.println("Server running on " + HOST + ":" + PORT);
