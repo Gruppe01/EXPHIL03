@@ -4,6 +4,7 @@ import model.*;
 import persistence.data.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,6 +118,16 @@ public class DataStorage implements Serializable{
         }
 
         return availableRooms;
+    }
+
+    public ArrayList<MeetingInvite> getMeetingInvitesByUsernameAndDate(String username, LocalDate date){
+        ArrayList<MeetingInvite> meetingInvited = new ArrayList<>();
+
+        for(MeetingInvite meetingInvite : meetingInvites().getMeetingInvites()){
+            if(username.equals(meetingInvite.getUsername()) && meetings().getMeetingByID(meetingInvite.getMeetingID()).getStartTimeAsLocalDateTime().toLocalDate().equals(date)) meetingInvited.add(meetingInvite);
+        }
+
+        return meetingInvited;
     }
 
     public ArrayList<String> getMeetingAdminsByMeetingID(int meetingID) {
