@@ -49,28 +49,6 @@ public class WeekCalendar extends JPanel {
 	private DefaultTableModel tablemodel;
 	private Meeting selectedData;
 	
-	private void removeMeeting(){
-		String selectedCell;
-		Meeting meeting = getSelectedData();
-		String starttime = meeting.getStarttime().substring(11, 16);
-		System.out.println(starttime);
-		String endtime = meeting.getEndtime().substring(11, 16);
-		System.out.println(endtime);
-		for(int row = 0; row < tablemodel.getRowCount(); row++){
-			selectedCell = (String) tablemodel.getValueAt(row, 0);
-			if(selectedCell.equals(starttime)){
-				for(int newrow = row; row < tablemodel.getRowCount(); newrow++){
-					tablemodel.setValueAt(null, newrow, 2);
-					selectedCell = (String) tablemodel.getValueAt(newrow, 0);
-					System.out.println("Selectedcell: " + selectedCell);
-					if(selectedCell.equals(endtime)){
-						break;
-					}
-				}
-			}
-		}
-	}
-	
 	public String getDate(){
 		return date;
 	}
@@ -184,7 +162,7 @@ public class WeekCalendar extends JPanel {
 		model = new DefaultListModel();
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(180, 56, 494, 247);
+		scrollPane_1.setBounds(180, 56, 494, 302);
 		add(scrollPane_1);
 		
 		table = new JTable();
@@ -277,7 +255,7 @@ public class WeekCalendar extends JPanel {
 		table.getColumnModel().getColumn(7).setResizable(false);
 		scrollPane_1.setViewportView(table);
 		collegues = new JComboBox();
-		collegues.setModel(new DefaultComboBoxModel(new String[] {"", "Robin Sjøvoll", "Simon Borøy-Johnsen", "Thor Håkon Bredesen", "Simen", "Russel", "Sara", "Susanne"}));
+		collegues.setModel(new DefaultComboBoxModel(new String[] {""}));
 		collegues.setBounds(10, 67, 160, 20);
 		AutoCompleteDecorator.decorate(collegues);
 		add(collegues);
@@ -286,16 +264,6 @@ public class WeekCalendar extends JPanel {
 		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatus.setBounds(20, 98, 46, 14);
 		add(lblStatus);
-		
-		JButton btnRemoveSche = new JButton("Remove meeting from my schedule");
-		btnRemoveSche.setToolTipText("");
-		btnRemoveSche.setBounds(292, 321, 288, 31);
-		add(btnRemoveSche);
-		btnRemoveSche.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				removeMeeting();
-			}
-		});
 		
 		JButton btnBack = new JButton("Back");
 		btnBack.setBounds(10, 314, 89, 44);
