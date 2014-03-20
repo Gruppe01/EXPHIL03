@@ -127,6 +127,7 @@ public class DataStorage implements Serializable{
     public ArrayList<MeetingInvite> getMeetingInvitesByUsernameAndDate(String username, LocalDate date){
         ArrayList<MeetingInvite> meetingInvited = new ArrayList<>();
         ArrayList<MeetingInvite> meetingInvites = meetingInvites().getMeetingInvitesByUsername(username);
+        
 
         for(MeetingInvite meetingInvite : meetingInvites){
             if(!meetings().getMeetingByID(meetingInvite.getMeetingID()).getStartTimeAsLocalDateTime().toLocalDate().equals(date)) continue;
@@ -139,7 +140,7 @@ public class DataStorage implements Serializable{
 
     public ArrayList<String> getMeetingAdminsByMeetingID(int meetingID) {
         ArrayList<String> meetingAdmins = new ArrayList<>();
-
+        
         for(MeetingAdmin meetingAdmin : meetingAdmins().getMeetingAdmins()){
             if(meetingAdmin.getMeetingID() == meetingID && !meetingAdmins.contains(meetingAdmin.getUsername())) meetingAdmins.add(meetingAdmin.getUsername());
         }

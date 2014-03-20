@@ -82,6 +82,17 @@ public class MainScreen extends JPanel {
 		});
 		btnEditShow.setBounds(276, 175, 170, 45);
 		add(btnEditShow);
+		btnEditShow.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				//if(meetingslist.hasFocus()){
+					frame.setFrame("editMeeting");
+				//}
+			}
+			
+		});
 		
 		JButton btnShowCalendar = new JButton("Show week calendar");
 		btnShowCalendar.addActionListener(new ActionListener() {
@@ -146,7 +157,7 @@ public class MainScreen extends JPanel {
 	}
 	
 	public void setNewsfeed(){
-		System.out.println("before");
+		listmodel.removeAllElements();
 		ArrayList<MeetingInvite> meetings = Frame.getClient().getDataStorage().getMeetingInvitesByUsernameAndDate(Frame.getUserName(), LocalDate.parse(pickedDate));
 		for(MeetingInvite meetingInvite : meetings){
 			listmodel.addElement(Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID()).getDescription());
