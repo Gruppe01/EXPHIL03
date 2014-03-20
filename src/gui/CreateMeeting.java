@@ -1,6 +1,7 @@
 package gui;
 
 import model.Meeting;
+import model.MeetingAdmin;
 import model.MeetingInvite;
 
 import javax.swing.DefaultListModel;
@@ -289,6 +290,8 @@ public class CreateMeeting extends JPanel {
 		String roomS;
 		int room;
 		
+		int meetingid = Frame.getClient().getDataStorage().meetings().getNextMeetingID();
+		
 		String month = model.getMonth()+1<10 ? "0" + model.getMonth()+1 : "" + model.getMonth()+1;
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
 		String startH = (Integer)starth.getValue() < 10 ? "0" + (Integer)starth.getValue() : "" + (Integer)starth.getValue();
@@ -307,25 +310,28 @@ public class CreateMeeting extends JPanel {
 		
 		if (list.isSelectionEmpty()){
 
-			meeting.add(new Meeting(starttime, endtime, description, place, frame.getUserName()));
+			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, -1, -1, frame.getUserName(), null));
 		}
 		else{
-			meeting.add(new Meeting(starttime, endtime, description, room, capacity, frame.getUserName()));
+			meeting.add(new Meeting(meetingid, starttime, endtime, description, null, room, capacity, frame.getUserName(), null));
 		}
 		
-		frame.getClient().sendChanges(meeting, "insert");
+		Frame.getClient().sendChanges(meeting, "insert");
 		
 		ArrayList<Object> tempMembers = new ArrayList<>();
+		ArrayList<Object> tempAdmin = new ArrayList<>();
 		
 		for (String i:admin){
+			tempAdmin.add(new MeetingAdmin(meetingid, i));
 			members.add(i);
 		}
 		
 		for (String i:members){
-			frame.getClient().sendChanges(new MeetingInvite(, username), "insert");
+			tempMembers.add(new MeetingInvite(meetingid, i));
 		}
 		
-		
+		Frame.getClient().sendChanges(tempAdmin, "insert");
+		Frame.getClient().sendChanges(tempMembers, "insert");
 		
 		frame.setFrame("mainScreen");
 	}
