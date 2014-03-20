@@ -201,7 +201,7 @@ public class CreateMeeting extends JPanel {
 		model = new UtilDateModel();
 		JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
-		datePicker.getJFormattedTextField().setText("Choose date here");
+		datePicker.getJFormattedTextField().setText("Choose date");
 		datePicker.setTextEditable(false);
 		datePicker.setToolTipText("");
 		datePicker.setBounds(274, 31, 145, 23);
@@ -242,7 +242,7 @@ public class CreateMeeting extends JPanel {
 		String startTime;
 		String endTime;
 		
-		String month = model.getMonth()<10 ? "0" + model.getMonth() : "" + model.getMonth();
+		String month = model.getMonth()+1<10 ? "0" + model.getMonth()+1 : "" + model.getMonth()+1;
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
 		String startH = (Integer)starth.getValue() < 10 ? "0" + (Integer)starth.getValue() : "" + (Integer)starth.getValue();
 		String endH = (Integer)endh.getValue() < 10 ? "0" + (Integer)endh.getValue() : "" + (Integer)endh.getValue();
@@ -273,7 +273,7 @@ public class CreateMeeting extends JPanel {
 		String roomS;
 		int room;
 		
-		String month = model.getMonth()<10 ? "0" + model.getMonth() : "" + model.getMonth();
+		String month = model.getMonth()+1<10 ? "0" + model.getMonth()+1 : "" + model.getMonth()+1;
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
 		String startH = (Integer)starth.getValue() < 10 ? "0" + (Integer)starth.getValue() : "" + (Integer)starth.getValue();
 		String endH = (Integer)endh.getValue() < 10 ? "0" + (Integer)endh.getValue() : "" + (Integer)endh.getValue();

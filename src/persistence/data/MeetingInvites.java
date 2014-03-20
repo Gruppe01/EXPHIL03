@@ -4,7 +4,6 @@ import model.MeetingInvite;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MeetingInvites implements Serializable {
     private ArrayList<MeetingInvite> meetingInvites;
@@ -37,16 +36,25 @@ public class MeetingInvites implements Serializable {
         return -1;
     }
 
-    public HashMap<String, Boolean> getMeetingInvitesByMeetingID(int meetingID){
-        HashMap<String, Boolean> meetingInvited = new HashMap<>();
+    public ArrayList<MeetingInvite> getMeetingInvitesByMeetingID(int meetingID){
+        ArrayList<MeetingInvite> meetingInvited = new ArrayList<>();
 
         for(MeetingInvite meetingInvite : meetingInvites){
-            if(meetingInvite.getMeetingID() == meetingID) meetingInvited.put(meetingInvite.getUsername(), meetingInvite.isComing());
+            if(meetingInvite.getMeetingID() == meetingID) meetingInvited.add(meetingInvite);
         }
 
         return meetingInvited;
     }
 
+    public ArrayList<MeetingInvite> getMeetingInvitesByUsername(String username){
+        ArrayList<MeetingInvite> meetingInvited = new ArrayList<>();
+
+        for(MeetingInvite meetingInvite : meetingInvites){
+            if(meetingInvite.getUsername().equals(username)) meetingInvited.add(meetingInvite);
+        }
+
+        return meetingInvited;
+    }
 
     public void addMeetingInvite(MeetingInvite meetingInvite){
         meetingInvites.add(meetingInvite);
