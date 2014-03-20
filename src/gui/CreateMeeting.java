@@ -249,8 +249,8 @@ public class CreateMeeting extends JPanel {
 		String startM = (Integer)startm.getValue() < 10 ? "0" + (Integer)startm.getValue() : "" + (Integer)startm.getValue();
 		String endM = (Integer)endm.getValue() < 10 ? "0" + (Integer)endm.getValue() : "" + (Integer)endm.getValue();
 		
-		startTime = Integer.toString(model.getYear())+"-"+month+"-"+day+" "+startH+":"+startM+":00";
-		endTime = Integer.toString(model.getYear())+"-"+month+"-"+day+" "+endH+":"+endM+":00";
+		startTime = Integer.toString(model.getYear())+"-"+month+"-"+day+"T"+startH+":"+startM+":00";
+		endTime = Integer.toString(model.getYear())+"-"+month+"-"+day+"T"+endH+":"+endM+":00";
 		
 		capacity = (Integer)participantsSpinner.getValue();
 		
@@ -281,8 +281,8 @@ public class CreateMeeting extends JPanel {
 		String endM = (Integer)endm.getValue() < 10 ? "0" + (Integer)endm.getValue() : "" + (Integer)endm.getValue();
 		
 		description = textPane.getText();
-		starttime = Integer.toString(model.getYear())+"-"+month+"-"+day+" "+startH+":"+startM+":00";
-		endtime = Integer.toString(model.getYear())+"-"+month+"-"+day+" "+endH+":"+endM+":00";
+		starttime = Integer.toString(model.getYear())+"-"+month+"-"+day+"T"+startH+":"+startM+":00";
+		endtime = Integer.toString(model.getYear())+"-"+month+"-"+day+"T"+endH+":"+endM+":00";
 		capacity = (Integer)participantsSpinner.getValue();
 		roomS = list.getSelectedValue().toString();
 		room = Integer.parseInt(roomS);
