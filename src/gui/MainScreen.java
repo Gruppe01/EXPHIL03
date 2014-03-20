@@ -92,7 +92,7 @@ public class MainScreen extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				//if(meetingslist.hasFocus()){
-					frame.setFrame("editMeeting");
+					frame.setFrame("showMeeting");
 				//}
 			}
 			

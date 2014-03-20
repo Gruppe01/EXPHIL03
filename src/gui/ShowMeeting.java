@@ -86,10 +86,6 @@ public class ShowMeeting extends JPanel {
 			}
 		});
 		
-		JCheckBox chckbxShowInCalendar = new JCheckBox("Show in calendar");
-		chckbxShowInCalendar.setBounds(263, 287, 110, 23);
-		add(chckbxShowInCalendar);
-		
 		JButton btnAccept = new JButton("Accept");
 		btnAccept.setBounds(470, 253, 89, 23);
 		add(btnAccept);
@@ -117,11 +113,6 @@ public class ShowMeeting extends JPanel {
 		JLabel lblCreatAlaram = new JLabel("Create alarm:");
 		lblCreatAlaram.setBounds(130, 225, 72, 14);
 		add(lblCreatAlaram);
-		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"SMS", "Email", "Both"}));
-		comboBox_1.setBounds(345, 225, 57, 20);
-		add(comboBox_1);
 		
 		JLabel lblDate = new JLabel("Date:");
 		lblDate.setBounds(381, 58, 46, 14);
