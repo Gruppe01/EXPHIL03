@@ -4,6 +4,7 @@ import model.*;
 import persistence.data.*;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -166,8 +167,13 @@ public class DataStorage implements Serializable{
                 break;
         }
 
-        for(MeetingInvite meetingInvite : meetingInvites().getMeetingInvitesByUsername(username)){
-            if(meetings().getMeetingByID(meetingInvite.getMeetingID()).getStartTimeAsLocalDateTime().toLocalDate().isEqual(date)) meetingInvitesReturn.add(meetingInvite);
+        while(true){
+            for(MeetingInvite meetingInvite : meetingInvites().getMeetingInvitesByUsername(username)){
+                if(meetings().getMeetingByID(meetingInvite.getMeetingID()).getStartTimeAsLocalDateTime().toLocalDate().isEqual(date)) meetingInvitesReturn.add(meetingInvite);
+            }
+
+            if(date.getDayOfWeek().equals(DayOfWeek.SUNDAY)) break;
+            date = date.plusDays(1);
         }
 
         return meetingInvitesReturn;
