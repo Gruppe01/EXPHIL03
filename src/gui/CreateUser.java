@@ -127,7 +127,7 @@ public class CreateUser extends JPanel {
 
             ArrayList<Object> changedObject = new ArrayList<>(); changedObject.add(user);
 
-            Frame.client.sendChanges(changedObject, "insert");
+            Frame.getClient().sendChanges(changedObject, "insert");
 		}catch(IllegalArgumentException e){
 			ErrorMessage error = new ErrorMessage("Error", e.getMessage());
 			return;
