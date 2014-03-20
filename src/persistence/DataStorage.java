@@ -1,8 +1,12 @@
 package persistence;
 
+import model.*;
 import persistence.data.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DataStorage implements Serializable{
     private GroupMemberships groupMemberships;
@@ -11,7 +15,7 @@ public class DataStorage implements Serializable{
     private Users users;
     private Groups groups;
     private Rooms rooms;
-    private Meetings meetings;
+    public Meetings meetings;
     private ExternalUsers externalUsers;
 
     public DataStorage(Users users, Groups groups, Rooms rooms, Meetings meetings, ExternalUsers externalUsers, GroupMemberships groupMemberships, MeetingInvites meetingInvites, MeetingAdmins meetingAdmins) {
@@ -31,8 +35,8 @@ public class DataStorage implements Serializable{
         this.meetingAdmins = new MeetingAdmins();
         this.users = new Users();
         this.groups = new Groups();
-        this.rooms = new Rooms();
-        this.meetings = new Meetings();
+        this.rooms = new Rooms(new ArrayList<Room>());
+        this.meetings = new Meetings(new ArrayList<Meeting>());
         this.externalUsers = new ExternalUsers();
     }
 
@@ -98,5 +102,70 @@ public class DataStorage implements Serializable{
 
     public void setMeetingAdmins(MeetingAdmins meetingAdmins) {
         this.meetingAdmins = meetingAdmins;
+    }
+
+    //================================================================================================
+
+    public ArrayList<Integer> getAvailableRooms(String startTime, String endTime, int capacity){
+        ArrayList<Integer> availableRooms = new ArrayList<>();
+        ArrayList<Meeting> meetings = meetings().getMeetings();
+
+        for(Meeting meeting : meetings){
+            int room = meeting.getRoom();
+
+            if(LocalDateTime.parse(meeting.getEndtime()).isBefore(LocalDateTime.parse(startTime)) || LocalDateTime.parse(meeting.getStarttime()).isAfter(LocalDateTime.parse(endTime)) && !availableRooms.contains(room) && rooms().getRoomByNumber(room).getCapacity() >= capacity) availableRooms.add(room);
+        }
+
+        return availableRooms;
+    }
+
+    public ArrayList<String> getMeetingAdminsByMeetingID(int meetingID) {
+        ArrayList<String> meetingAdmins = new ArrayList<>();
+
+        for(MeetingAdmin meetingAdmin : meetingAdmins().getMeetingAdmins()){
+            if(meetingAdmin.getMeetingID() == meetingID && !meetingAdmins.contains(meetingAdmin.getUsername())) meetingAdmins.add(meetingAdmin.getUsername());
+        }
+
+        return meetingAdmins;
+    }
+
+    public void addMeetingAdmin(int meetingID, String username) {
+        if(meetingAdmins().getMeetingAdminByUsernameAndMeetingID(meetingID, username) != null) throw new IllegalArgumentException("The user is allready an admin");
+
+        meetingAdmins().addMeetingAdmin(new MeetingAdmin(meetingID, username));
+    }
+
+    public void deleteAdmin(int meetingID, String username){
+        if(meetingAdmins().getMeetingAdminByUsernameAndMeetingID(meetingID, username) == null) throw new IllegalArgumentException("The user is not an admin");
+
+        meetingAdmins().removeMeetingAdminByMeetingIDAndUsername(meetingID, username);
+    }
+
+    public HashMap<String, Boolean> getMembers(int meetingID) {
+        return meetingInvites().getMeetingInvitesByMeetingID(meetingID);
+    }
+
+    public void addMember(int meetingID, String username) {
+        if(meetingInvites().getMeetingInvitesByMeetingID(meetingID).keySet().contains(username)) throw new IllegalArgumentException("The user is already invited");
+        else meetingInvites().addMeetingInvite(new MeetingInvite(meetingID, username));
+    }
+
+    public void deleteMember(int meetingID, String username){
+        if(!meetingInvites().getMeetingInvitesByMeetingID(meetingID).keySet().contains(username)) throw new IllegalArgumentException("The user is not invited");
+        else meetingInvites().removeMeetingInviteByMeetingIDAndUsername(meetingID, username);
+    }
+
+    public ArrayList<String> getExternalMembers(int meetingID) {
+        return externalUsers().getExternalUsersByMeetingID(meetingID);
+    }
+
+    public void addExternalMember(int meetingID, String email, String name, String phonenumber) throws IllegalArgumentException {
+        if(externalUsers().getExternalUsersByMeetingID(meetingID).contains(email)) throw new IllegalArgumentException("The user is already invited");
+        else externalUsers().addExternalUser(new ExternalUser(email, meetingID, name, phonenumber));
+    }
+
+    public void deleteExternalMember(int meetingID, String email) throws IllegalArgumentException {
+        if(!externalUsers().getExternalUsersByMeetingID(meetingID).contains(email)) throw new IllegalArgumentException("The user is not invited");
+        else externalUsers().removeExternalUserByMeetingIDAndEmail(meetingID, email);
     }
 }
