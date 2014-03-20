@@ -125,7 +125,7 @@ public class Meeting implements Serializable {
     }
 
     public String getLastUpdated() {
-        return lastUpdated.toString();
+        return lastUpdated == null ? null : lastUpdated.toString();
     }
 
     public LocalDateTime getLastUpdatedAsLocalDateTime() {
