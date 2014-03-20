@@ -134,8 +134,8 @@ public class Meeting implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Members: " + /*getMembers().length +*/ "\r\nstarttime: " + starttime
-				+  "\r\nendtime: " + endtime
+		return "Members: " + /*getMembers().length +*/ "\r\nStarttime: " + starttime
+				+  "\r\nEndtime: " + endtime
 				+ "\r\nPlace:  " + place;
 	}
 }
