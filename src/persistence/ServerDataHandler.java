@@ -397,6 +397,7 @@ public class ServerDataHandler extends DataHandler {
 
         return meetingInvites;
     }
+
     public ArrayList<MeetingAdmin> getAllMeetingAdminsFromDatabase(){
         ArrayList<MeetingAdmin> meetingAdmins = new ArrayList<>();
         ArrayList<HashMap<String, String>> meetingAdmins_raw = mySQLQuery.getAllRows("MeetingAdmin");

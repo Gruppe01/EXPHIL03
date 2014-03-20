@@ -2,13 +2,12 @@ package persistence.data;
 
 import model.Meeting;
 import model.Room;
-import persistence.DataStorage;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class Rooms extends DataStorage implements Serializable {
+public class Rooms implements Serializable {
     private ArrayList<Room> rooms;
 
     public Rooms(ArrayList<Room> rooms){
@@ -18,6 +17,7 @@ public class Rooms extends DataStorage implements Serializable {
     public Rooms(){
         this.rooms = new ArrayList<>();
     }
+
 
     public ArrayList<Room> getRooms(){
         return rooms;
@@ -52,18 +52,5 @@ public class Rooms extends DataStorage implements Serializable {
 
         rooms.remove(i);
         rooms.add(i, room);
-    }
-
-    public ArrayList<Integer> getAvailableRooms(String startTime, String endTime, int capacity){
-        ArrayList<Integer> availableRooms = new ArrayList<>();
-        ArrayList<Meeting> meetings = meetings().getMeetings();
-
-        for(Meeting meeting : meetings){
-            int room = meeting.getRoom();
-
-            if(LocalDateTime.parse(meeting.getEndtime()).isBefore(LocalDateTime.parse(startTime)) || LocalDateTime.parse(meeting.getStarttime()).isAfter(LocalDateTime.parse(endTime)) && !availableRooms.contains(room) && getRoomByNumber(room).getCapacity() >= capacity) availableRooms.add(room);
-        }
-
-        return availableRooms;
     }
 }
