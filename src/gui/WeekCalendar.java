@@ -276,8 +276,6 @@ public class WeekCalendar extends JPanel {
 		table.getColumnModel().getColumn(6).setResizable(false);
 		table.getColumnModel().getColumn(7).setResizable(false);
 		scrollPane_1.setViewportView(table);
-		System.out.println(table.getSelectedColumn());
-		System.out.println(table.getSelectedRow());
 		collegues = new JComboBox();
 		collegues.setModel(new DefaultComboBoxModel(new String[] {"", "Robin Sjøvoll", "Simon Borøy-Johnsen", "Thor Håkon Bredesen", "Simen", "Russel", "Sara", "Susanne"}));
 		collegues.setBounds(10, 67, 160, 20);
