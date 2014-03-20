@@ -15,7 +15,7 @@ public class DataStorage implements Serializable{
     private Users users;
     private Groups groups;
     private Rooms rooms;
-    public Meetings meetings;
+    private Meetings meetings;
     private ExternalUsers externalUsers;
 
     public DataStorage(Users users, Groups groups, Rooms rooms, Meetings meetings, ExternalUsers externalUsers, GroupMemberships groupMemberships, MeetingInvites meetingInvites, MeetingAdmins meetingAdmins) {
