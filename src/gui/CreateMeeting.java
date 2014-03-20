@@ -317,7 +317,7 @@ public class CreateMeeting extends JPanel {
 		else{
 			roomS = list.getSelectedValue().toString();
 			room = Integer.parseInt(roomS);
-			meeting.add(new Meeting(meetingid, starttime, endtime, description, null, room, capacity, Frame.getUserName(), null));
+			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, room, capacity, Frame.getUserName(), null));
 		}
 
 		Frame.getClient().sendChanges(meeting, "insert");
