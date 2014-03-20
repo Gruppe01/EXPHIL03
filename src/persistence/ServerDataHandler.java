@@ -97,7 +97,7 @@ public class ServerDataHandler extends DataHandler {
 
                 mySQLQuery.insert(table, fields, values);
                 mySQLQuery.insert("MeetingAdmin", new ArrayList<>(Arrays.asList("meetingID", "username")), new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getCreator())));
-                mySQLQuery.insert("MeetingInvite", new ArrayList<>(Arrays.asList("meetingID", "username", "coming")), new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getCreator(), "true")));
+                mySQLQuery.insert("MeetingInvite", new ArrayList<>(Arrays.asList("meetingID", "username", "coming")), new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getCreator(), "1")));
                 break;
             case "ExternalUser":
                 ExternalUser externalUser = (ExternalUser) changedObject;
