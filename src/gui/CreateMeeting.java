@@ -185,7 +185,6 @@ public class CreateMeeting extends JPanel {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				roomLoader();
-				
 			}
 		});
 		
