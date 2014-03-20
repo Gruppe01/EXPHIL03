@@ -20,7 +20,7 @@ public class Meeting implements Serializable {
     private String creator;
     private LocalDateTime lastUpdated = null;
 
-    public Meeting(int meetingID, String starttime, String endtime, String description, String place, int room, int minCapacity, String creator, LocalDateTime lastUpdated){
+    public Meeting(int meetingID, String starttime, String endtime, String description, String place, int room, int minCapacity, String creator, String lastUpdated){
         this.meetingID = meetingID;
         setStarttime(starttime);
         setEndtime(endtime);
@@ -29,7 +29,7 @@ public class Meeting implements Serializable {
         this.room = room;
         setMinCapacity(minCapacity);
         this.creator = creator;
-        this.lastUpdated = lastUpdated;
+        setLastUpdated(lastUpdated);
     }
 
 	public Meeting(String starttime, String endtime, String description, int room, int minCapacity, String creator){
@@ -58,68 +58,6 @@ public class Meeting implements Serializable {
 	public void setPlace(String place){
 		this.place = place;
 	}
-
-	/*public ArrayList<User> getAdmins() {
-		return admins;
-	}
-
-
-	public void addAdmin(User admin) {
-		if (admins.contains(admin)) throw new IllegalArgumentException("The user is allready an admin");
-
-		this.admins.add(admin);
-	}
-
-	public void deleteAdmin(User admin){
-		if (admins.contains(admin)){
-			this.admins.remove(admin);
-		}
-		else{
-			throw new IllegalArgumentException("The user is not an current admin");
-		}
-	}
-
-	
-	public HashMap<User, Boolean> getMembers() {
-		return members;
-	}
-	
-
-	public void addMember(User member) {
-        if(members.containsKey(member)){
-            throw new IllegalArgumentException("The user is allready invited");
-        }else{
-            this.members.put(member, null);
-        }
-	}
-	
-	public void deleteMember(User member){
-		if (members.keySet().contains(member)){
-			this.members.remove(member);
-		}else{
-			throw new IllegalArgumentException("The user is not a current member");
-		}
-	}
-
-    public ArrayList<String> getExternalMembers() {
-        return externalMembers;
-    }
-
-    public void addExternalMember(String member) throws IllegalArgumentException {
-        if (externalMembers.contains(member)){
-            throw new IllegalArgumentException("The email is allready invited");
-        }else{
-            this.externalMembers.add(member);
-        }
-    }
-
-    public void deleteExternalMember(String member) throws IllegalArgumentException {
-        if (!externalMembers.contains(member)){
-            throw new IllegalArgumentException("The email is not a current member");
-        }else{
-            this.externalMembers.remove(member);
-        }
-    }*/
 	
 	public String getStarttime() {
 		return starttime.toString();
@@ -192,11 +130,7 @@ public class Meeting implements Serializable {
     }
 
     public void setRoom(int room) throws IllegalArgumentException {
-        if(new MySQLQuery().getAvailableRooms(starttime.toString(), endtime.toString(), minCapacity).contains(room)){
-            this.room = room;
-        }else{
-            throw new IllegalArgumentException("Selected room not available.");
-        }
+        this.room = room;
     }
 	
 	public int getMeetingID() {
@@ -205,6 +139,18 @@ public class Meeting implements Serializable {
 
     public String getCreator(){
         return creator;
+    }
+
+    public String getLastUpdated() {
+        return lastUpdated.toString();
+    }
+
+    public void setLastUpdated(String lastUpdated) throws IllegalArgumentException {
+        try {
+            this.lastUpdated = LocalDateTime.parse(lastUpdated);
+        }catch (DateTimeException e){
+            throw new IllegalArgumentException("Invalid lastUpdated format.");
+        }
     }
 
 	@Override

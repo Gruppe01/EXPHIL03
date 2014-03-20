@@ -43,42 +43,42 @@ public class DataHandler extends Thread{
                 case "User":
                     User user = (User) changedObject;
 
-                    dataStorage.getUsers().addUser(user);
+                    dataStorage.users().addUser(user);
                     break;
                 case "Group":
                     Group group = (Group) changedObject;
 
-                    dataStorage.getGroups().addGroup(group);
+                    dataStorage.groups().addGroup(group);
                     break;
                 case "Room":
                     Room room = (Room) changedObject;
 
-                    dataStorage.getRooms().addRoom(room);
+                    dataStorage.rooms().addRoom(room);
                     break;
                 case "Meeting":
                     Meeting meeting = (Meeting) changedObject;
 
-                    dataStorage.getMeetings().addMeeting(meeting);
+                    dataStorage.meetings().addMeeting(meeting);
                     break;
                 case "ExternalUser":
                     ExternalUser externalUser = (ExternalUser) changedObject;
 
-                    dataStorage.getExternalUsers().addExternalUser(externalUser);
+                    dataStorage.externalUsers().addExternalUser(externalUser);
                     break;
                 case "GroupMembership":
                     GroupMembership groupMembership = (GroupMembership) changedObject;
 
-                    dataStorage.getGroupMemberships().addGroupMembership(groupMembership);
+                    dataStorage.groupMemberships().addGroupMembership(groupMembership);
                     break;
                 case "MeetingInvite":
                     MeetingInvite meetingInvite = (MeetingInvite) changedObject;
 
-                    dataStorage.getMeetingInvites().addMeetingInvite(meetingInvite);
+                    dataStorage.meetingInvites().addMeetingInvite(meetingInvite);
                     break;
                 case "MeetingAdmin":
                     MeetingAdmin meetingAdmin = (MeetingAdmin) changedObject;
 
-                    dataStorage.getMeetingAdmins().addMeetingAdmin(meetingAdmin);
+                    dataStorage.meetingAdmins().addMeetingAdmin(meetingAdmin);
                     break;
                 default:
                     break;
@@ -94,42 +94,42 @@ public class DataHandler extends Thread{
                 case "User":
                     User user = (User) changedObject;
 
-                    dataStorage.getUsers().updateUser(user);
+                    dataStorage.users().updateUser(user);
                     break;
                 case "Group":
                     Group group = (Group) changedObject;
 
-                    dataStorage.getGroups().updateGroup(group);
+                    dataStorage.groups().updateGroup(group);
                     break;
                 case "Room":
                     Room room = (Room) changedObject;
 
-                    dataStorage.getRooms().updateRoom(room);
+                    dataStorage.rooms().updateRoom(room);
                     break;
                 case "Meeting":
                     Meeting meeting = (Meeting) changedObject;
 
-                    dataStorage.getMeetings().updateMeeting(meeting);
+                    dataStorage.meetings().updateMeeting(meeting);
                     break;
                 case "ExternalUser":
                     ExternalUser externalUser = (ExternalUser) changedObject;
 
-                    dataStorage.getExternalUsers().updateExternalUser(externalUser);
+                    dataStorage.externalUsers().updateExternalUser(externalUser);
                     break;
                 case "GroupMembership":
                     GroupMembership groupMembership = (GroupMembership) changedObject;
 
-                    dataStorage.getGroupMemberships().updateGroupMembership(groupMembership);
+                    dataStorage.groupMemberships().updateGroupMembership(groupMembership);
                     break;
                 case "MeetingInvite":
                     MeetingInvite meetingInvite = (MeetingInvite) changedObject;
 
-                    dataStorage.getMeetingInvites().updateMeetingInvite(meetingInvite);
+                    dataStorage.meetingInvites().updateMeetingInvite(meetingInvite);
                     break;
                 case "MeetingAdmin":
                     MeetingAdmin meetingAdmin = (MeetingAdmin) changedObject;
 
-                    dataStorage.getMeetingAdmins().updateMeetingAdmin(meetingAdmin);
+                    dataStorage.meetingAdmins().updateMeetingAdmin(meetingAdmin);
                     break;
                 default:
                     break;
@@ -145,42 +145,42 @@ public class DataHandler extends Thread{
                 case "User":
                     User user = (User) changedObject;
 
-                    dataStorage.getUsers().removeUser(user);
+                    dataStorage.users().removeUser(user);
                     break;
                 case "Group":
                     Group group = (Group) changedObject;
 
-                    dataStorage.getGroups().removeGroup(group);
+                    dataStorage.groups().removeGroup(group);
                     break;
                 case "Room":
                     Room room = (Room) changedObject;
 
-                    dataStorage.getRooms().removeRoom(room);
+                    dataStorage.rooms().removeRoom(room);
                     break;
                 case "Meeting":
                     Meeting meeting = (Meeting) changedObject;
 
-                    dataStorage.getMeetings().removeMeeting(meeting);
+                    dataStorage.meetings().removeMeeting(meeting);
                     break;
                 case "ExternalUser":
                     ExternalUser externalUser = (ExternalUser) changedObject;
 
-                    dataStorage.getExternalUsers().removeExternalUser(externalUser);
+                    dataStorage.externalUsers().removeExternalUser(externalUser);
                     break;
                 case "GroupMembership":
                     GroupMembership groupMembership = (GroupMembership) changedObject;
 
-                    dataStorage.getGroupMemberships().removeGroupMembership(groupMembership);
+                    dataStorage.groupMemberships().removeGroupMembership(groupMembership);
                     break;
                 case "MeetingInvite":
                     MeetingInvite meetingInvite = (MeetingInvite) changedObject;
 
-                    dataStorage.getMeetingInvites().removeMeetingInvite(meetingInvite);
+                    dataStorage.meetingInvites().removeMeetingInvite(meetingInvite);
                     break;
                 case "MeetingAdmin":
                     MeetingAdmin meetingAdmin = (MeetingAdmin) changedObject;
 
-                    dataStorage.getMeetingAdmins().removeMeetingAdmin(meetingAdmin);
+                    dataStorage.meetingAdmins().removeMeetingAdmin(meetingAdmin);
                     break;
                 default:
                     break;

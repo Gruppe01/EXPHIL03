@@ -50,10 +50,4 @@ public class GroupMemberships implements Serializable {
         groupMemberships.remove(i);
         groupMemberships.add(i, groupMembership);
     }
-
-    public void populate(ArrayList<GroupMembership> groupMemberships){
-        for(GroupMembership groupMembership : groupMemberships){
-            groupMemberships.add(groupMembership);
-        }
-    }
 }

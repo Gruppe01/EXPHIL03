@@ -4,7 +4,6 @@ import model.*;
 import persistence.data.*;
 import persistence.mysql.MySQLQuery;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class ServerDataHandler extends DataHandler {
@@ -66,8 +65,8 @@ public class ServerDataHandler extends DataHandler {
                 case "Meeting":
                     Meeting meeting = (Meeting) changedObject;
 
-                    fields = new ArrayList<>(Arrays.asList("meetingID", "startTime", "endTime", "description", "place", "room", "creator"));
-                    values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), meeting.getCreator()));
+                    fields = new ArrayList<>(Arrays.asList("meetingID", "startTime", "endTime", "description", "place", "room", "minCapacity", "creator", "lastUpdated"));
+                    values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), String.valueOf(meeting.getMinCapacity()), meeting.getCreator(), meeting.getLastUpdated()));
 
                     mySQLQuery.insert(table, fields, values);
                     mySQLQuery.insert("MeetingAdmin", null, new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getCreator())));
@@ -76,8 +75,8 @@ public class ServerDataHandler extends DataHandler {
                 case "ExternalUser":
                     ExternalUser externalUser = (ExternalUser) changedObject;
 
-                    fields = new ArrayList<>(Arrays.asList("email", "meetingID", "name"));
-                    values = new ArrayList<>(Arrays.asList(externalUser.getEmail(), String.valueOf(externalUser.getMeetingID()), externalUser.getName()));
+                    fields = new ArrayList<>(Arrays.asList("email", "meetingID", "name", "phonenumber"));
+                    values = new ArrayList<>(Arrays.asList(externalUser.getEmail(), String.valueOf(externalUser.getMeetingID()), externalUser.getName(), externalUser.getPhoneNumber()));
 
                     mySQLQuery.insert(table, fields, values);
                     break;
@@ -92,8 +91,8 @@ public class ServerDataHandler extends DataHandler {
                 case "MeetingInvite":
                     MeetingInvite meetingInvite = (MeetingInvite) changedObject;
 
-                    fields = new ArrayList<>(Arrays.asList("username", "meetingID"));
-                    values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID())));
+                    fields = new ArrayList<>(Arrays.asList("username", "meetingID", "coming", "alarm", "lastSeen"));
+                    values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID()), String.valueOf(meetingInvite.isComing()), meetingInvite.getAlarm(), meetingInvite.getLastSeen()));
 
                     mySQLQuery.insert(table, fields, values);
                     break;
@@ -151,8 +150,8 @@ public class ServerDataHandler extends DataHandler {
                     Meeting meeting = (Meeting) changedObject;
 
                     map = new HashMap<>(); map.put("meetingID", String.valueOf(meeting.getMeetingID()));
-                    fields = new ArrayList<>(Arrays.asList("meetingID", "startTime", "endTime", "description", "place", "minCapacity", "room", "creator"));
-                    values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), String.valueOf(meeting.getMinCapacity()), meeting.getCreator()));
+                    fields = new ArrayList<>(Arrays.asList("meetingID", "startTime", "endTime", "description", "place", "room", "minCapacity", "creator", "lastUpdated"));
+                    values = new ArrayList<>(Arrays.asList(String.valueOf(meeting.getMeetingID()), meeting.getStarttime(), meeting.getEndtime(), meeting.getDescription(), meeting.getPlace(), String.valueOf(meeting.getRoom()), String.valueOf(meeting.getMinCapacity()), meeting.getCreator(), meeting.getLastUpdated()));
 
                     mySQLQuery.update(table, fields, values, map, null);
                     break;
@@ -160,8 +159,8 @@ public class ServerDataHandler extends DataHandler {
                     ExternalUser externalUser = (ExternalUser) changedObject;
 
                     map = new HashMap<>(); map.put("email", String.valueOf(externalUser.getEmail())); map.put("meetingID", String.valueOf(externalUser.getMeetingID()));
-                    fields = new ArrayList<>(Arrays.asList("email", "meetingID", "name"));
-                    values = new ArrayList<>(Arrays.asList(externalUser.getEmail(), String.valueOf(externalUser.getMeetingID()), externalUser.getName()));
+                    fields = new ArrayList<>(Arrays.asList("email", "meetingID", "name", "phonenumber"));
+                    values = new ArrayList<>(Arrays.asList(externalUser.getEmail(), String.valueOf(externalUser.getMeetingID()), externalUser.getName(), externalUser.getPhoneNumber()));
 
                     mySQLQuery.update(table, fields, values, map, null);
                     break;
@@ -178,8 +177,8 @@ public class ServerDataHandler extends DataHandler {
                     MeetingInvite meetingInvite = (MeetingInvite) changedObject;
 
                     map = new HashMap<>(); map.put("meetingID", String.valueOf(meetingInvite.getMeetingID())); map.put("username", String.valueOf(meetingInvite.getUsername()));
-                    fields = new ArrayList<>(Arrays.asList("username", "meetingID"));
-                    values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID())));
+                    fields = new ArrayList<>(Arrays.asList("username", "meetingID", "coming", "alarm", "lastSeen"));
+                    values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID()), String.valueOf(meetingInvite.isComing()), meetingInvite.getAlarm(), meetingInvite.getLastSeen()));
 
                     mySQLQuery.update(table, fields, values, map, null);
                     break;
@@ -342,12 +341,12 @@ public class ServerDataHandler extends DataHandler {
             int meetingID = Integer.parseInt(meeting_raw.get("meetingID"));
             String startTime = meeting_raw.get("startTime").substring(0, meeting_raw.get("startTime").length()-2).replace(' ', 'T');
             String endTime = meeting_raw.get("endTime").substring(0, meeting_raw.get("endTime").length()-2).replace(' ', 'T');
-            String description = meeting_raw.get("description");
+            String description = meeting_raw.get("description") == null ? "" : meeting_raw.get("description");
             String place = meeting_raw.get("place") == null ? "" : meeting_raw.get("place");
             int room = meeting_raw.get("room") == null ? -1 : Integer.parseInt(meeting_raw.get("room"));
             int minCapacity = meeting_raw.get("minCapacity") == null ? -1 : Integer.parseInt(meeting_raw.get("minCapacity"));
             String creator = meeting_raw.get("creator");
-            LocalDateTime lastUpdated = meeting_raw.get("lastUpdated") == null ? null : LocalDateTime.parse(meeting_raw.get("lastUpdated"));
+            String lastUpdated = meeting_raw.get("lastUpdated") == null ? null : meeting_raw.get("lastUpdated").substring(0, meeting_raw.get("lastUpdated").length()-2).replace(' ', 'T');
 
             meetings.add(new Meeting(meetingID, startTime, endTime, description, place, room, minCapacity, creator, lastUpdated));
         }
@@ -362,8 +361,8 @@ public class ServerDataHandler extends DataHandler {
         for(HashMap<String, String> externalUser_raw : externalUsers_raw){
             String email = externalUser_raw.get("email");
             int meetingID = Integer.parseInt(externalUser_raw.get("meetingID"));
-            String name = externalUser_raw.get("name");
-            String phonenumber = externalUser_raw.get("phonenumber");
+            String name = externalUser_raw.get("name") == null ? "" : externalUser_raw.get("name");
+            String phonenumber = externalUser_raw.get("phonenumber") == null ? "" : externalUser_raw.get("phonenumber");
 
             externalUsers.add(new ExternalUser(email, meetingID, name, phonenumber));
         }

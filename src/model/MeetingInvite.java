@@ -8,7 +8,7 @@ public class MeetingInvite implements Serializable {
     private String username;
     private Boolean coming;
     private LocalDateTime alarm;
-    private LocalDateTime lastUpdated;
+    private LocalDateTime lastSeen;
 
     public MeetingInvite(int meetingID, String username) {
         this.meetingID = meetingID;
@@ -54,11 +54,11 @@ public class MeetingInvite implements Serializable {
         this.alarm = LocalDateTime.parse(alarm);
     }
 
-    public String getLastUpdated() {
-        return lastUpdated.toString();
+    public String getLastSeen() {
+        return lastSeen.toString();
     }
 
-    public void setLastUpdated(String lastUpdated) throws IllegalArgumentException{
-        this.lastUpdated = LocalDateTime.parse(lastUpdated);
+    public void setLastSeen(String lastUpdated) throws IllegalArgumentException{
+        this.lastSeen = LocalDateTime.parse(lastUpdated);
     }
 }

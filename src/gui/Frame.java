@@ -1,7 +1,6 @@
 package gui;
 
 import persistence.server.Client;
-import persistence.data.*;
 import model.User;
 import java.awt.BorderLayout;
 
@@ -52,7 +51,7 @@ public class Frame extends JPanel{
 	
 	public void setUser(String in){
 		username = in;
-		user = client.getDataStorage().getUsers().getUserByUsername(username);
+		user = client.getDataStorage().users().getUserByUsername(username);
 		mainScreen.setUser(in);
 	}
 	
@@ -61,7 +60,7 @@ public class Frame extends JPanel{
 	}
 	
 	public void createUser(User u){
-		client.getDataStorage().getUsers().addUser(u);
+		client.getDataStorage().users().addUser(u);
 	}
 	
 	public void logout(){

@@ -87,31 +87,6 @@ public class MySQLQuery {
         return Integer.parseInt(tableInfo.get(0).get("AUTO_INCREMENT"));
     }
 
-    @SuppressWarnings("unchecked")
-    public ArrayList<Integer> getAvailableRooms(String startTime, String endTime, int capacity){
-        String query = "SELECT * FROM `Room` WHERE `roomNumber` NOT IN (SELECT `room` FROM `Meeting` WHERE NOT (`endTime` <= ? OR `startTime` >= ?)) AND `capacity` >= ? ORDER BY `roomNumber` ASC";
-
-        ArrayList<HashMap<String, String>> roomsHashMap = connection.execute(query, new ArrayList(Arrays.asList(startTime, endTime, Integer.toString(capacity))), true);
-        ArrayList<Integer> rooms = new ArrayList<>();
-
-        for(HashMap<String, String> room : roomsHashMap){
-            rooms.add(Integer.parseInt(room.get("roomNumber")));
-        }
-
-        return rooms;
-    }
-
-    public boolean checkLogin(String username, String password){
-        HashMap<String, String> conditions = new HashMap<>();
-
-        conditions.put("username", username);
-        conditions.put("password", password);
-
-        ArrayList<HashMap<String, String>> result = select(new ArrayList<>(Arrays.asList("User")), new ArrayList<>(Arrays.asList("username", "password")), conditions, null);
-
-        return result.size() == 1;
-    }
-
     public ArrayList<HashMap<String, String>> getAllRows(String table){
         return select(new ArrayList<>(Arrays.asList(table)), null, null, null);
     }
