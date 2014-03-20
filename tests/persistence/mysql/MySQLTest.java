@@ -72,10 +72,6 @@ public class MySQLTest {
         validConnection.execute("INSERT INTO Meeting (room, startTime, endTime, creator) VALUES (1, '2014-03-14 09:00:00', '2014-03-14 11:00:00', 'testUserRoom');", new ArrayList<String>(), false);
         validConnection.execute("INSERT INTO Meeting (room, startTime, endTime, creator) VALUES (2, '2014-03-14 11:00:00', '2014-03-14 14:00:00', 'testUserRoom');", new ArrayList<String>(), false);
         validConnection.execute("INSERT INTO Meeting (room, startTime, endTime, creator) VALUES (3, '2014-03-14 09:00:00', '2014-03-14 11:00:00', 'testUserRoom');", new ArrayList<String>(), false);
-
-        assertEquals(new ArrayList(Arrays.asList(2)), validConnection.getAvailableRooms("2014-03-14 08:00:00", "2014-03-14 10:00:00", 7));
-        assertEquals(new ArrayList(Arrays.asList(1, 3)), validConnection.getAvailableRooms("2014-03-14 11:00:00", "2014-03-14 12:00:00", 5));
-        assertEquals(new ArrayList(Arrays.asList()), validConnection.getAvailableRooms("2014-03-14 09:00:00", "2014-03-14 15:00:00", 5));
     }
 
     @Test(expected=IllegalArgumentException.class)
