@@ -50,9 +50,9 @@ public class Client extends Thread{
 
                 try{
                     String type = (String) in.readObject();
-                    ArrayList<Object> changedObjects = (ArrayList<Object>) in.readObject();
+                    Object changedObject = in.readObject();
 
-                   dataHandler.receiveChanges(changedObjects, type);
+                   dataHandler.receiveChanges(changedObject, type);
                 }catch(ClassNotFoundException e) {
                     System.out.println(e.getMessage());
                     break;
@@ -73,14 +73,14 @@ public class Client extends Thread{
         }
     }
 
-    public void sendChanges(ArrayList<Object> changedObjects, String type){
+    public void sendChanges(Object changedObject, String type){
         ObjectOutputStream out;
 
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
 
             out.writeObject(type);
-            out.writeObject(changedObjects);
+            out.writeObject(changedObject);
             out.flush();
         }catch(IOException e){
             System.out.println("Could not send to " + socket);

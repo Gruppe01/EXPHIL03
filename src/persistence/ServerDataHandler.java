@@ -14,7 +14,13 @@ public class ServerDataHandler extends DataHandler {
         dataStorage = getDataStorageFromDatabase();
     }
 
-    public void editDatabase(ArrayList<Object> changedObjects, String type){
+    @SuppressWarnings("unchecked")
+    public void editDatabase(Object changedObject, String type){
+        if(changedObject.getClass().getSimpleName().equals("ArrayList")) edit((ArrayList<Object>) changedObject, type);
+        else edit(changedObject, type);
+    }
+
+    public void edit(ArrayList<Object> changedObjects, String type){
         switch(type){
             case "insert":
                 for(Object changedObject : changedObjects){
@@ -36,7 +42,7 @@ public class ServerDataHandler extends DataHandler {
         }
     }
 
-    public void editDatabase(Object changedObject, String type){
+    public void edit(Object changedObject, String type){
         switch(type){
             case "insert":
                 insert(changedObject);

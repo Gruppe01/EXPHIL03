@@ -16,7 +16,13 @@ public class DataHandler extends Thread{
     }
 
     @SuppressWarnings("unchecked")
-    public void receiveChanges(ArrayList<Object> changedObjects, String type){
+    public void receiveChanges(Object changedObject, String type){
+        if(changedObject.getClass().getSimpleName().equals("ArrayList")) receive((ArrayList<Object>) changedObject, type);
+        else receive(changedObject, type);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void receive(ArrayList<Object> changedObjects, String type){
         switch (type){
             case "insert":
                 for(Object changedObject : changedObjects){
@@ -41,7 +47,7 @@ public class DataHandler extends Thread{
         }
     }
 
-    public void receiveChanges(Object changedObject, String type){
+    public void receive(Object changedObject, String type){
         switch (type){
             case "insert":
                 insertObject(changedObject);
