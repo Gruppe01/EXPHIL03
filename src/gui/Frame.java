@@ -19,7 +19,7 @@ public class Frame extends JPanel{
 	private ShowMeeting showMeeting;
 	private ShowMembers showMembers;
 	private WeekCalendar weekCalendar;
-	public static Client client;
+	private Client client;
 	private User user;
 	private String username;
 	
