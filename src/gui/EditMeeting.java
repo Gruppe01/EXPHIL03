@@ -35,7 +35,7 @@ public class EditMeeting extends JPanel {
 		add(lblDescription);
 		
 		JTextPane textPane = new JTextPane();
-		textPane.setBounds(92, 52, 123, 69);
+		textPane.setBounds(116, 52, 142, 69);
 		add(textPane);
 		
 		JLabel lblPlace = new JLabel("Place:");
@@ -43,7 +43,7 @@ public class EditMeeting extends JPanel {
 		add(lblPlace);
 		
 		JTextPane textPane_1 = new JTextPane();
-		textPane_1.setBounds(92, 132, 123, 20);
+		textPane_1.setBounds(116, 132, 142, 20);
 		add(textPane_1);
 		
 		JLabel lblStartTime = new JLabel("Start time:");
@@ -51,7 +51,7 @@ public class EditMeeting extends JPanel {
 		add(lblStartTime);
 		
 		JTextPane textPane_2 = new JTextPane();
-		textPane_2.setBounds(92, 163, 123, 20);
+		textPane_2.setBounds(116, 163, 142, 20);
 		add(textPane_2);
 		
 		JLabel lblEndTime = new JLabel("End time:");
@@ -59,7 +59,7 @@ public class EditMeeting extends JPanel {
 		add(lblEndTime);
 		
 		JTextPane textPane_3 = new JTextPane();
-		textPane_3.setBounds(92, 194, 123, 20);
+		textPane_3.setBounds(116, 194, 142, 20);
 		add(textPane_3);
 		
 		JButton btnCancel = new JButton("Cancel");
@@ -72,7 +72,7 @@ public class EditMeeting extends JPanel {
 		});
 		
 		JButton btnEditMembers = new JButton("Edit/Show members");
-		btnEditMembers.setBounds(158, 287, 127, 23);
+		btnEditMembers.setBounds(158, 287, 148, 23);
 		add(btnEditMembers);
 		btnEditMembers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -81,7 +81,7 @@ public class EditMeeting extends JPanel {
 		});
 		
 		JButton btnAccept = new JButton("Update meeting");
-		btnAccept.setBounds(517, 287, 123, 23);
+		btnAccept.setBounds(517, 287, 132, 23);
 		add(btnAccept);
 		btnAccept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -90,7 +90,7 @@ public class EditMeeting extends JPanel {
 		});
 		
 		JButton btnDecline = new JButton("Delete meeting");
-		btnDecline.setBounds(347, 287, 117, 23);
+		btnDecline.setBounds(347, 287, 127, 23);
 		add(btnDecline);
 		btnDecline.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,11 +111,11 @@ public class EditMeeting extends JPanel {
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Time before meeting", "5 min", "10 min", "15 min", "20 min", "30 min"}));
-		comboBox.setBounds(92, 225, 123, 20);
+		comboBox.setBounds(116, 225, 142, 20);
 		add(comboBox);
 		
 		JLabel lblCreatAlaram = new JLabel("Create alarm:");
-		lblCreatAlaram.setBounds(10, 228, 72, 14);
+		lblCreatAlaram.setBounds(10, 228, 96, 14);
 		add(lblCreatAlaram);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -139,10 +139,5 @@ public class EditMeeting extends JPanel {
 		textField.setBounds(435, 225, 123, 20);
 		add(textField);
 		textField.setColumns(10);
-		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"SMS", "Email", "Both"}));
-		comboBox_1.setBounds(225, 225, 60, 20);
-		add(comboBox_1);
 	}
 }

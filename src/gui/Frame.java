@@ -106,7 +106,7 @@ public class Frame extends JPanel{
 				frame.validate();
 				frame.repaint();
 				curPanel=editMeeting;
-				frame.setSize(700, 300);
+				frame.setSize(660, 360);
 				break;
 			case "mainScreen":
 				frame.remove(curPanel);
