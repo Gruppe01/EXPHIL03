@@ -137,6 +137,19 @@ public class DataStorage implements Serializable{
         return meetingInvited;
     }
 
+    public ArrayList<Meeting> getMeetingNotificationsByUsername(String username){
+        ArrayList<Meeting> meetings = new ArrayList<>();
+        ArrayList<MeetingInvite> meetingInvites = meetingInvites().getMeetingInvitesByUsername(username);
+
+        for(MeetingInvite meetingInvite : meetingInvites){
+            Meeting meeting = meetings().getMeetingByID(meetingInvite.getMeetingID());
+
+            if(meeting.getLastUpdatedAsLocalDateTime().isAfter(meetingInvite.getLastSeenAsLocalDateTime())) meetings.add(meeting);
+        }
+
+        return meetings;
+    }
+
     public ArrayList<String> getMeetingAdminsByMeetingID(int meetingID) {
         ArrayList<String> meetingAdmins = new ArrayList<>();
 

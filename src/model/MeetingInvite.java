@@ -58,6 +58,10 @@ public class MeetingInvite implements Serializable {
         return lastSeen.toString();
     }
 
+    public LocalDateTime getLastSeenAsLocalDateTime() {
+        return lastSeen;
+    }
+
     public void setLastSeen(String lastUpdated) throws IllegalArgumentException{
         this.lastSeen = LocalDateTime.parse(lastUpdated);
     }
