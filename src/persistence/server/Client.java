@@ -8,8 +8,8 @@ import java.net.*;
 import java.util.ArrayList;
 
 public class Client extends Thread{
-    private static String HOST;
-    private static int PORT;
+    private String HOST;
+    private int PORT;
     private Socket socket;
     private DataHandler dataHandler;
 
@@ -42,7 +42,7 @@ public class Client extends Thread{
         ObjectInputStream in = null;
 
         try{
-            socket = new Socket(Server.HOST, PORT);
+            socket = new Socket(HOST, PORT);
             System.out.println("Connected to server on " + HOST + ":" + PORT);
 
             while(true){
