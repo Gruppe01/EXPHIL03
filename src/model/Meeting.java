@@ -125,10 +125,13 @@ public class Meeting implements Serializable {
     }
 
     public void setLastUpdated(String lastUpdated) throws IllegalArgumentException {
-        try {
-            this.lastUpdated = LocalDateTime.parse(lastUpdated);
-        }catch (DateTimeException e){
-            throw new IllegalArgumentException("Invalid lastUpdated format.");
+        if(lastUpdated == null) this.lastUpdated = null;
+        else{
+            try {
+                this.lastUpdated = LocalDateTime.parse(lastUpdated);
+            }catch (DateTimeException e){
+                throw new IllegalArgumentException("Invalid lastUpdated format.");
+            }
         }
     }
 

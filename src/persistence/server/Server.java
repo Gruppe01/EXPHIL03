@@ -1,15 +1,15 @@
 package persistence.server;
 
-import model.User;
 import persistence.ServerDataHandler;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server{
-    public static final String HOST = "localhost";
+    public static String HOST;
     public static final int PORT = 1234;
 
     private ServerSocket serverSocket;
@@ -25,6 +25,12 @@ public class Server{
         }catch(IOException ioe){
             System.out.println("Could not create server socket on " + HOST + ":" + PORT);
             System.exit(0);
+        }
+
+        try {
+            HOST = InetAddress.getLocalHost().getHostAddress();
+        }catch (Exception e){
+            HOST = "localhost";
         }
 
         System.out.println("Server running on " + HOST + ":" + PORT);
