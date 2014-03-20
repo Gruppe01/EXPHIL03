@@ -207,7 +207,7 @@ public class CreateMeeting extends JPanel {
 		datePicker.setBounds(274, 31, 145, 23);
 		add(datePicker);
 		Calendar cal = Calendar.getInstance();
-		model.setDate(cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.DATE));
+		model.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
 		model.addChangeListener(new ChangeListener() {
 			
 			@Override
