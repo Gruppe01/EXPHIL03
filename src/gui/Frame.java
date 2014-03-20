@@ -19,7 +19,7 @@ public class Frame extends JPanel{
 	private ShowMeeting showMeeting;
 	private ShowMembers showMembers;
 	private WeekCalendar weekCalendar;
-	private Client client;
+	public static Client client;
 	private User user;
 	private String username;
 	
@@ -45,10 +45,6 @@ public class Frame extends JPanel{
 		frame.setVisible(true);
 		setFrame("login");
 		
-	}
-	
-	public Client getClient(){
-		return client;
 	}
 	
 	public void setUser(String in){

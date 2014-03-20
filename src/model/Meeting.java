@@ -63,6 +63,10 @@ public class Meeting implements Serializable {
 		return starttime.toString();
 	}
 
+    public LocalDateTime getStartTimeAsLocalDateTime() {
+        return starttime;
+    }
+
 	public void setStarttime(String starttime) throws IllegalArgumentException {
         try {
 			this.starttime = LocalDateTime.parse(starttime);
@@ -74,6 +78,10 @@ public class Meeting implements Serializable {
 	public String getEndtime() {
 		return endtime.toString();
 	}
+
+    public LocalDateTime getendTimeAsLocalDateTime() {
+        return endtime;
+    }
 
 	public void setEndtime(String endtime) throws IllegalArgumentException {
         try {
@@ -122,6 +130,10 @@ public class Meeting implements Serializable {
 
     public String getLastUpdated() {
         return lastUpdated.toString();
+    }
+
+    public LocalDateTime getLastUpdatedAsLocalDateTime() {
+        return lastUpdated;
     }
 
     public void setLastUpdated(String lastUpdated) throws IllegalArgumentException {
