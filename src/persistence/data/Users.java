@@ -58,4 +58,14 @@ public class Users implements Serializable {
 
         return user.getPassword().equals(password);
     }
+
+    public ArrayList<String> getAllUsers(){
+        ArrayList<String> usersReturn = new ArrayList<>();
+
+        for(User user : users){
+            usersReturn.add(user.toString());
+        }
+
+        return usersReturn;
+    }
 }

@@ -79,7 +79,7 @@ public class Meeting implements Serializable {
 		return endtime.toString();
 	}
 
-    public LocalDateTime getendTimeAsLocalDateTime() {
+    public LocalDateTime getEndTimeAsLocalDateTime() {
         return endtime;
     }
 

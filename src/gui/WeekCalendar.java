@@ -105,16 +105,15 @@ public class WeekCalendar extends JPanel {
 	public void addMeetingtoCalendar(Meeting meeting, String starttime, String endtime, int day){
 		String selectedCell;
 		starttime = starttime.substring(11, 16);
-		System.out.println(starttime);
+		
 		endtime = endtime.substring(11, 16);
-		System.out.println(endtime);
+		
 		for(int row = 0; row < tablemodel.getRowCount(); row++){
 			selectedCell = (String) tablemodel.getValueAt(row, 0);
 			if(selectedCell.equals(starttime)){
 				for(int newrow = row; row < tablemodel.getRowCount(); newrow++){
 					tablemodel.setValueAt(meeting, newrow, day);
 					selectedCell = (String) tablemodel.getValueAt(newrow, 0);
-					System.out.println("Selectedcell: " + selectedCell);
 					if(selectedCell.equals(endtime)){
 						break;
 					}

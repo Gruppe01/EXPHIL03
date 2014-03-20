@@ -258,7 +258,7 @@ public class CreateMeeting extends JPanel {
 		String startTime;
 		String endTime;
 		
-		String month = model.getMonth()+1<10 ? "0" + model.getMonth()+1 : "" + model.getMonth()+1;
+		String month = model.getMonth()+1<10 ? "0" + (model.getMonth()+1) : "" + (model.getMonth()+1);
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
 		String startH = (Integer)starth.getValue() < 10 ? "0" + (Integer)starth.getValue() : "" + (Integer)starth.getValue();
 		String endH = (Integer)endh.getValue() < 10 ? "0" + (Integer)endh.getValue() : "" + (Integer)endh.getValue();

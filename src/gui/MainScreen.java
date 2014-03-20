@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.DefaultListModel;
 import javax.swing.SpringLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -35,6 +36,8 @@ public class MainScreen extends JPanel {
 	private JDatePanelImpl datePanel;
 	private JDatePickerImpl datePicker;
 	private String pickedDate;
+	private JList meetingslist;
+	private DefaultListModel listmodel;
 	/**
 	 * Create the frame.
 	 */
@@ -55,7 +58,8 @@ public class MainScreen extends JPanel {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		scrollPane.setColumnHeaderView(lblNewLabel);
 		
-		JList meetingslist = new JList();
+		listmodel = new DefaultListModel();
+		meetingslist = new JList(listmodel);
 		scrollPane.setViewportView(meetingslist);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -78,6 +82,17 @@ public class MainScreen extends JPanel {
 		});
 		btnEditShow.setBounds(276, 175, 170, 45);
 		add(btnEditShow);
+		btnEditShow.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				//if(meetingslist.hasFocus()){
+					frame.setFrame("editMeeting");
+				//}
+			}
+			
+		});
 		
 		JButton btnShowCalendar = new JButton("Show week calendar");
 		btnShowCalendar.addActionListener(new ActionListener() {
@@ -133,7 +148,8 @@ public class MainScreen extends JPanel {
 	}
 	
 	private void setDatePicked(){
-		String month = model.getMonth()<10 ? "0" + model.getMonth() : "" + model.getMonth();
+		int thismonth = model.getMonth() + 1;
+		String month = thismonth<10 ? "0" + thismonth : "" + thismonth;
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
 		
 		pickedDate = model.getYear() + "-" + month + "-" + day;
@@ -141,7 +157,14 @@ public class MainScreen extends JPanel {
 	}
 	
 	public void setNewsfeed(){
+		listmodel.removeAllElements();
 		ArrayList<MeetingInvite> meetings = Frame.getClient().getDataStorage().getMeetingInvitesByUsernameAndDate(Frame.getUserName(), LocalDate.parse(pickedDate));
+		for(MeetingInvite meetingInvite : meetings){
+			listmodel.addElement(Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID()).getDescription());
+		}
+	}
+	
+	public void setNotifications(){
 		
 	}
 	

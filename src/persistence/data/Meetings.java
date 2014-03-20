@@ -50,4 +50,14 @@ public class Meetings implements Serializable {
         meetings.remove(i);
         meetings.add(i, meeting);
     }
+
+    public int getNextMeetingID(){
+        int largestID = -1;
+
+        for(Meeting meeting : meetings){
+            if(meeting.getMeetingID() > largestID) largestID = meeting.getMeetingID();
+        }
+
+        return largestID + 1;
+    }
 }
