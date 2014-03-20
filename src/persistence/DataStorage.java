@@ -126,9 +126,12 @@ public class DataStorage implements Serializable{
 
     public ArrayList<MeetingInvite> getMeetingInvitesByUsernameAndDate(String username, LocalDate date){
         ArrayList<MeetingInvite> meetingInvited = new ArrayList<>();
+        ArrayList<MeetingInvite> meetingInvites = meetingInvites().getMeetingInvitesByUsername(username);
 
-        for(MeetingInvite meetingInvite : meetingInvites().getMeetingInvites()){
-            if(username.equals(meetingInvite.getUsername()) && meetings().getMeetingByID(meetingInvite.getMeetingID()).getStartTimeAsLocalDateTime().toLocalDate().equals(date)) meetingInvited.add(meetingInvite);
+        for(MeetingInvite meetingInvite : meetingInvites){
+            if(!meetings().getMeetingByID(meetingInvite.getMeetingID()).getStartTimeAsLocalDateTime().toLocalDate().equals(date)) continue;
+
+            meetingInvited.add(meetingInvite);
         }
 
         return meetingInvited;
@@ -156,17 +159,17 @@ public class DataStorage implements Serializable{
         meetingAdmins().removeMeetingAdminByMeetingIDAndUsername(meetingID, username);
     }
 
-    public HashMap<String, Boolean> getMembers(int meetingID) {
+    public ArrayList<MeetingInvite> getMembers(int meetingID) {
         return meetingInvites().getMeetingInvitesByMeetingID(meetingID);
     }
 
     public void addMember(int meetingID, String username) {
-        if(meetingInvites().getMeetingInvitesByMeetingID(meetingID).keySet().contains(username)) throw new IllegalArgumentException("The user is already invited");
+        if(meetingInvites().getMeetingInviteByUsernameAndMeetingID(meetingID, username) != null) throw new IllegalArgumentException("The user is already invited");
         else meetingInvites().addMeetingInvite(new MeetingInvite(meetingID, username));
     }
 
     public void deleteMember(int meetingID, String username){
-        if(!meetingInvites().getMeetingInvitesByMeetingID(meetingID).keySet().contains(username)) throw new IllegalArgumentException("The user is not invited");
+        if(meetingInvites().getMeetingInviteByUsernameAndMeetingID(meetingID, username) == null) throw new IllegalArgumentException("The user is not invited");
         else meetingInvites().removeMeetingInviteByMeetingIDAndUsername(meetingID, username);
     }
 
