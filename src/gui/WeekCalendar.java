@@ -49,6 +49,28 @@ public class WeekCalendar extends JPanel {
 	private DefaultTableModel tablemodel;
 	private Meeting selectedData;
 	
+	private void removeMeeting(){
+		String selectedCell;
+		Meeting meeting = getSelectedData();
+		String starttime = meeting.getStarttime().substring(11, 16);
+		System.out.println(starttime);
+		String endtime = meeting.getEndtime().substring(11, 16);
+		System.out.println(endtime);
+		for(int row = 0; row < tablemodel.getRowCount(); row++){
+			selectedCell = (String) tablemodel.getValueAt(row, 0);
+			if(selectedCell.equals(starttime)){
+				for(int newrow = row; row < tablemodel.getRowCount(); newrow++){
+					tablemodel.setValueAt(null, newrow, 2);
+					selectedCell = (String) tablemodel.getValueAt(newrow, 0);
+					System.out.println("Selectedcell: " + selectedCell);
+					if(selectedCell.equals(endtime)){
+						break;
+					}
+				}
+			}
+		}
+	}
+	
 	public String getDate(){
 		return date;
 	}
@@ -82,7 +104,7 @@ public class WeekCalendar extends JPanel {
 		System.out.println(getDate());
 	}
 	
-	private void getSelectedData(){
+	private Meeting getSelectedData(){
 		selectedData = null;
 
         int[] selectedRow = table.getSelectedRows();
@@ -99,7 +121,7 @@ public class WeekCalendar extends JPanel {
         }else{
         	statusPane.setText("No meeting selected");
         }
-		addMeetingtoCalendar(new Meeting("2014-03-14T08:00:00", "2014-03-14T10:00:00", "Fylla", 4, 2, "Robin"), "2014-03-14T08:00:00", "2014-03-14T10:00:00", 2);
+		return selectedData;
 	}
 	
 	public void addMeetingtoCalendar(Meeting meeting, String starttime, String endtime, int day){
@@ -112,7 +134,7 @@ public class WeekCalendar extends JPanel {
 			selectedCell = (String) tablemodel.getValueAt(row, 0);
 			if(selectedCell.equals(starttime)){
 				for(int newrow = row; row < tablemodel.getRowCount(); newrow++){
-					tablemodel.setValueAt(meeting.getMeetingID(), newrow, day);
+					tablemodel.setValueAt(meeting, newrow, day);
 					selectedCell = (String) tablemodel.getValueAt(newrow, 0);
 					System.out.println("Selectedcell: " + selectedCell);
 					if(selectedCell.equals(endtime)){
@@ -254,8 +276,6 @@ public class WeekCalendar extends JPanel {
 		table.getColumnModel().getColumn(6).setResizable(false);
 		table.getColumnModel().getColumn(7).setResizable(false);
 		scrollPane_1.setViewportView(table);
-		System.out.println(table.getSelectedColumn());
-		System.out.println(table.getSelectedRow());
 		collegues = new JComboBox();
 		collegues.setModel(new DefaultComboBoxModel(new String[] {"", "Robin Sjøvoll", "Simon Borøy-Johnsen", "Thor Håkon Bredesen", "Simen", "Russel", "Sara", "Susanne"}));
 		collegues.setBounds(10, 67, 160, 20);
@@ -271,6 +291,11 @@ public class WeekCalendar extends JPanel {
 		btnRemoveSche.setToolTipText("");
 		btnRemoveSche.setBounds(292, 321, 288, 31);
 		add(btnRemoveSche);
+		btnRemoveSche.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeMeeting();
+			}
+		});
 		
 		JButton btnBack = new JButton("Back");
 		btnBack.setBounds(10, 314, 89, 44);
@@ -294,5 +319,6 @@ public class WeekCalendar extends JPanel {
 				frame.setFrame("mainScreen");
 			}
 		});
+		addMeetingtoCalendar(new Meeting("2014-03-14T08:00:00", "2014-03-14T10:00:00", "Fylla", 4, 2, "Robin"), "2014-03-14T08:00:00", "2014-03-14T10:00:00", 2);
 	}
 }

@@ -29,7 +29,7 @@ public class Frame extends JPanel{
 	public Frame(){
 		
 		frame = new JFrame();
-		client = new Client();
+		client = new Client("169.254.233.84", 1234);
 		username = null;
 		user = null;
 		login = new Login(this);
