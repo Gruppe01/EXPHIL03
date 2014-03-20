@@ -1,6 +1,8 @@
 package gui;
 
 import model.Meeting;
+import model.MeetingAdmin;
+import model.MeetingInvite;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
@@ -55,6 +57,8 @@ public class CreateMeeting extends JPanel {
 	private JTextField placeTextField;
 	private CreateMeeting working;
 	private Frame frame;
+	private ArrayList<String> members = new ArrayList<>();
+	private ArrayList<String> admin = new ArrayList<>();
 
 	/**
 	 * Create the panel.
@@ -107,6 +111,7 @@ public class CreateMeeting extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				EditMembers edit = new EditMembers(working);
 				edit.setVisible(true);
+				btnEditMembers.setEnabled(false);
 			}
 		});
 		
@@ -234,6 +239,18 @@ public class CreateMeeting extends JPanel {
 //		add(scrollPane_1);
 	}
 	
+	public void setAdmins(ArrayList<String> in){
+		admin = in;
+	}
+	
+	public void setMembers(ArrayList<String> in){
+		members = in;
+	}
+	
+	public void enableEditButton(){
+		btnEditMembers.setEnabled(true);
+	}
+	
 	private void roomLoader(){
 		
 		listModel.removeAllElements();
@@ -273,6 +290,8 @@ public class CreateMeeting extends JPanel {
 		String roomS;
 		int room;
 		
+		int meetingid = Frame.getClient().getDataStorage().meetings().getNextMeetingID();
+		
 		String month = model.getMonth()+1<10 ? "0" + model.getMonth()+1 : "" + model.getMonth()+1;
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
 		String startH = (Integer)starth.getValue() < 10 ? "0" + (Integer)starth.getValue() : "" + (Integer)starth.getValue();
@@ -291,13 +310,28 @@ public class CreateMeeting extends JPanel {
 		
 		if (list.isSelectionEmpty()){
 
-			meeting.add(new Meeting(starttime, endtime, description, place, frame.getUserName()));
+			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null));
 		}
 		else{
-			meeting.add(new Meeting(starttime, endtime, description, room, capacity, frame.getUserName()));
+			meeting.add(new Meeting(meetingid, starttime, endtime, description, null, room, capacity, Frame.getUserName(), null));
 		}
 		
-		frame.getClient().sendChanges(meeting, "insert");
+		Frame.getClient().sendChanges(meeting, "insert");
+		
+		ArrayList<Object> tempMembers = new ArrayList<>();
+		ArrayList<Object> tempAdmin = new ArrayList<>();
+		
+		for (String i:admin){
+			tempAdmin.add(new MeetingAdmin(meetingid, i));
+			members.add(i);
+		}
+		
+		for (String i:members){
+			tempMembers.add(new MeetingInvite(meetingid, i));
+		}
+		
+		Frame.getClient().sendChanges(tempAdmin, "insert");
+		Frame.getClient().sendChanges(tempMembers, "insert");
 		
 		frame.setFrame("mainScreen");
 	}
