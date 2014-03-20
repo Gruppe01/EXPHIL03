@@ -1,11 +1,11 @@
 package persistence.data;
 
-import model.Meeting;
+import model.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-//Meeting, ExternalUser, MeetingAdmin, MeetingInvite
-public class Meetings {
+public class Meetings implements Serializable {
     private ArrayList<Meeting> meetings;
 
     public Meetings(ArrayList<Meeting> meetings){
@@ -49,11 +49,5 @@ public class Meetings {
 
         meetings.remove(i);
         meetings.add(i, meeting);
-    }
-
-    public void populate(ArrayList<Meeting> meetings){
-        for(Meeting meeting : meetings){
-            meetings.add(meeting);
-        }
     }
 }

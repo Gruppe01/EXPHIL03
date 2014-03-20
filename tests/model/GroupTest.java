@@ -3,10 +3,12 @@ package model;
 import org.junit.*;
 import static org.junit.Assert.*;
 import persistence.mysql.MySQLQuery;
+import persistence.mysql.MySQLTest;
+
 import java.util.ArrayList;
 
 public class GroupTest {
-    MySQLQuery mySQLConnection = new MySQLQuery();
+    MySQLQuery mySQLConnection = MySQLTest.TEST_CONNECTION();
 
     Group testGroup1;
     Group testGroup2;
@@ -27,8 +29,8 @@ public class GroupTest {
 
         testGroup1 = new Group();
         testGroup2 = new Group(members);
-        testGroup3 = new Group(testGroup1);
-        testGroup4 = new Group(testGroup1, members);
+        testGroup3 = new Group(testGroup1.getGroupID());
+        testGroup4 = new Group(testGroup1.getGroupID(), members);
     }
 
     @After
@@ -48,14 +50,14 @@ public class GroupTest {
 
     @Test
     public void testGetSuperGroup() throws Exception {
-        assertNull(testGroup1.getSuperGroup());
-        assertEquals(testGroup1, testGroup3.getSuperGroup());
+        assertEquals(-1, testGroup1.getSuperGroup());
+        assertEquals(testGroup1.getGroupID(), testGroup3.getSuperGroup());
     }
 
     @Test
     public void testSetSuperGroup() throws Exception {
-        testGroup1.setSuperGroup(testGroup2);
-        assertEquals(testGroup2, testGroup1.getSuperGroup());
+        testGroup1.setSuperGroup(testGroup2.getGroupID());
+        assertEquals(testGroup2.getGroupID(), testGroup1.getSuperGroup());
     }
 
     @Test

@@ -2,10 +2,10 @@ package persistence.data;
 
 import model.Room;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.*;
 
-//MeetingRoom
-public class Rooms {
+public class Rooms implements Serializable {
     private ArrayList<Room> rooms;
 
     public Rooms(ArrayList<Room> rooms){
@@ -15,6 +15,7 @@ public class Rooms {
     public Rooms(){
         this.rooms = new ArrayList<>();
     }
+
 
     public ArrayList<Room> getRooms(){
         return rooms;
@@ -49,11 +50,5 @@ public class Rooms {
 
         rooms.remove(i);
         rooms.add(i, room);
-    }
-
-    public void populate(ArrayList<Room> rooms){
-        for(Room room : rooms){
-            rooms.add(room);
-        }
     }
 }

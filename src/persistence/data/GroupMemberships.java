@@ -2,9 +2,10 @@ package persistence.data;
 
 import model.GroupMembership;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GroupMemberships {
+public class GroupMemberships implements Serializable {
     private ArrayList<GroupMembership> groupMemberships;
 
     public GroupMemberships(ArrayList<GroupMembership> groupMemberships){
@@ -48,11 +49,5 @@ public class GroupMemberships {
 
         groupMemberships.remove(i);
         groupMemberships.add(i, groupMembership);
-    }
-
-    public void populate(ArrayList<GroupMembership> groupMemberships){
-        for(GroupMembership groupMembership : groupMemberships){
-            groupMemberships.add(groupMembership);
-        }
     }
 }

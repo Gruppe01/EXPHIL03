@@ -1,13 +1,20 @@
 package model;
 
+import java.io.Serializable;
 import java.time.*;
 
-public class MeetingInvite {
+public class MeetingInvite implements Serializable {
     private int meetingID;
     private String username;
-    private boolean coming;
+    private Boolean coming;
     private LocalDateTime alarm;
-    private LocalDateTime lastUpdated;
+    private LocalDateTime lastSeen;
+
+    public MeetingInvite(int meetingID, String username) {
+        this.meetingID = meetingID;
+        this.username = username;
+        this.coming = null;
+    }
 
     public MeetingInvite(int meetingID, String username, boolean coming) {
         this.meetingID = meetingID;
@@ -47,11 +54,15 @@ public class MeetingInvite {
         this.alarm = LocalDateTime.parse(alarm);
     }
 
-    public String getLastUpdated() {
-        return lastUpdated.toString();
+    public String getLastSeen() {
+        return lastSeen.toString();
     }
 
-    public void setLastUpdated(String lastUpdated) throws IllegalArgumentException{
-        this.lastUpdated = LocalDateTime.parse(lastUpdated);
+    public LocalDateTime getLastSeenAsLocalDateTime() {
+        return lastSeen;
+    }
+
+    public void setLastSeen(String lastUpdated) throws IllegalArgumentException{
+        this.lastSeen = LocalDateTime.parse(lastUpdated);
     }
 }

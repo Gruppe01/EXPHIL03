@@ -2,34 +2,40 @@ package model;
 
 import persistence.mysql.MySQLQuery;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Group {
+public class Group implements Serializable {
     private final int groupID;
-    private Group superGroup;
+    private int superGroup;
     private ArrayList<User> members;
 
-    public Group(Group superGroup, ArrayList<User> members) throws IllegalArgumentException {
-        groupID = new MySQLQuery().getNextID("Group");
+    public Group(int groupID, int superGroup) throws IllegalArgumentException {
+        this.groupID = groupID;
+        this.superGroup = superGroup;
+    }
+
+    public Group(int superGroup, ArrayList<User> members) throws IllegalArgumentException {
+        this.groupID = new MySQLQuery().getNextID("Group");
         this.superGroup = superGroup;
         this.members = members;
     }
 
-    public Group(Group superGroup) throws IllegalArgumentException {
-        groupID = new MySQLQuery().getNextID("Group");
+    public Group(int superGroup) throws IllegalArgumentException {
+        this.groupID = new MySQLQuery().getNextID("Group");
         this.superGroup = superGroup;
         this.members = new ArrayList<>();
     }
 
     public Group(ArrayList<User> members) throws IllegalArgumentException {
-        groupID = new MySQLQuery().getNextID("Group");
-        this.superGroup = null;
+        this.groupID = new MySQLQuery().getNextID("Group");
+        this.superGroup = -1;
         this.members = members;
     }
 
     public Group() throws IllegalArgumentException {
-        groupID = new MySQLQuery().getNextID("Group");
-        this.superGroup = null;
+        this.groupID = new MySQLQuery().getNextID("Group");
+        this.superGroup = -1;
         this.members = new ArrayList<>();
     }
 
@@ -37,11 +43,11 @@ public class Group {
         return groupID;
     }
 
-    public Group getSuperGroup() {
+    public int getSuperGroup() {
         return superGroup;
     }
 
-    public void setSuperGroup(Group superGroup) {
+    public void setSuperGroup(int superGroup) {
         this.superGroup = superGroup;
     }
 
