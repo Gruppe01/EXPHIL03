@@ -74,6 +74,10 @@ public class Frame extends JPanel{
 		username = null;
 	}
 	
+	public MainScreen getMainScreen(){
+		return mainScreen;
+	}
+	
 	public void setFrame(String panel){
 		switch(panel){
 			case "login":

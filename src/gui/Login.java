@@ -74,9 +74,10 @@ public class Login extends JPanel {
                 new ErrorMessage("Error", "Invalid login!");
                 return;
             }
-
+            
             frame.setUser(username);
             frame.setFrame("mainScreen");
+            frame.getMainScreen().setNotifications();
         }catch (IllegalArgumentException e){
             new ErrorMessage("Error", e.getMessage());
             return;
