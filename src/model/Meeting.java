@@ -83,27 +83,6 @@ public class Meeting implements Serializable {
 		}
 	}
 	
-	public String getDuration() {
-        long minutes;
-        long hours;
-
-        try {
-            Date startTime = DATE_FORMAT.parse(starttime.toString());
-            Date endTime = DATE_FORMAT.parse(endtime.toString());
-
-            long diff = endTime.getTime() - startTime.getTime();
-
-            minutes = diff / (60 * 1000) % 60;
-            hours = diff / (60 * 60 * 1000) % 24;
-        }catch (Exception e){
-            throw new IllegalArgumentException("Error parsing dates.");
-        }
-
-        String hourString = (hours > 0 ? hours + (hours > 1 ? " hours" : " hour") : "");
-        String minuteString = (minutes > 0 ? minutes + (minutes > 1 ? " minutes" : " minute") : "");
-
-        return (hourString.equals("") ? minuteString : hourString + (minuteString.equals("") ? "" : ", " + minuteString));
-	}
 	
 	public String getDescription() {
 		return description;
@@ -155,8 +134,8 @@ public class Meeting implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Meeting [members=" + /*getMembers() +*/ ", starttime=" + starttime
-				+  ", endtime=" + endtime + ", duration=" + getDuration()
-				+ ", description=" + description + "]";
+		return "Members: " + /*getMembers().length +*/ "\r\nstarttime: " + starttime
+				+  "\r\nendtime: " + endtime
+				+ "\r\nPlace:  " + place;
 	}
 }
