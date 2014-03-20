@@ -67,7 +67,7 @@ public class Meeting implements Serializable {
         try {
 			this.starttime = LocalDateTime.parse(starttime);
 		}catch (DateTimeException e){
-			throw new IllegalArgumentException("Invalid starttime format.");
+			throw new IllegalArgumentException("Invalid starttime format: " + starttime);
 		}
 	}
 	
