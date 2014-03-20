@@ -1,6 +1,8 @@
 package gui;
 
 import model.Meeting;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -18,11 +20,21 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.Calendar;
+
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import persistence.data.Rooms;
 
 public class CreateMeeting extends JPanel {
 	private JScrollPane scrollPane;
+	private DefaultListModel listModel;
 	private JList list;
-	private JTextField textField_3;
+	private JTextField ParticipantsTextField;
 	private JLabel lblDescription;
 	private JLabel lblSelectTimeStart;
 	private JLabel lblSelectTimeEnd;
@@ -32,9 +44,12 @@ public class CreateMeeting extends JPanel {
 	private JLabel lblParticipants;
 	private JLabel label;
 	private JLabel label_1;
-	private JSpinner spinner_3;
+	private JSpinner starth;
+	private JSpinner startm;
+	private JSpinner endh;
+	private JSpinner endm;
 	private JScrollPane scrollPane_1;
-	private JTextField textField;
+	private JTextField placeTextField;
 	private CreateMeeting working;
 	private Frame frame;
 
@@ -52,7 +67,7 @@ public class CreateMeeting extends JPanel {
 		scrollPane.setBounds(449, 31, 125, 183);
 		add(scrollPane);
 		
-		list = new JList();
+		list = new JList(listModel);
 		scrollPane.setViewportView(list);
 		
 		JLabel lblAvail = new JLabel("Available rooms");
@@ -60,10 +75,15 @@ public class CreateMeeting extends JPanel {
 		lblAvail.setHorizontalAlignment(SwingConstants.CENTER);
 		scrollPane.setColumnHeaderView(lblAvail);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(449, 225, 125, 20);
-		add(textField_3);
-		textField_3.setColumns(10);
+		ParticipantsTextField = new JTextField();
+		ParticipantsTextField.setBounds(449, 225, 125, 20);
+		add(ParticipantsTextField);
+		ParticipantsTextField.setColumns(10);
+		ParticipantsTextField.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				roomLoader();
+			}
+		});
 		
 		lblDescription = new JLabel("Description:");
 		lblDescription.setBounds(10, 66, 101, 14);
@@ -117,21 +137,58 @@ public class CreateMeeting extends JPanel {
 		label_1.setBounds(190, 207, 15, 14);
 		add(label_1);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setBounds(121, 173, 59, 20);
-		add(spinner);
+		starth = new JSpinner();
+		starth.setModel(new SpinnerNumberModel(12, 0, 23, 1));
+		starth.setBounds(121, 173, 59, 20);
+		add(starth);
+		starth.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				roomLoader();
+				
+			}
+		});
 		
-		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setBounds(121, 204, 59, 20);
-		add(spinner_1);
+		endh = new JSpinner();
+		endh.setModel(new SpinnerNumberModel(13, 0, 23, 1));
+		endh.setBounds(121, 204, 59, 20);
+		add(endh);
+		endh.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				roomLoader();
+				
+			}
+		});
 		
-		JSpinner spinner_2 = new JSpinner();
-		spinner_2.setBounds(200, 173, 59, 20);
-		add(spinner_2);
+		startm = new JSpinner();
+		startm.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+		startm.setBounds(200, 173, 59, 20);
+		add(startm);
+		startm.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				roomLoader();
+				
+			}
+		});
 		
-		spinner_3 = new JSpinner();
-		spinner_3.setBounds(200, 204, 59, 20);
-		add(spinner_3);
+		endm = new JSpinner();
+		endm.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+		endm.setBounds(200, 204, 59, 20);
+		add(endm);
+		endm.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				roomLoader();
+				
+			}
+		});
+		
 		
 		JTextPane textPane = new JTextPane();
 		textPane.setBounds(121, 31, 143, 103);
@@ -145,31 +202,56 @@ public class CreateMeeting extends JPanel {
 		datePicker.setToolTipText("");
 		datePicker.setBounds(274, 31, 145, 23);
 		add(datePicker);
+		Calendar cal = Calendar.getInstance();
+		model.setDate(cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH)+1), cal.get(Calendar.DATE));
+		model.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				roomLoader();
+			}
+		});
 		
 		JLabel lblPlace = new JLabel("Place: ");
 		lblPlace.setBounds(10, 151, 46, 14);
 		add(lblPlace);
 		
-		textField = new JTextField();
-		textField.setBounds(121, 145, 138, 20);
-		add(textField);
-		textField.setColumns(10);
+		placeTextField = new JTextField();
+		placeTextField.setBounds(121, 145, 138, 20);
+		add(placeTextField);
+		placeTextField.setColumns(10);
+		
+		roomLoader();
 		
 //		scrollPane_1 = new JScrollPane();
 //		scrollPane_1.setBounds(274, 103, 132, 86);
 //		add(scrollPane_1);
 	}
 	
+	private void roomLoader(){
+		
+		Rooms rooms = frame.getClient().getDataStorage().getRooms();
+		
+		for (int i=1; i<x; i++){
+			
+		}
+		
+		
+	}
+	
 	private void create(){
 		
-		/*
+		String starttime;
+		String endtime;
+		String description;
+		
 		if (list.isSelectionEmpty()){
-			new Meeting(frame.getUser(), starttime, endtime, description, place)
+			new Meeting(frame.getUser(), starttime, endtime, description, place);
 		}
 		else{
-			new Meeting(frame.getUser(), starttime, endtime, description, capacity, room)
+			new Meeting(frame.getUser(), starttime, endtime, description, capacity, room);
 		}
-		*/
+		
 		frame.setFrame("mainScreen");
 	}
 }
