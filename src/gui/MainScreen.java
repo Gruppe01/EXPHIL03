@@ -16,8 +16,13 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.JList;
+
+import persistence.data.*;
+import model.*;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -119,7 +124,7 @@ public class MainScreen extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				//setDatePicked();
+				setDatePicked();
 			}
 			
 		});
@@ -127,10 +132,18 @@ public class MainScreen extends JPanel {
 		add(datePicker);
 	}
 	
-//	private void setDatePicked(){
-	//	pickedDate = model.getYear()
-//	}
+	private void setDatePicked(){
+		String month = model.getMonth()<10 ? "0" + model.getMonth() : "" + model.getMonth();
+		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
+		
+		pickedDate = model.getYear() + "-" + month + "-" + day;
+		setNewsfeed();
+	}
 	
+	public void setNewsfeed(){
+		ArrayList<MeetingInvite> meetings = Frame.getClient().getDataStorage().getMeetingInvitesByUsernameAndDate(Frame.getUserName(), LocalDate.parse(pickedDate));
+		
+	}
 	
 	public void setUser(String in){
 		lblUsername.setText(in);

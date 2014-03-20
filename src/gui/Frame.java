@@ -19,9 +19,9 @@ public class Frame extends JPanel{
 	private ShowMeeting showMeeting;
 	private ShowMembers showMembers;
 	private WeekCalendar weekCalendar;
-	public static Client client;
-	private User user;
-	private String username;
+	private static Client client;
+	private static User user;
+	private static String username;
 	
 	private JPanel curPanel;
 	
@@ -47,17 +47,21 @@ public class Frame extends JPanel{
 		
 	}
 	
+	public static Client getClient(){
+		return client;
+	}
+	
 	public void setUser(String in){
 		username = in;
 		user = client.getDataStorage().users().getUserByUsername(username);
 		mainScreen.setUser(in);
 	}
 	
-	public String getUserName(){
+	public static String getUserName(){
 		return username;
 	}
 	
-	public User getUser(){
+	public static User getUser(){
 		return user;
 	}
 	
