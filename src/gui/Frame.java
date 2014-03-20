@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Frame extends JPanel{
-	
 	private JFrame frame;
 	private Login login;
 	private CreateUser createUser;
@@ -20,16 +19,15 @@ public class Frame extends JPanel{
 	private ShowMeeting showMeeting;
 	private ShowMembers showMembers;
 	private WeekCalendar weekCalendar;
-	private Client client;
+	public static Client client;
 	private User user;
 	private String username;
 	
 	private JPanel curPanel;
 	
 	public Frame(){
-		
 		frame = new JFrame();
-		client = new Client("169.254.233.84", 1234);
+		client = new Client("169.254.36.165", 1234);
 		username = null;
 		user = null;
 		login = new Login(this);
@@ -69,9 +67,6 @@ public class Frame extends JPanel{
 	}
 	
 	public void setFrame(String panel){
-		
-		
-		
 		switch(panel){
 			case "login":
 				frame.remove(curPanel);
@@ -131,8 +126,9 @@ public class Frame extends JPanel{
 				break;
 			
 		}
-		
-		
-		
 	}
+
+    public static void main(String args[]){
+        new Frame();
+    }
 }
