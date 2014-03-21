@@ -149,6 +149,24 @@ public class DataStorage implements Serializable{
         return meetingInvited;
     }
 
+    public void updateMeetingByMeeting(Meeting meeting){
+        Frame.getClient().sendChanges(meeting, "update");
+    }
+
+    public void updateMeetingByMeetingID(int meetingID, String starttime, String endtime, String description, String place, int room, int minCapacity, String lastUpdated){
+        Meeting meeting = meetings().getMeetingByID(meetingID);
+
+        meeting.setStarttime(starttime);
+        meeting.setEndtime(endtime);
+        meeting.setDescription(description);
+        meeting.setPlace(place);
+        meeting.setRoom(room);
+        meeting.setMinCapacity(minCapacity);
+        meeting.setLastUpdated(lastUpdated);
+
+        Frame.getClient().sendChanges(meeting, "update");
+    }
+
     public void updateMeetingInviteByUsernameAndMeetingID(int meetingID, String username, boolean coming, String alarm){
         MeetingInvite meetingInvite = meetingInvites().getMeetingInviteByUsernameAndMeetingID(meetingID, username);
 

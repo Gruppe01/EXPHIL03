@@ -1,5 +1,6 @@
 package gui;
 
+import persistence.DataStorage;
 import persistence.server.Client;
 import model.User;
 import java.awt.BorderLayout;
@@ -50,6 +51,10 @@ public class Frame extends JPanel{
 	public static Client getClient(){
 		return client;
 	}
+
+    public static DataStorage getDataStorage(){
+        return client.getDataStorage();
+    }
 	
 	public void setUser(String in){
 		username = in;
@@ -136,6 +141,7 @@ public class Frame extends JPanel{
 				frame.repaint();
 				curPanel=mainScreen;
 				frame.setSize(700, 400);
+                mainScreen.setNewsfeed();
 				break;
 			case"showMeeting":
 				frame.remove(curPanel);
