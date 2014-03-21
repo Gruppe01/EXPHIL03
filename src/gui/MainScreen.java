@@ -117,6 +117,9 @@ public class MainScreen extends JPanel {
 		add(btnNewMeeting);
 		btnNewMeeting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.setYear(model.getYear());
+				frame.setMonth(model.getMonth());
+				frame.setDay(model.getDay());
 				frame.setFrame("createMeeting");
 			}
 		});
@@ -143,6 +146,8 @@ public class MainScreen extends JPanel {
 		datePicker.setTextEditable(false);
 		datePicker.setToolTipText("");
 		datePicker.setBounds(499, 175, 146, 23);
+		Calendar cal = Calendar.getInstance();
+		model.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
 		datePanel.addActionListener(new ActionListener() {
 
 			@Override

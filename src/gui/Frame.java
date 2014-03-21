@@ -20,6 +20,9 @@ public class Frame extends JPanel{
 	private ShowMeeting showMeeting;
 	private ShowMembers showMembers;
 	private WeekCalendar weekCalendar;
+	private int year;
+	private int month;
+	private int day;
 	private static Client client;
 	private static User user;
 	private static String username;
@@ -95,6 +98,18 @@ public class Frame extends JPanel{
 		return mainScreen;
 	}
 	
+	public void setYear(int in){
+		year = in;
+	}
+	
+	public void setMonth(int in){
+		month = in;
+	}
+	
+	public void setDay(int in){
+		day = in;
+	}
+	
 	public void setFrame(String panel){
 		switch(panel){
 			case "login":
@@ -117,6 +132,9 @@ public class Frame extends JPanel{
 				break;
 			case "createMeeting":
 				frame.remove(curPanel);
+				createMeeting.setYear(year);
+				createMeeting.setMonth(month);
+				createMeeting.setDay(day);
 				frame.add(createMeeting);
 				createMeeting.refresh();
 				frame.validate();
