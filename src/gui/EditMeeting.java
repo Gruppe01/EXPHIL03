@@ -79,7 +79,7 @@ public class EditMeeting extends JPanel {
 		endh.setValue(Integer.parseInt(endHour));
 		startm.setValue(Integer.parseInt(startMinute));
 		endm.setValue(Integer.parseInt(endMinute));
-		model.setDate(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+		model.setDate(Integer.parseInt(year), Integer.parseInt(month)-1, Integer.parseInt(day));
 		
 		roomLoader();
 		
@@ -164,7 +164,7 @@ public class EditMeeting extends JPanel {
 		datePicker.getJFormattedTextField().setText("Choose date");
 		datePicker.setTextEditable(false);
 		datePicker.setToolTipText("");
-		datePicker.setBounds(314, 52, 137, 23);
+		datePicker.setBounds(270, 52, 244, 23);
 		add(datePicker);
 		model.addChangeListener(new ChangeListener() {
 
