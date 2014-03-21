@@ -1,5 +1,6 @@
 package gui;
 
+import model.ExternalUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -14,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
@@ -29,12 +32,18 @@ public class EditMembers extends JFrame {
 	private JPanel contentPane;
 	private CreateMeeting meeting;
 	private EditMembers working;
+	private JButton btnAddExternal;
 	private JList meetingList;
 	private DefaultListModel listModelMembers;
 	private JList groupMembersList;
 	private DefaultListModel listModelgroupMembers;
+	private JList groupsList;
+	private DefaultListModel listModelgroupsList;
 	private ArrayList<String> members = new ArrayList<>();
 	private ArrayList<String> admin = new ArrayList<>();
+	private ArrayList<String> groups = new ArrayList<>();
+	private ArrayList<String> groupMembers = new ArrayList<>();
+	private ArrayList<ExternalUser> externalUsers = new ArrayList<>();
 	
 	public EditMembers(final CreateMeeting in) {
 		
@@ -45,6 +54,8 @@ public class EditMembers extends JFrame {
 		setSize(697,335);
 		listModelgroupMembers = new DefaultListModel<>();
 		listModelMembers = new DefaultListModel<>();
+		listModelgroupsList = new DefaultListModel<>();
+		groups.add("Show All Members");
 		contentPane = new JPanel();
 		
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -69,12 +80,19 @@ public class EditMembers extends JFrame {
 				int selectedIndex = meetingList.getSelectedIndex();
 				if (selectedIndex != -1) {
 					String selected = (String) meetingList.getSelectedValue();
-					selected = selected.replaceAll(" (Admin)", "");
+					selected = selected.replaceAll("\\b (Admin)\\b", "");
+					selected = selected.replaceAll("\\b (External)\\b", "");
 					for ( int i = 0;  i < members.size(); i++){
 			            String tempName = members.get(i);
 			            if(tempName.equals(selected)){
 			                admin.add(members.get(i));
 			            	members.remove(i);
+			            }
+			        }
+					for ( int i = 0;  i < externalUsers.size(); i++){
+			            String tempName = externalUsers.get(i).getName();
+			            if(tempName.equals(selected)){
+			            	ErrorMessage Error = new ErrorMessage("Error", "External Users can not be admins");
 			            }
 			        }
 					updateMembersList();
@@ -90,7 +108,7 @@ public class EditMembers extends JFrame {
 				int selectedIndex = meetingList.getSelectedIndex();
 				if (selectedIndex != -1) {
 					String selected = (String) meetingList.getSelectedValue();
-					selected = selected.replaceAll(" (Admin)", "");
+					selected = selected.replaceAll("\\b (Admin)\\b", "");
 					for ( int i = 0;  i < admin.size(); i++){
 			            String tempName = admin.get(i);
 			            if(tempName.equals(selected)){
@@ -112,7 +130,8 @@ public class EditMembers extends JFrame {
 				int selectedIndex = meetingList.getSelectedIndex();
 				if (selectedIndex != -1) {
 					String selected = (String) meetingList.getSelectedValue();
-					selected = selected.replaceAll(" (Admin)", "");
+					selected = selected.replaceAll("\\b (Admin)\\b", "");
+					selected = selected.replaceAll("\\b (External)\\b", "");
 					for ( int i = 0;  i < admin.size(); i++){
 			            String tempName = admin.get(i);
 			            if(tempName.equals(selected)){
@@ -123,6 +142,12 @@ public class EditMembers extends JFrame {
 			            String tempName = members.get(i);
 			            if(tempName.equals(selected)){
 			                members.remove(i);
+			            }
+			        }
+					for ( int i = 0;  i < externalUsers.size(); i++){
+			            String tempName = externalUsers.get(i).getName();
+			            if(tempName.equals(selected)){
+			            	externalUsers.remove(i);
 			            }
 			        }
 					updateMembersList();
@@ -137,6 +162,7 @@ public class EditMembers extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				meeting.setMembers(members);
 				meeting.setAdmins(admin);
+				meeting.setExternalUsers(externalUsers);
 				meeting.enableEditButton();
 				setVisible(false);
 				dispose();
@@ -161,8 +187,15 @@ public class EditMembers extends JFrame {
 		scrollPane_1.setBounds(10, 45, 136, 139);
 		contentPane.add(scrollPane_1);
 		
-		JList GroupsList = new JList();
-		scrollPane_1.setViewportView(GroupsList);
+		groupsList = new JList();
+		scrollPane_1.setViewportView(groupsList);
+		groupsList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent evt) {
+				if (evt.getValueIsAdjusting()){
+		        	updateGroupMembers();
+		        }
+		      }
+		});
 		
 		JLabel lblGroups = new JLabel("Groups");
 		lblGroups.setHorizontalAlignment(SwingConstants.CENTER);
@@ -194,13 +227,14 @@ public class EditMembers extends JFrame {
 		btnSelectAll.setBounds(187, 195, 89, 23);
 		contentPane.add(btnSelectAll);
 		
-		JButton btnAddExternal = new JButton("Add external");
+		btnAddExternal = new JButton("Add external");
 		btnAddExternal.setBounds(167, 11, 119, 23);
 		contentPane.add(btnAddExternal);
 		btnAddExternal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddExternal addExternal = new AddExternal(working);
 				addExternal.setVisible(true);
+				btnAddExternal.setEnabled(false);
 			}
 		});
 		
@@ -212,6 +246,7 @@ public class EditMembers extends JFrame {
 		
 		setResizable(false);
 		setContentPane(contentPane);
+		updateGroups();
 		
 		this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
@@ -220,13 +255,58 @@ public class EditMembers extends JFrame {
         });
 	}
 	
-	private void updateMembersList(){
+	public void addExternal(ExternalUser user){
+		externalUsers.add(user);
+		updateMembersList();
+	}
+	
+	public void enableExternalButton(){
+		btnAddExternal.setEnabled(true);
+	}
+	
+	private void updateGroups(){
+		ArrayList<Integer> tempGroups = new ArrayList<>();
+		groups = null;
+		tempGroups = Frame.getClient().getDataStorage().groups().getGroupID();
+		for (int id:tempGroups){
+			groups.add(String.valueOf(id));
+		}
+		for (String i:groups){
+			listModelgroupsList.addElement(i);
+		}
+	}
+	
+	private void updateGroupMembers() {
+		int selectedIndex = groupsList.getSelectedIndex();
+		if (selectedIndex != -1) {
+			if (selectedIndex == 0){
+				groupMembers = null;
+				groupMembers = Frame.getClient().getDataStorage().users().getAllUsers();
+				for (String i:groupMembers){
+					listModelgroupMembers.addElement(i);
+				}
+			}
+			else{
+				groupMembers = null;
+				String selected = (String) groupsList.getSelectedValue();
+				groupMembers = Frame.getClient().getDataStorage().groupMemberships().getGroupsMembersByGroupID(Integer.parseInt(selected));
+				for (String i:groupMembers){
+					listModelgroupMembers.addElement(i);
+				}
+			}
+		}
+	}
+	
+	public void updateMembersList(){
 		listModelMembers.removeAllElements();
 		for (String i:admin){
 			listModelMembers.addElement(i+" (Admin)");
 		}
 		for (String i:members){
 			listModelMembers.addElement(i);
+		}
+		for (ExternalUser i:externalUsers){
+			listModelMembers.addElement(i.getName()+" (External)");
 		}
 	}
 

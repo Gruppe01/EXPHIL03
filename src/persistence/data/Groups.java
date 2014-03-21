@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class Groups implements Serializable {
     private ArrayList<Group> groups;
+    private ArrayList<Integer> groupIDs;
 
     public Groups(ArrayList<Group> groups){
         this.groups = groups;
@@ -34,6 +35,13 @@ public class Groups implements Serializable {
         }
 
         return -1;
+    }
+    
+    public ArrayList<Integer> getGroupID(){
+    	for (Group group: groups){
+    		groupIDs.add(group.getGroupID());
+    	}
+    	return groupIDs;
     }
 
     public void addGroup(Group group){
