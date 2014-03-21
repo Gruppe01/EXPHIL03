@@ -97,10 +97,16 @@ public class MainScreen extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(meetingslist.getSelectedIndex() > -1){
+					ArrayList<String> admins = new ArrayList<>();
 					meeting = Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingIDList.get(meetingslist.getSelectedIndex()));
+					admins = Frame.getClient().getDataStorage().getMeetingAdminsByMeetingID(meetingIDList.get(meetingslist.getSelectedIndex()));
 					if (meeting.getCreator() == Frame.getUserName()){
 						frame.getEditMeeting().setMeeting(meeting);
 						frame.setFrame("editMeeting");	
+					}
+					else if(admins.contains(Frame.getUserName())){
+						frame.getEditMeeting().setMeeting(meeting);
+						frame.setFrame("editMeeting");
 					}
 					else{
 						frame.getShowMeeting().setMeeting(meeting);
