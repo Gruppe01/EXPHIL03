@@ -140,14 +140,13 @@ public class MainScreen extends JPanel {
 		add(lblUsername);
 
 		model = new UtilDateModel();
+		String dateStr = LocalDate.now().toString();
 		datePanel = new JDatePanelImpl(model);
 		datePicker = new JDatePickerImpl(datePanel);
-		datePicker.getJFormattedTextField().setText("Choose date here");
+		datePicker.getJFormattedTextField().setText(dateStr);
 		datePicker.setTextEditable(false);
 		datePicker.setToolTipText("");
 		datePicker.setBounds(499, 175, 146, 23);
-		Calendar cal = Calendar.getInstance();
-		model.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
 		datePanel.addActionListener(new ActionListener() {
 
 			@Override
