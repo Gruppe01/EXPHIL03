@@ -111,8 +111,9 @@ public class EditMembers extends JFrame {
 					for ( int i = 0;  i < admin.size(); i++){
 			            String tempName = admin.get(i);
 			            if((tempName+" (Admin)").equals(selected)){
-			                admin.remove(i);
-			                members.add(admin.get(i));
+			            	members.add(admin.get(i));
+			            	admin.remove(i);
+			                
 			            }
 			        }
 					updateMembersList();
@@ -186,7 +187,7 @@ public class EditMembers extends JFrame {
 		scrollPane_1.setBounds(10, 45, 136, 139);
 		contentPane.add(scrollPane_1);
 		
-		groupsList = new JList();
+		groupsList = new JList(listModelgroupsList);
 		scrollPane_1.setViewportView(groupsList);
 		groupsList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent evt) {
@@ -222,9 +223,12 @@ public class EditMembers extends JFrame {
 			}
 		});
 		
+		
+		/*
 		JButton btnSelectAll = new JButton("Select all");
 		btnSelectAll.setBounds(187, 195, 89, 23);
 		contentPane.add(btnSelectAll);
+		*/
 		
 		btnAddExternal = new JButton("Add external");
 		btnAddExternal.setBounds(167, 11, 119, 23);
@@ -259,7 +263,6 @@ public class EditMembers extends JFrame {
 	
 	private void updateGroups(){
 		ArrayList<Integer> tempGroups = new ArrayList<>();
-		groups.clear();
 		tempGroups = Frame.getClient().getDataStorage().groups().getGroupID();
 		for (int id:tempGroups){
 			groups.add(String.valueOf(id));
