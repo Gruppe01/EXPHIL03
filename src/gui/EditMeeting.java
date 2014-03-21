@@ -147,11 +147,12 @@ public class EditMeeting extends JPanel {
 			}
 		});
 		
-		JButton btnDecline = new JButton("Delete meeting");
-		btnDecline.setBounds(347, 287, 127, 23);
-		add(btnDecline);
-		btnDecline.addActionListener(new ActionListener() {
+		JButton btnDelete = new JButton("Delete meeting");
+		btnDelete.setBounds(347, 287, 127, 23);
+		add(btnDelete);
+		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Frame.getClient().sendChanges(meeting, "delete");
 				frame.setFrame("mainScreen");
 			}
 		});
