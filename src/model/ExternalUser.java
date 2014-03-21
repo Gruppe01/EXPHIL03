@@ -4,10 +4,16 @@ import java.io.Serializable;
 
 public class ExternalUser implements Serializable {
     private String email;
-    private final int meetingID;
+    private int meetingID;
     private String name;
     private String phoneNumber;
 
+    public ExternalUser(String email, String name, String phoneNumber) throws IllegalArgumentException {
+        setEmail(email);
+        setName(name);
+        setPhoneNumber(phoneNumber);
+    }
+    
     public ExternalUser(String email, int meetingID, String name, String phoneNumber) throws IllegalArgumentException {
         setEmail(email);
         this.meetingID = meetingID;
@@ -17,6 +23,10 @@ public class ExternalUser implements Serializable {
 
     public String getEmail() {
         return email;
+    }
+    
+    public void setMeetingID(int meetingid){
+    	meetingID = meetingid;
     }
 
     public void setEmail(String email) throws IllegalArgumentException {

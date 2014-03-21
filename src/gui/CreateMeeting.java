@@ -1,5 +1,6 @@
 package gui;
 
+import model.ExternalUser;
 import model.Meeting;
 import model.MeetingAdmin;
 import model.MeetingInvite;
@@ -59,6 +60,7 @@ public class CreateMeeting extends JPanel {
 	private Frame frame;
 	private ArrayList<String> members = new ArrayList<>();
 	private ArrayList<String> admin = new ArrayList<>();
+	private ArrayList<ExternalUser> externalUsers = new ArrayList<>();
 
 	/**
 	 * Create the panel.
@@ -251,6 +253,10 @@ public class CreateMeeting extends JPanel {
 	public void setMembers(ArrayList<String> in){
 		members = in;
 	}
+	
+	public void setExternalUsers(ArrayList<ExternalUser> in){
+		externalUsers = in;
+	}
 
 	public void enableEditButton(){
 		btnEditMembers.setEnabled(true);
@@ -337,6 +343,10 @@ public class CreateMeeting extends JPanel {
 
 		for (String i:members){
 			tempMembers.add(new MeetingInvite(meetingid, i));
+		}
+		
+		for (ExternalUser i: externalUsers){
+			Frame.getClient().getDataStorage().addExternaMeetinglMember(meetingid, i.getEmail(), i.getName(), i.getPhoneNumber());
 		}
 
 		Frame.getClient().sendChanges(tempAdmin, "insert");
