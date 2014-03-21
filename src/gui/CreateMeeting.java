@@ -111,7 +111,7 @@ public class CreateMeeting extends JPanel {
 		add(btnEditMembers);
 		btnEditMembers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EditMembers edit = new EditMembers(working);
+				EditMembers edit = new EditMembers(working,null);
 				edit.setVisible(true);
 				btnEditMembers.setEnabled(false);
 			}
