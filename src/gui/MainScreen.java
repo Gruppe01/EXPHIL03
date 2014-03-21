@@ -10,10 +10,13 @@ import javax.swing.DefaultListModel;
 import javax.swing.SpringLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
 import java.awt.Font;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,7 +27,6 @@ import javax.swing.JList;
 
 import persistence.data.*;
 import model.*;
-
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -41,6 +43,8 @@ public class MainScreen extends JPanel {
 	private JList notifications;
 	private DefaultListModel notiflistModel;
 	private ArrayList<Integer> notifmeetings = new ArrayList<Integer>();
+	private model.Meeting meeting;
+	private ArrayList<Integer> meetingIDList;
 	/**
 	 * Create the frame.
 	 */
@@ -78,6 +82,8 @@ public class MainScreen extends JPanel {
 		notifications = new JList(notiflistModel);
 		scrollPane_1.setViewportView(notifications);
 		
+		meetingIDList = new ArrayList<Integer>();
+		
 		JButton btnEditShow = new JButton("Edit / Show meeting");
 		btnEditShow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -91,9 +97,19 @@ public class MainScreen extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				//if(meetingslist.hasFocus()){
-					frame.setFrame("showMeeting");
-				//}
+				if(meetingslist.getSelectedIndex() > -1){
+					meeting = Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingIDList.get(meetingslist.getSelectedIndex()));
+					//if (meeting.isAdmin()){
+						//frame.getEditMeeting().setMeeting(meeting);
+						//frame.setFrame("editMeeting");	
+					//}
+					//else{
+						frame.getShowMeeting().setMeeting(meeting);
+						frame.setFrame("showMeeting");	
+					//}
+
+					
+				}
 			}
 			
 		});
@@ -153,6 +169,11 @@ public class MainScreen extends JPanel {
 		setNotifications();
 	}
 	
+	public void refresh(){
+		this.revalidate();
+		this.repaint();
+	}
+	
 	private void setDatePicked(){
 		int thismonth = model.getMonth() + 1;
 		String month = thismonth<10 ? "0" + thismonth : "" + thismonth;
@@ -164,9 +185,11 @@ public class MainScreen extends JPanel {
 	
 	public void setNewsfeed(){
 		meetingListModel.removeAllElements();
+		meetingIDList.clear();
 		ArrayList<MeetingInvite> meetings = Frame.getClient().getDataStorage().getMeetingInvitesByUsernameAndDate(Frame.getUserName(), LocalDate.parse(pickedDate));
 		for(MeetingInvite meetingInvite : meetings){
 			meetingListModel.addElement(Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID()).getDescription());
+			meetingIDList.add(Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID()).getMeetingID());
 		}
 	}
 	

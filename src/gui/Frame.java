@@ -65,6 +65,14 @@ public class Frame extends JPanel{
 		return user;
 	}
 	
+	public ShowMeeting getShowMeeting(){
+		return showMeeting;
+	}
+	
+	public EditMeeting getEditMeeting(){
+		return editMeeting;
+	}
+	
 	public WeekCalendar getWeekCalendar(){
 		return weekCalendar;
 	}
@@ -87,6 +95,7 @@ public class Frame extends JPanel{
 			case "login":
 				frame.remove(curPanel);
 				frame.add(login);
+				login.refresh();
 				frame.validate();
 				frame.repaint();
 				curPanel=login;
@@ -95,6 +104,7 @@ public class Frame extends JPanel{
 			case "createUser":
 				frame.remove(curPanel);
 				frame.add(createUser);
+				createUser.refresh();
 				frame.validate();
 				frame.repaint();
 				curPanel=createUser;
@@ -103,6 +113,7 @@ public class Frame extends JPanel{
 			case "createMeeting":
 				frame.remove(curPanel);
 				frame.add(createMeeting);
+				createMeeting.refresh();
 				frame.validate();
 				frame.repaint();
 				curPanel=createMeeting;
@@ -111,6 +122,7 @@ public class Frame extends JPanel{
 			case "editMeeting":
 				frame.remove(curPanel);
 				frame.add(editMeeting);
+				editMeeting.refresh();
 				frame.validate();
 				frame.repaint();
 				curPanel=editMeeting;
@@ -119,6 +131,7 @@ public class Frame extends JPanel{
 			case "mainScreen":
 				frame.remove(curPanel);
 				frame.add(mainScreen);
+				mainScreen.refresh();
 				frame.validate();
 				frame.repaint();
 				curPanel=mainScreen;
@@ -127,6 +140,7 @@ public class Frame extends JPanel{
 			case"showMeeting":
 				frame.remove(curPanel);
 				frame.add(showMeeting);
+				showMeeting.refresh();
 				frame.validate();
 				frame.repaint();
 				curPanel=showMeeting;
@@ -135,6 +149,7 @@ public class Frame extends JPanel{
 			case "weekCalendar":
 				frame.remove(curPanel);
 				frame.add(weekCalendar);
+				weekCalendar.refresh();
 				frame.validate();
 				frame.repaint();
 				curPanel=weekCalendar;
