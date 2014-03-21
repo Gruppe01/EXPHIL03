@@ -223,6 +223,25 @@ public class DataStorage implements Serializable{
         return meetings;
     }
 
+    public ArrayList<String> getUsersInGroup(int groupID){
+        ArrayList<GroupMembership> allGroupMemberships = groupMemberships().getGroupMemberships();
+        ArrayList<String> usersInGroup = new ArrayList<>();
+
+        if(groupID == -1){
+            usersInGroup = new ArrayList<>(users().getAllUsers());
+
+            for(GroupMembership groupMembership : allGroupMemberships){
+                usersInGroup.remove(groupMembership.getUsername());
+            }
+        }else{
+            for(GroupMembership groupMembership : groupMemberships().getGroupMembershipsByGroupID(groupID)){
+                if(groupMembership.getGroupID() == groupID) usersInGroup.add(groupMembership.getUsername());
+            }
+        }
+
+        return usersInGroup;
+    }
+
     public ArrayList<String> getMeetingAdminsByMeetingID(int meetingID) {
         ArrayList<String> meetingAdmins = new ArrayList<>();
 
