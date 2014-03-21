@@ -32,7 +32,6 @@ public class EditMembers extends JFrame {
 	 */
 	
 	private JPanel contentPane;
-	private CreateMeeting meeting;
 	private EditMembers working;
 	private JButton btnAddExternal;
 	private JList meetingList;
@@ -46,10 +45,24 @@ public class EditMembers extends JFrame {
 	private ArrayList<String> groups = new ArrayList<>();
 	private ArrayList<String> groupMembers = new ArrayList<>();
 	private ArrayList<ExternalUser> externalUsers = new ArrayList<>();
+	private boolean isCreate;
+	private CreateMeeting meetingC;
+	private EditMeeting meetingE;
 	
-	public EditMembers(final CreateMeeting in) {
+	public EditMembers(final CreateMeeting inC, final EditMeeting inE) {
 		
-		meeting = in;
+		if (inC!=null&&inE==null){
+			meetingC = inC;
+			isCreate = true;
+		}
+		else{
+			meetingE = inE;
+			isCreate = false;
+			for (model.MeetingInvite i :Frame.getClient().getDataStorage().getMeetingMembers(meetingE.getMeetingID())){
+				members.add(i.getUsername());
+			}
+			
+		}
 		working = this;
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -160,10 +173,18 @@ public class EditMembers extends JFrame {
 		contentPane.add(btnDone);
 		btnDone.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				meeting.setMembers(members);
-				meeting.setAdmins(admin);
-				meeting.setExternalUsers(externalUsers);
-				meeting.enableEditButton();
+				if (isCreate){
+					meetingC.setMembers(members);
+					meetingC.setAdmins(admin);
+					meetingC.setExternalUsers(externalUsers);
+					meetingC.enableEditButton();
+				}
+				else{
+					meetingE.setMembers(members);
+					meetingE.setAdmins(admin);
+					meetingE.setExternalUsers(externalUsers);
+					meetingE.enableEditButton();
+				}
 				setVisible(false);
 				dispose();
 			}
@@ -217,7 +238,12 @@ public class EditMembers extends JFrame {
 		contentPane.add(btnCancel);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				meeting.enableEditButton();
+				if (isCreate){
+					meetingC.enableEditButton();
+				}
+				else{
+					meetingE.enableEditButton();
+				}
 				setVisible(false);
 				dispose();
 			}
