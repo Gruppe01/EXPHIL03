@@ -309,7 +309,11 @@ public class CreateMeeting extends JPanel {
 		String roomS;
 		int room;
 
-		int meetingid = Frame.getClient().getDataStorage().meetings().getNextMeetingID();
+        int meetingid = Frame.getClient().getDataStorage().meetings().getNextMeetingID();
+
+        while(Frame.getDataStorage().meetings().getMeetingByID(meetingid) != null){
+            meetingid += 1;
+        }
 
 		String month = model.getMonth()+1<10 ? "0" + (model.getMonth()+1) : "" + (model.getMonth()+1);
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
@@ -323,7 +327,7 @@ public class CreateMeeting extends JPanel {
 		endtime = Integer.toString(model.getYear())+"-"+month+"-"+day+"T"+endH+":"+endM+":00";
 		capacity = (Integer) participantsSpinner.getValue();
 		place = placeTextField.getText();
-		Object meeting = new ArrayList<>();
+		ArrayList<Object> meeting = new ArrayList<>();
 
 		if (list.isSelectionEmpty()){
             if(place.equals("")){
@@ -331,13 +335,13 @@ public class CreateMeeting extends JPanel {
                 return;
             }
 
-			meeting = new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null);
+			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null));
 		}
 		else{
             roomS = list.getSelectedValue().toString();
 			room = Integer.parseInt(roomS.substring(roomS.indexOf(" ") + 1));
 
-			meeting = new Meeting(meetingid, starttime, endtime, description, place, room, capacity, Frame.getUserName(), null);
+			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, room, capacity, Frame.getUserName(), null));
 		}
 
 		Frame.getClient().sendChanges(meeting, "insert");

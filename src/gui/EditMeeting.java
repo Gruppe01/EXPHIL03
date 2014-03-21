@@ -79,7 +79,7 @@ public class EditMeeting extends JPanel {
 		endh.setValue(Integer.parseInt(endHour));
 		startm.setValue(Integer.parseInt(startMinute));
 		endm.setValue(Integer.parseInt(endMinute));
-		model.setDate(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+		model.setDate(Integer.parseInt(year), Integer.parseInt(month)-1, Integer.parseInt(day));
 		
 		roomLoader();
 		
@@ -143,7 +143,7 @@ public class EditMeeting extends JPanel {
 		add(btnAccept);
 		btnAccept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				create();
+				updateMeeting();
 			}
 		});
 		
@@ -308,7 +308,7 @@ public class EditMeeting extends JPanel {
 		for (int i:room){
 			roomCnt++;
 			listModel.addElement("Room " + i);
-			if( "Room " + i == meeting.getPlace()){
+			if(("Room " + i).equals(meeting.getPlace())){
 				list_1.setSelectedIndex(roomCnt);
 			}
 		}
@@ -334,7 +334,7 @@ public class EditMeeting extends JPanel {
 		btnEditMembers.setEnabled(true);
 	}
 	
-	private void create(){
+	private void updateMeeting(){
 
 		String starttime;
 		String endtime;
@@ -357,42 +357,72 @@ public class EditMeeting extends JPanel {
 		capacity = (Integer) participantsSpinner.getValue();
 		place = placeTextField.getText();
 
-        int meetingid = meeting.getMeetingID();
-
 		if (list_1.isSelectionEmpty()){
             if(place.equals("")){
                 new ErrorMessage("Error", "You must either choose place or room");
                 return;
             }
 
-			meeting = new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null);
+			meeting = new Meeting(meetingID, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null);
 		}else{
             roomS = list_1.getSelectedValue().toString();
 			room = Integer.parseInt(roomS.substring(roomS.indexOf(" ") + 1));
 
-			meeting = new Meeting(meetingid, starttime, endtime, description, place, room, capacity, Frame.getUserName(), null);
+			meeting = new Meeting(meetingID, starttime, endtime, description, place, room, capacity, Frame.getUserName(), null);
 		}
 
 		Frame.getDataStorage().updateMeetingByMeeting(meeting);
 
-		ArrayList<Object> tempMembers = new ArrayList<>();
-		ArrayList<Object> tempAdmin = new ArrayList<>();
+        ArrayList<String> currentAdmins = Frame.getDataStorage().getMeetingAdminsByMeetingID(meetingID);
+        ArrayList<String> currentMembers = Frame.getDataStorage().meetingInvites().getMeetingMembersByMeetingID(meetingID);
+        ArrayList<String> currentExternalMembers = Frame.getDataStorage().externalUsers().getExternalUsersByMeetingID(meetingID);
+
+        ArrayList<Object> tempAdminAdd = new ArrayList<>();
+        ArrayList<Object> tempAdminRemove = new ArrayList<>();
+        ArrayList<Object> tempMembersAdd = new ArrayList<>();
+        ArrayList<Object> tempMembersRemove = new ArrayList<>();
+        ArrayList<Object> tempExternalMembersAdd = new ArrayList<>();
+        ArrayList<Object> tempExternalMembersRemove = new ArrayList<>();
 
 		for (String i:admin){
-			tempAdmin.add(new MeetingAdmin(meetingid, i));
+			if(!currentAdmins.contains(i)) tempAdminAdd.add(new MeetingAdmin(meetingID, i));
 			members.add(i);
 		}
 
 		for (String i:members){
-			tempMembers.add(new MeetingInvite(meetingid, i));
+            if(!currentMembers.contains(i)) tempMembersAdd.add(new MeetingInvite(meetingID, i));
 		}
 		
 		for (ExternalUser i: externalUsers){
-			Frame.getClient().getDataStorage().addExternaMeetingMember(meetingid, i.getEmail(), i.getName(), i.getPhoneNumber());
+            if(!currentExternalMembers.contains(i.getEmail())) tempExternalMembersAdd.add(new ExternalUser(i.getEmail(), meetingID, i.getName(), i.getPhoneNumber()));
 		}
 
-		Frame.getClient().sendChanges(tempAdmin, "insert");
-		Frame.getClient().sendChanges(tempMembers, "insert");
+		if(admin.size() > 0){
+            for(String currentAdmin : currentAdmins){
+                if(!admin.contains(currentAdmin)) tempAdminRemove.add(new MeetingAdmin(meetingID, currentAdmin));
+            }
+
+            if(tempAdminRemove.size() > 0) Frame.getClient().sendChanges(tempAdminRemove, "delete");
+            Frame.getClient().sendChanges(tempAdminAdd, "insert");
+        }
+
+        if(members.size() > 0){
+            for(String currentMember : currentMembers){
+                if(!members.contains(currentMember)) tempMembersRemove.add(new MeetingInvite(meetingID,currentMember));
+            }
+
+            if(tempMembersRemove.size() > 0) Frame.getClient().sendChanges(tempMembersRemove, "delete");
+            Frame.getClient().sendChanges(tempMembersAdd, "insert");
+        }
+
+        if(externalUsers.size() > 0){
+            for(String currentExternalMember : currentExternalMembers){
+                if(!externalUsers.contains(Frame.getDataStorage().externalUsers().getExternalUserByEmailAndMeetingID(meetingID, currentExternalMember))) tempExternalMembersRemove.add(new ExternalUser(meetingID, currentExternalMember));
+            }
+
+            if(tempExternalMembersRemove.size() > 0) Frame.getClient().sendChanges(tempExternalMembersRemove, "delete");
+            Frame.getClient().sendChanges(tempExternalMembersAdd, "insert");
+        }
 
 		frame.setFrame("mainScreen");
 	}

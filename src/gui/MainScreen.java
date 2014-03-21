@@ -117,6 +117,7 @@ public class MainScreen extends JPanel {
 		add(btnNewMeeting);
 		btnNewMeeting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				frame.setFrame("createMeeting");
 			}
 		});
@@ -156,8 +157,6 @@ public class MainScreen extends JPanel {
         pickedDate = LocalDate.now().toString();
 
 		add(datePicker);
-        setNewsfeed();
-		setNotifications();
 	}
 
 	public void refresh(){
@@ -165,9 +164,9 @@ public class MainScreen extends JPanel {
 		this.repaint();
 	}
 
-	private void setDatePicked(){
-		int thismonth = model.getMonth() + 1;
-		String month = thismonth<10 ? "0" + thismonth : "" + thismonth;
+	public void setDatePicked(){
+		int thismonth = model.getMonth();
+		String month = (thismonth+1)<10 ? "0" + (thismonth+1) : "" + (thismonth+1);
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
 
 		pickedDate = model.getYear() + "-" + month + "-" + day;

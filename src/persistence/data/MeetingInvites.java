@@ -56,6 +56,16 @@ public class MeetingInvites implements Serializable {
         return meetingInvited;
     }
 
+    public ArrayList<String> getMeetingMembersByMeetingID(int meetingID){
+        ArrayList<String> meetingInvited = new ArrayList<>();
+
+        for(MeetingInvite meetingInvite : meetingInvites){
+            if(meetingInvite.getMeetingID() == meetingID) meetingInvited.add(meetingInvite.getUsername());
+        }
+
+        return meetingInvited;
+    }
+
     public void addMeetingInvite(MeetingInvite meetingInvite){
         meetingInvites.add(meetingInvite);
     }

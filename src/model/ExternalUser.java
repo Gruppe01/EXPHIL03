@@ -13,6 +13,11 @@ public class ExternalUser implements Serializable {
         setName(name);
         setPhoneNumber(phoneNumber);
     }
+
+    public ExternalUser(int meetingID, String email){
+        this.meetingID = meetingID;
+        setEmail(email);
+    }
     
     public ExternalUser(String email, int meetingID, String name, String phoneNumber) throws IllegalArgumentException {
         setEmail(email);
