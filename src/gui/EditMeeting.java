@@ -18,6 +18,9 @@ import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
 import model.ExternalUser;
+import model.Meeting;
+import model.MeetingAdmin;
+import model.MeetingInvite;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -41,6 +44,7 @@ public class EditMeeting extends JPanel {
 	private JSpinner endm;
 	private JSpinner participantsSpinner;
 	private JButton btnEditMembers;
+	private Frame frame;
 	private EditMeeting working;
 	private int meetingID;
 	private int room;
@@ -84,7 +88,8 @@ public class EditMeeting extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public EditMeeting(final Frame frame) {
+	public EditMeeting(final Frame in) {
+		frame = in;
 		working = this;
 		listModel = new DefaultListModel<>();
 		setLayout(null);
@@ -316,8 +321,70 @@ public class EditMeeting extends JPanel {
 		btnEditMembers.setEnabled(true);
 	}
 	
-	public void create(){
+	private void create(){
+
+		String starttime;
+		String endtime;
+		int capacity;
+		String description;
+		String place;
+		String roomS;
+		int room;
+
+		int meetingid = Frame.getClient().getDataStorage().meetings().getNextMeetingID();
+
+		String month = model.getMonth()+1<10 ? "0" + (model.getMonth()+1) : "" + (model.getMonth()+1);
+		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
+		String startH = (Integer)starth.getValue() < 10 ? "0" + (Integer)starth.getValue() : "" + (Integer)starth.getValue();
+		String endH = (Integer)endh.getValue() < 10 ? "0" + (Integer)endh.getValue() : "" + (Integer)endh.getValue();
+		String startM = (Integer)startm.getValue() < 10 ? "0" + (Integer)startm.getValue() : "" + (Integer)startm.getValue();
+		String endM = (Integer)endm.getValue() < 10 ? "0" + (Integer)endm.getValue() : "" + (Integer)endm.getValue();
+
+		description = descriptionTextField.getText();
+		starttime = Integer.toString(model.getYear())+"-"+month+"-"+day+"T"+startH+":"+startM+":00";
+		endtime = Integer.toString(model.getYear())+"-"+month+"-"+day+"T"+endH+":"+endM+":00";
+		capacity = (Integer) participantsSpinner.getValue();
+		place = placeTextField.getText();
+		ArrayList<Object> meeting = new ArrayList<>();
+
+		if (list_1.isSelectionEmpty()){
+            if(place.equals("")){
+                new ErrorMessage("Error", "You must either choose place or room");
+                return;
+            }
+
+			//meeting.add(new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null));
+		}
+		else{
+            roomS = list_1.getSelectedValue().toString();
+			room = Integer.parseInt(roomS.substring(roomS.indexOf(" ") + 1));
+
+			//meeting.add(new Meeting(meetingid, starttime, endtime, description, place, room, capacity, Frame.getUserName(), null));
+		}
+		/*
+		Frame.getClient().sendChanges(meeting, "insert");
+
+		ArrayList<Object> tempMembers = new ArrayList<>();
+		ArrayList<Object> tempAdmin = new ArrayList<>();
+
+		for (String i:admin){
+			tempAdmin.add(new MeetingAdmin(meetingid, i));
+			members.add(i);
+		}
+
+		for (String i:members){
+			tempMembers.add(new MeetingInvite(meetingid, i));
+		}
 		
+		for (ExternalUser i: externalUsers){
+			Frame.getClient().getDataStorage().addExternaMeetinglMember(meetingid, i.getEmail(), i.getName(), i.getPhoneNumber());
+		}
+
+		Frame.getClient().sendChanges(tempAdmin, "insert");
+		Frame.getClient().sendChanges(tempMembers, "insert");
+		*/
+
+		frame.setFrame("mainScreen");
 	}
 	
 	public void refresh(){
