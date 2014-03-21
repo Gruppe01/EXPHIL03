@@ -303,6 +303,7 @@ public class EditMembers extends JFrame {
 	private void updateGroupMembers() {
 		int selectedIndex = groupsList.getSelectedIndex();
 		if (selectedIndex != -1) {
+			listModelgroupMembers.removeAllElements();
 			if (selectedIndex == 0){
 				groupMembers = null;
 				groupMembers = Frame.getClient().getDataStorage().users().getAllUsers();
