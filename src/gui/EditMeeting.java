@@ -305,11 +305,12 @@ public class EditMeeting extends JPanel {
 		
 		//listModel.addElement("Room"+room);
 		int roomCnt = -1;
-		
 		for (int i:room){
 			roomCnt++;
 			listModel.addElement("Room " + i);
-			if( "Room " + i == meeting.getPlace()){
+			
+			if(i == meeting.getRoom()){
+				System.out.println(meeting.getRoom());
 				list_1.setSelectedIndex(roomCnt);
 			}
 		}
