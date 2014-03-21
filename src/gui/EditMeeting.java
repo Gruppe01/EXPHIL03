@@ -147,11 +147,12 @@ public class EditMeeting extends JPanel {
 			}
 		});
 		
-		JButton btnDecline = new JButton("Delete meeting");
-		btnDecline.setBounds(347, 287, 127, 23);
-		add(btnDecline);
-		btnDecline.addActionListener(new ActionListener() {
+		JButton btnDelete = new JButton("Delete meeting");
+		btnDelete.setBounds(347, 287, 127, 23);
+		add(btnDelete);
+		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Frame.getClient().sendChanges(meeting, "delete");
 				frame.setFrame("mainScreen");
 			}
 		});
@@ -163,7 +164,7 @@ public class EditMeeting extends JPanel {
 		datePicker.getJFormattedTextField().setText("Choose date");
 		datePicker.setTextEditable(false);
 		datePicker.setToolTipText("");
-		datePicker.setBounds(314, 52, 137, 23);
+		datePicker.setBounds(270, 52, 244, 23);
 		add(datePicker);
 		model.addChangeListener(new ChangeListener() {
 
@@ -304,7 +305,6 @@ public class EditMeeting extends JPanel {
 		
 		//listModel.addElement("Room"+room);
 		int roomCnt = -1;
-		
 		for (int i:room){
 			roomCnt++;
 			listModel.addElement("Room " + i);

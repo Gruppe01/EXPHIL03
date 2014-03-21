@@ -117,7 +117,9 @@ public class MainScreen extends JPanel {
 		add(btnNewMeeting);
 		btnNewMeeting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				frame.setYear(model.getYear());
+				frame.setMonth(model.getMonth());
+				frame.setDay(model.getDay());
 				frame.setFrame("createMeeting");
 			}
 		});
@@ -138,9 +140,10 @@ public class MainScreen extends JPanel {
 		add(lblUsername);
 
 		model = new UtilDateModel();
+		String dateStr = LocalDate.now().toString();
 		datePanel = new JDatePanelImpl(model);
 		datePicker = new JDatePickerImpl(datePanel);
-		datePicker.getJFormattedTextField().setText("Choose date here");
+		datePicker.getJFormattedTextField().setText(dateStr);
 		datePicker.setTextEditable(false);
 		datePicker.setToolTipText("");
 		datePicker.setBounds(499, 175, 146, 23);

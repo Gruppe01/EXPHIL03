@@ -89,21 +89,26 @@ public class WeekCalendar extends JPanel {
 
         int[] selectedRow = table.getSelectedRows();
         int[] selectedColumns = table.getSelectedColumns();
-
-        for (int i = 0; i < selectedRow.length; i++) {
-          for (int j = 0; j < selectedColumns.length; j++) {
-            selectedData = (Meeting) table.getValueAt(selectedRow[i], selectedColumns[j]);
-          }
-        }
-        System.out.println("Selected: " + selectedData);
-        if(selectedData != null){
-        	statusPane.setText(selectedData.toString());
-        }else{
-        	statusPane.setText("No meeting selected");
-        }
-		return selectedData;
-	}
+        System.out.println(table.getSelectedColumn());
+        
+        //Fix for exeption når man trykker på kollonne 0
+        if(table.getSelectedColumn() != 0) {
 	
+	        for (int i = 0; i < selectedRow.length; i++) {
+	          for (int j = 0; j < selectedColumns.length; j++) {
+	            selectedData = (Meeting) table.getValueAt(selectedRow[i], selectedColumns[j]);
+	          }
+	        }
+	        System.out.println("Selected: " + selectedData);
+	        if(selectedData != null){
+	        	statusPane.setText(selectedData.toString());
+	        }else{
+	        	statusPane.setText("No meeting selected");
+	        }
+			return selectedData;
+        }
+        return null;
+	}
 	public void addMeetingtoCalendar(Meeting meeting, String starttime, String endtime, int day){
 		String selectedCell;
 		starttime = starttime.substring(11, 16);
@@ -168,6 +173,7 @@ public class WeekCalendar extends JPanel {
 		
 		table = new JTable();
 		ListSelectionModel cellSelectionModel = table.getSelectionModel();
+	
 		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		cellSelectionModel.addListSelectionListener(new ListSelectionListener() {

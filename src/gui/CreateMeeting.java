@@ -61,6 +61,10 @@ public class CreateMeeting extends JPanel {
 	private ArrayList<String> members = new ArrayList<>();
 	private ArrayList<String> admin = new ArrayList<>();
 	private ArrayList<ExternalUser> externalUsers = new ArrayList<>();
+	private Calendar cal = Calendar.getInstance();
+	private int year = cal.get(Calendar.YEAR);
+	private int month = cal.get(Calendar.MONTH);
+	private int day = cal.get(Calendar.DATE);
 
 	/**
 	 * Create the panel.
@@ -214,7 +218,7 @@ public class CreateMeeting extends JPanel {
 		datePicker.setBounds(274, 31, 145, 23);
 		add(datePicker);
 		Calendar cal = Calendar.getInstance();
-		model.setDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+		model.setDate(year, month, day);
 		model.addChangeListener(new ChangeListener() {
 
 			@Override
@@ -248,6 +252,21 @@ public class CreateMeeting extends JPanel {
 //		scrollPane_1 = new JScrollPane();
 //		scrollPane_1.setBounds(274, 103, 132, 86);
 //		add(scrollPane_1);
+	}
+	
+	public void setYear(int in){
+		year = in;
+		model.setYear(year);
+	}
+	
+	public void setMonth(int in){
+		month = in;
+		model.setMonth(month);
+	}
+	
+	public void setDay(int in){
+		day = in;
+		model.setDay(day);
 	}
 	
 	public void refresh(){
