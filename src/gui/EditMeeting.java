@@ -54,8 +54,8 @@ public class EditMeeting extends JPanel {
 	
 	public void setMeeting(model.Meeting m){
 		this.meeting = m;
-		String startTime = meeting.getStartTimeAsLocalDateTime().toLocalTime().toString();
-		String endTime = meeting.getEndTimeAsLocalDateTime().toLocalTime().toString();
+		String startTime = meeting.getStartTimeAsLocalDateTime().toString();
+		String endTime = meeting.getEndTimeAsLocalDateTime().toString();
 		String[] startSplit = startTime.split("T");
 		String[] endSplit = endTime.split("T");
 		String[] startClock = startSplit[1].split(":");
@@ -293,12 +293,16 @@ public class EditMeeting extends JPanel {
 
 		ArrayList<Integer> room = Frame.getClient().getDataStorage().getAvailableRooms(startTime, endTime, capacity);
 		
-		listModel.addElement("Room"+room);
-
+		//listModel.addElement("Room"+room);
+		int roomCnt = -1;
+		
 		for (int i:room){
+			roomCnt++;
 			listModel.addElement("Room " + i);
+			if( "Room " + i == meeting.getPlace()){
+				list_1.setSelectedIndex(roomCnt);
+			}
 		}
-		list_1.setSelectedIndex(0);
 	}
 	
 	public int getMeetingID(){
