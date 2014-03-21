@@ -33,14 +33,15 @@ public class ShowMeeting extends JPanel {
 	JTextPane textPane_1;
 	JTextPane textPane_2;
 	JTextPane textPane_3;
+	JTextPane textPane_4;
 	
 	public void setMeeting(model.Meeting m){
 		this.meeting = m;
-		textPane.setEditable(true);
 		textPane.setText(meeting.getDescription());
 		textPane_1.setText(meeting.getPlace());
-		textPane_2.setText(meeting.getStarttime());
-		textPane_3.setText(meeting.getEndtime());
+		textPane_2.setText(meeting.getStartTimeAsLocalDateTime().toLocalTime().toString());
+		textPane_3.setText(meeting.getEndTimeAsLocalDateTime().toLocalTime().toString());
+		textPane_4.setText(meeting.getStartTimeAsLocalDateTime().toLocalDate().toString());
 	}
 
 	public ShowMeeting(final Frame frame) {
@@ -132,7 +133,7 @@ public class ShowMeeting extends JPanel {
 		lblDate.setBounds(267, 11, 46, 14);
 		add(lblDate);
 		
-		JTextPane textPane_4 = new JTextPane();
+		textPane_4 = new JTextPane();
 		textPane_4.setEditable(false);
 		textPane_4.setBounds(312, 5, 123, 20);
 		add(textPane_4);

@@ -96,19 +96,16 @@ public class MainScreen extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				if(meetingslist.getSelectedIndex() > -1){
 					meeting = Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingIDList.get(meetingslist.getSelectedIndex()));
-					//if (meeting.isAdmin()){
-						//frame.getEditMeeting().setMeeting(meeting);
-						//frame.setFrame("editMeeting");	
-					//}
-					//else{
+					if (meeting.getCreator() == Frame.getUserName()){
+						frame.getEditMeeting().setMeeting(meeting);
+						frame.setFrame("editMeeting");	
+					}
+					else{
 						frame.getShowMeeting().setMeeting(meeting);
 						frame.setFrame("showMeeting");	
-					//}
-
-					
+					}
 				}
 			}
 			
