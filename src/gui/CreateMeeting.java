@@ -251,6 +251,7 @@ public class CreateMeeting extends JPanel {
 		btnEditMembers.setEnabled(true);
 	}
 
+    @SuppressWarnings("unchecked")
 	private void roomLoader(){
 
 		listModel.removeAllElements();
@@ -271,13 +272,11 @@ public class CreateMeeting extends JPanel {
 
 		capacity = (Integer)participantsSpinner.getValue();
 
-		ArrayList<Integer> room = frame.getClient().getDataStorage().getAvailableRooms(startTime, endTime, capacity);
+		ArrayList<Integer> room = Frame.getClient().getDataStorage().getAvailableRooms(startTime, endTime, capacity);
 
 		for (int i:room){
-			listModel.addElement(room);
+			listModel.addElement("Room " + i);
 		}
-
-
 	}
 
 	private void create(){
@@ -302,7 +301,7 @@ public class CreateMeeting extends JPanel {
 		description = textPane.getText();
 		starttime = Integer.toString(model.getYear())+"-"+month+"-"+day+"T"+startH+":"+startM+":00";
 		endtime = Integer.toString(model.getYear())+"-"+month+"-"+day+"T"+endH+":"+endM+":00";
-		capacity = (Integer)participantsSpinner.getValue();
+		capacity = (Integer) participantsSpinner.getValue();
 		place = placeTextField.getText();
 		ArrayList<Object> meeting = new ArrayList<>();
 
@@ -315,8 +314,9 @@ public class CreateMeeting extends JPanel {
 			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null));
 		}
 		else{
-			roomS = list.getSelectedValue().toString();
-			room = Integer.parseInt(roomS);
+            roomS = list.getSelectedValue().toString();
+			room = Integer.parseInt(roomS.substring(roomS.indexOf(" ") + 1));
+
 			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, room, capacity, Frame.getUserName(), null));
 		}
 

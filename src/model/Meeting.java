@@ -22,7 +22,7 @@ public class Meeting implements Serializable {
         setEndtime(endtime);
         setDescription(description);
         setPlace(place);
-        this.room = room;
+        setRoom(room);
         setMinCapacity(minCapacity);
         this.creator = creator;
         setLastUpdated(lastUpdated);
