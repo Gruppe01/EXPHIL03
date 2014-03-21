@@ -44,6 +44,7 @@ public class MainScreen extends JPanel {
 	private DefaultListModel notiflistModel;
 	private ArrayList<Integer> notifmeetings = new ArrayList<Integer>();
 	private model.Meeting meeting;
+	private ArrayList<Integer> meetingIDList;
 	/**
 	 * Create the frame.
 	 */
@@ -81,6 +82,8 @@ public class MainScreen extends JPanel {
 		notifications = new JList(notiflistModel);
 		scrollPane_1.setViewportView(notifications);
 		
+		meetingIDList = new ArrayList<Integer>();
+		
 		JButton btnEditShow = new JButton("Edit / Show meeting");
 		btnEditShow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -95,7 +98,7 @@ public class MainScreen extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				if(meetingslist.getSelectedIndex() > -1){
-					meeting = Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingslist.getSelectedIndex() + 1);
+					meeting = Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingIDList.get(meetingslist.getSelectedIndex()));
 					//if (meeting.isAdmin()){
 						//frame.getEditMeeting().setMeeting(meeting);
 						//frame.setFrame("editMeeting");	
@@ -182,9 +185,11 @@ public class MainScreen extends JPanel {
 	
 	public void setNewsfeed(){
 		meetingListModel.removeAllElements();
+		meetingIDList.clear();
 		ArrayList<MeetingInvite> meetings = Frame.getClient().getDataStorage().getMeetingInvitesByUsernameAndDate(Frame.getUserName(), LocalDate.parse(pickedDate));
 		for(MeetingInvite meetingInvite : meetings){
 			meetingListModel.addElement(Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID()).getDescription());
+			meetingIDList.add(Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID()).getMeetingID());
 		}
 	}
 	

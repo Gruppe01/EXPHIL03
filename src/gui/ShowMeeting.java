@@ -29,13 +29,20 @@ import javax.swing.JTextField;
 public class ShowMeeting extends JPanel {
 	private JTable table;
 	private model.Meeting meeting;
+	JTextPane textPane;
+	JTextPane textPane_1;
+	JTextPane textPane_2;
+	JTextPane textPane_3;
 	
 	public void setMeeting(model.Meeting m){
 		this.meeting = m;
-		System.out.println(meeting.getDescription());
+		textPane.setEditable(true);
+		textPane.setText(meeting.getDescription());
+		textPane_1.setText(meeting.getPlace());
+		textPane_2.setText(meeting.getStarttime());
+		textPane_3.setText(meeting.getEndtime());
 	}
 
-	
 	public ShowMeeting(final Frame frame) {
 		setLayout(null);
 		
@@ -43,7 +50,7 @@ public class ShowMeeting extends JPanel {
 		lblDescription.setBounds(10, 11, 72, 14);
 		add(lblDescription);
 		
-		JTextPane textPane = new JTextPane();
+		textPane = new JTextPane();
 		textPane.setEditable(false);
 		textPane.setBounds(110, 11, 147, 69);
 		add(textPane);
@@ -52,7 +59,7 @@ public class ShowMeeting extends JPanel {
 		lblPlace.setBounds(10, 97, 46, 14);
 		add(lblPlace);
 		
-		JTextPane textPane_1 = new JTextPane();
+		textPane_1 = new JTextPane();
 		textPane_1.setEditable(false);
 		textPane_1.setBounds(110, 91, 147, 20);
 		add(textPane_1);
@@ -61,7 +68,7 @@ public class ShowMeeting extends JPanel {
 		lblStartTime.setBounds(10, 128, 72, 14);
 		add(lblStartTime);
 		
-		JTextPane textPane_2 = new JTextPane();
+		textPane_2 = new JTextPane();
 		textPane_2.setBounds(110, 122, 147, 20);
 		add(textPane_2);
 		
@@ -69,9 +76,10 @@ public class ShowMeeting extends JPanel {
 		lblEndTime.setBounds(10, 159, 72, 14);
 		add(lblEndTime);
 		
-		JTextPane textPane_3 = new JTextPane();
+		textPane_3 = new JTextPane();
 		textPane_3.setBounds(110, 153, 147, 20);
 		add(textPane_3);
+		
 		
 		JButton btnCancel = new JButton("Back");
 		btnCancel.setBounds(10, 287, 89, 23);
@@ -140,6 +148,8 @@ public class ShowMeeting extends JPanel {
 		
 		JList list = new JList();
 		scrollPane.setViewportView(list);
+		
+
 		
 		
 
