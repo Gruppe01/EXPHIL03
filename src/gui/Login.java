@@ -68,6 +68,8 @@ public class Login extends JPanel {
 	}
 	
 	public void refresh(){
+		usernameField.setText("");
+		passwordField.setText("");
 		this.revalidate();
 		this.repaint();
 	}
