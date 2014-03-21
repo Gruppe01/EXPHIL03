@@ -203,7 +203,7 @@ public class ServerDataHandler extends DataHandler {
 
                 map = new HashMap<>(); map.put("meetingID", String.valueOf(meetingInvite.getMeetingID())); map.put("username", String.valueOf(meetingInvite.getUsername()));
                 fields = new ArrayList<>(Arrays.asList("username", "meetingID", "coming", "alarm", "lastSeen"));
-                values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID()), String.valueOf(meetingInvite.isComing()), meetingInvite.getAlarm(), meetingInvite.getLastSeen()));
+                values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID()), String.valueOf(meetingInvite.isComingAsTinyInt()), meetingInvite.getAlarm(), meetingInvite.getLastSeen()));
 
                 mySQLQuery.update(table, fields, values, map, null);
                 break;

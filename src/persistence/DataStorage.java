@@ -1,5 +1,7 @@
 package persistence;
 
+import com.sun.swing.internal.plaf.synth.resources.synth_sv;
+import gui.Frame;
 import model.*;
 import persistence.data.*;
 
@@ -147,6 +149,19 @@ public class DataStorage implements Serializable{
         return meetingInvited;
     }
 
+    public void updateMeetingInviteByUsernameAndMeetingID(int meetingID, String username, boolean coming, String alarm){
+        MeetingInvite meetingInvite = meetingInvites().getMeetingInviteByUsernameAndMeetingID(meetingID, username);
+
+        if(meetingInvite == null) throw new IllegalArgumentException("Error updating meeting info");
+        else{
+            meetingInvite.setComing(coming);
+            meetingInvite.setAlarm(alarm);
+            meetingInvite.setLastSeenAsLocalDateTime(LocalDateTime.now());
+
+            Frame.getClient().sendChanges(meetingInvite, "update");
+        }
+    }
+
     public ArrayList<MeetingInvite> getActiveMeetingInvitesByUsernameAndWeek(String username, String stringDate){
         ArrayList<MeetingInvite> meetingInvitesReturn = new ArrayList<>();
         LocalDate date = LocalDate.parse(stringDate);
@@ -220,14 +235,20 @@ public class DataStorage implements Serializable{
 
     public void addMeetingAdmin(int meetingID, String username) {
         if(meetingAdmins().getMeetingAdminByUsernameAndMeetingID(meetingID, username) != null) throw new IllegalArgumentException("The user is allready an admin");
+        else{
+            MeetingAdmin meetingAdmin = new MeetingAdmin(meetingID, username);
 
-        meetingAdmins().addMeetingAdmin(new MeetingAdmin(meetingID, username));
+            Frame.getClient().sendChanges(meetingAdmin, "insert");
+        }
     }
 
     public void deleteMeetingAdmin(int meetingID, String username){
         if(meetingAdmins().getMeetingAdminByUsernameAndMeetingID(meetingID, username) == null) throw new IllegalArgumentException("The user is not an admin");
+        else{
+            MeetingAdmin meetingAdmin = meetingAdmins().getMeetingAdminByUsernameAndMeetingID(meetingID, username);
 
-        meetingAdmins().removeMeetingAdminByMeetingIDAndUsername(meetingID, username);
+            Frame.getClient().sendChanges(meetingAdmin, "delete");
+        }
     }
 
     public ArrayList<MeetingInvite> getMeetingMembers(int meetingID) {
@@ -236,12 +257,20 @@ public class DataStorage implements Serializable{
 
     public void addMeetingMember(int meetingID, String username) {
         if(meetingInvites().getMeetingInviteByUsernameAndMeetingID(meetingID, username) != null) throw new IllegalArgumentException("The user is already invited");
-        else meetingInvites().addMeetingInvite(new MeetingInvite(meetingID, username));
+        else{
+            MeetingInvite meetingInvite = new MeetingInvite(meetingID, username);
+
+            Frame.getClient().sendChanges(meetingInvite, "insert");
+        }
     }
 
     public void deleteMeetingMember(int meetingID, String username){
         if(meetingInvites().getMeetingInviteByUsernameAndMeetingID(meetingID, username) == null) throw new IllegalArgumentException("The user is not invited");
-        else meetingInvites().removeMeetingInviteByMeetingIDAndUsername(meetingID, username);
+        else{
+            MeetingInvite meetingInvite = meetingInvites().getMeetingInviteByUsernameAndMeetingID(meetingID, username);
+
+            Frame.getClient().sendChanges(meetingInvite, "delete");
+        }
     }
 
     public ArrayList<String> getExternalMeetingMembers(int meetingID) {
@@ -250,11 +279,19 @@ public class DataStorage implements Serializable{
 
     public void addExternaMeetinglMember(int meetingID, String email, String name, String phonenumber) throws IllegalArgumentException {
         if(externalUsers().getExternalUsersByMeetingID(meetingID).contains(email)) throw new IllegalArgumentException("The user is already invited");
-        else externalUsers().addExternalUser(new ExternalUser(email, meetingID, name, phonenumber));
+        else{
+            ExternalUser externalUser = new ExternalUser(email, meetingID, name, phonenumber);
+
+            Frame.getClient().sendChanges(externalUser, "insert");
+        }
     }
 
     public void deleteExternalMeetingMember(int meetingID, String email) throws IllegalArgumentException {
         if(!externalUsers().getExternalUsersByMeetingID(meetingID).contains(email)) throw new IllegalArgumentException("The user is not invited");
-        else externalUsers().removeExternalUserByMeetingIDAndEmail(meetingID, email);
+        else{
+            ExternalUser externalUser = externalUsers().getExternalUserByEmailAndMeetingID(meetingID, email);
+
+            Frame.getClient().sendChanges(externalUser, "delete");
+        }
     }
 }

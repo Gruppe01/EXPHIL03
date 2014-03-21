@@ -42,20 +42,24 @@ public class MeetingInvite implements Serializable {
         return coming;
     }
 
-    public void setComing(boolean coming) {
+    public String isComingAsTinyInt(){
+        return coming ? "1" : "0";
+    }
+
+    public void setComing(Boolean coming) {
         this.coming = coming;
     }
 
     public String getAlarm() {
-        return alarm.toString();
+        return alarm == null ? null : alarm.toString();
     }
 
     public void setAlarm(String alarm) throws IllegalArgumentException{
-        this.alarm = LocalDateTime.parse(alarm);
+        this.alarm = alarm == null ? null : LocalDateTime.parse(alarm);
     }
 
     public String getLastSeen() {
-        return lastSeen.toString();
+        return lastSeen == null ? null : lastSeen.toString();
     }
 
     public LocalDateTime getLastSeenAsLocalDateTime() {
@@ -64,5 +68,9 @@ public class MeetingInvite implements Serializable {
 
     public void setLastSeen(String lastUpdated) throws IllegalArgumentException{
         this.lastSeen = LocalDateTime.parse(lastUpdated);
+    }
+
+    public void setLastSeenAsLocalDateTime(LocalDateTime lastUpdated) throws IllegalArgumentException{
+        this.lastSeen = lastUpdated;
     }
 }

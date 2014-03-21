@@ -1,6 +1,6 @@
 package persistence.data;
 
-import model.MeetingInvite;
+import model.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;

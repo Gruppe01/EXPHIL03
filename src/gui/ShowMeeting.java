@@ -34,6 +34,7 @@ public class ShowMeeting extends JPanel {
 	JTextPane textPane_2;
 	JTextPane textPane_3;
 	JTextPane textPane_4;
+    JComboBox comboBox;
 	
 	public void setMeeting(model.Meeting m){
 		this.meeting = m;
@@ -106,7 +107,18 @@ public class ShowMeeting extends JPanel {
 		add(btnAccept);
 		btnAccept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.setFrame("mainScreen");
+                String comboboxValue = comboBox.getSelectedItem().toString();
+                String alarmTime;
+
+                if(comboboxValue.equals("Time before meeting")) alarmTime = null;
+                else{
+                    int minutesBefore = Integer.parseInt(comboboxValue.substring(0, comboboxValue.indexOf(" ")));
+                    alarmTime = meeting.getStartTimeAsLocalDateTime().minusMinutes(minutesBefore).toString();
+                }
+
+                Frame.getClient().getDataStorage().updateMeetingInviteByUsernameAndMeetingID(meeting.getMeetingID(), Frame.getUserName(), true, alarmTime);
+
+                frame.setFrame("mainScreen");
 			}
 		});
 		
@@ -115,12 +127,14 @@ public class ShowMeeting extends JPanel {
 		add(btnDecline);
 		btnDecline.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+                Frame.getClient().getDataStorage().updateMeetingInviteByUsernameAndMeetingID(meeting.getMeetingID(), Frame.getUserName(), false, null);
+
 				frame.setFrame("mainScreen");
 			}
 		});
 		
 
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Time before meeting", "10 min", "15 min", "20 min", "25 min", "30 min"}));
 		comboBox.setBounds(110, 184, 147, 20);
 		add(comboBox);
