@@ -64,16 +64,6 @@ public class MainScreen extends JPanel {
 		meetingListModel = new DefaultListModel();
 		meetingslist = new JList(meetingListModel);
 		scrollPane.setViewportView(meetingslist);
-        meetingslist.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if(meetingslist.getSelectionBackground() != new JList().getBackground()) return;
-                System.out.println("Meeting");
-
-                meetingslist.setSelectionBackground(new JList().getSelectionBackground());
-                notifications.setSelectionBackground(new JList().getBackground());
-            }
-        });
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(276, 35, 369, 129);
@@ -87,17 +77,6 @@ public class MainScreen extends JPanel {
 		notiflistModel = new DefaultListModel<>();
 		notifications = new JList(notiflistModel);
 		scrollPane_1.setViewportView(notifications);
-        notifications.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if(notifications.getSelectionBackground() != new JList().getBackground()) return;
-                System.out.println("Notification");
-
-                notifications.setSelectionBackground(new JList().getSelectionBackground());
-                meetingslist.setSelectionBackground(new JList().getBackground());
-            }
-        });
-
         group = new ButtonGroup();
 
 		meetingIDList = new ArrayList<Integer>();
@@ -110,18 +89,12 @@ public class MainScreen extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(meetingslist.getSelectedIndex() > -1){
-					ArrayList<String> admins = new ArrayList<>();
 					meeting = Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingIDList.get(meetingslist.getSelectedIndex()));
-					admins = Frame.getClient().getDataStorage().getMeetingAdminsByMeetingID(meetingIDList.get(meetingslist.getSelectedIndex()));
-					if (meeting.getCreator() == Frame.getUserName()){
+					MeetingAdmin admin = Frame.getDataStorage().meetingAdmins().getMeetingAdminByUsernameAndMeetingID(meeting.getMeetingID(), Frame.getUserName());
+					if (admin != null){
 						frame.getEditMeeting().setMeeting(meeting);
 						frame.setFrame("editMeeting");	
-					}
-					else if(admins.contains(Frame.getUserName())){
-						frame.getEditMeeting().setMeeting(meeting);
-						frame.setFrame("editMeeting");
-					}
-					else{
+					}else{
 						frame.getShowMeeting().setMeeting(meeting);
 						frame.setFrame("showMeeting");	
 					}

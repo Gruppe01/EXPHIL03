@@ -142,6 +142,7 @@ public class Frame extends JPanel{
 				curPanel=mainScreen;
 				frame.setSize(700, 400);
                 mainScreen.setNewsfeed();
+                mainScreen.setNotifications();;
 				break;
 			case"showMeeting":
 				frame.remove(curPanel);
