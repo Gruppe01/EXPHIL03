@@ -43,6 +43,12 @@ public class ShowMeeting extends JPanel {
 		textPane_2.setText(meeting.getStartTimeAsLocalDateTime().toLocalTime().toString());
 		textPane_3.setText(meeting.getEndTimeAsLocalDateTime().toLocalTime().toString());
 		textPane_4.setText(meeting.getStartTimeAsLocalDateTime().toLocalDate().toString());
+		
+		textPane.setEditable(false);
+		textPane_1.setEditable(false);
+		textPane_2.setEditable(false);
+		textPane_3.setEditable(false);
+		textPane_4.setEditable(false);
 	}
 
 	public ShowMeeting(final Frame frame) {
