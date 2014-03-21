@@ -111,7 +111,7 @@ public class CreateMeeting extends JPanel {
 		add(btnEditMembers);
 		btnEditMembers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EditMembers edit = new EditMembers(working);
+				EditMembers edit = new EditMembers(working,null);
 				edit.setVisible(true);
 				btnEditMembers.setEnabled(false);
 			}
@@ -127,7 +127,7 @@ public class CreateMeeting extends JPanel {
 		});
 
 		lblParticipants = new JLabel("Participants:");
-		lblParticipants.setBounds(353, 228, 86, 14);
+		lblParticipants.setBounds(352, 257, 86, 14);
 		add(lblParticipants);
 
 		label = new JLabel(":");
@@ -190,7 +190,7 @@ public class CreateMeeting extends JPanel {
 
 		participantsSpinner = new JSpinner();
 		participantsSpinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
-		participantsSpinner.setBounds(449, 227, 125, 20);
+		participantsSpinner.setBounds(449, 254, 125, 20);
 		add(participantsSpinner);
 		participantsSpinner.addChangeListener(new ChangeListener() {
 
@@ -231,6 +231,15 @@ public class CreateMeeting extends JPanel {
 		placeTextField.setBounds(121, 145, 138, 20);
 		add(placeTextField);
 		placeTextField.setColumns(10);
+		
+		JButton btnClear = new JButton("Clear Selection");
+		btnClear.setBounds(449, 227, 125, 25);
+		add(btnClear);
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				list.clearSelection();
+			}
+		});
 
 
 
