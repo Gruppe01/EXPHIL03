@@ -189,13 +189,22 @@ public class EditMeeting extends JPanel {
 		list_1 = new JList(listModel);
 		scrollPane_1.setViewportView(list_1);
 		
+		JButton btnClear = new JButton("Clear Selection");
+		btnClear.setBounds(524, 223, 125, 25);
+		add(btnClear);
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				list_1.clearSelection();
+			}
+		});
+		
 		JLabel lblNewLabel = new JLabel("Available rooms");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		scrollPane_1.setColumnHeaderView(lblNewLabel);
 		
 		JLabel lblParticipants = new JLabel("Participants:");
-		lblParticipants.setBounds(442, 228, 72, 14);
+		lblParticipants.setBounds(442, 256, 72, 14);
 		add(lblParticipants);
 		
 		starth = new JSpinner();
@@ -259,7 +268,7 @@ public class EditMeeting extends JPanel {
 		add(label_1);
 		
 		participantsSpinner = new JSpinner();
-		participantsSpinner.setBounds(526, 224, 123, 22);
+		participantsSpinner.setBounds(526, 252, 123, 22);
 		add(participantsSpinner);
 		participantsSpinner.addChangeListener(new ChangeListener() {
 
