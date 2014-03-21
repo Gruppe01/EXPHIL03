@@ -65,6 +65,14 @@ public class Frame extends JPanel{
 		return user;
 	}
 	
+	public ShowMeeting getShowMeeting(){
+		return showMeeting;
+	}
+	
+	public EditMeeting getEditMeeting(){
+		return editMeeting;
+	}
+	
 	public WeekCalendar getWeekCalendar(){
 		return weekCalendar;
 	}
