@@ -413,8 +413,24 @@ public class ServerDataHandler extends DataHandler {
         for(HashMap<String, String> meetingInvite_raw : meetingInvites_raw){
             int meetingID = Integer.parseInt(meetingInvite_raw.get("meetingID"));
             String username = meetingInvite_raw.get("username");
+            String alarm = meetingInvite_raw.get("alarm") == null ? null : meetingInvite_raw.get("alarm").substring(0, meetingInvite_raw.get("alarm").length()-2).replace(' ', 'T');
+            String lastSeen = meetingInvite_raw.get("lastSeen") == null ? null : meetingInvite_raw.get("lastSeen").substring(0, meetingInvite_raw.get("lastSeen").length()-2).replace(' ', 'T');
+            String comingString = meetingInvite_raw.get("coming");
+            Boolean coming;
 
-            meetingInvites.add(new MeetingInvite(meetingID, username));
+            switch (comingString) {
+                case "1":
+                    coming = true;
+                    break;
+                case "0":
+                    coming = false;
+                    break;
+                default:
+                    coming = null;
+                    break;
+            }
+
+            meetingInvites.add(new MeetingInvite(meetingID, username, coming, alarm, lastSeen));
         }
 
         return meetingInvites;

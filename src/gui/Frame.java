@@ -162,6 +162,7 @@ public class Frame extends JPanel{
 				frame.repaint();
 				curPanel=mainScreen;
 				frame.setSize(700, 400);
+                mainScreen.setDatePicked();
                 mainScreen.setNewsfeed();
                 mainScreen.setNotifications();;
 				break;

@@ -17,8 +17,8 @@ public class Server{
     private boolean serverOn = true;
     private ServerDataHandler dataHandler;
 
-    public Server(){
-        this.dataHandler = new ServerDataHandler();
+    public Server(ServerDataHandler dataHandler){
+        this.dataHandler = dataHandler;
 
         try{
             serverSocket = new ServerSocket(PORT);
@@ -108,8 +108,8 @@ public class Server{
                         String type = (String) in.readObject();
                         Object changedObject = in.readObject();
 
-                        dataHandler.receiveChanges(changedObject, type);
                         dataHandler.editDatabase(changedObject, type);
+                        dataHandler.receiveChanges(changedObject, type);
                         sendChanges(changedObject, type);
                     }catch(ClassNotFoundException e){
                         System.out.println("Received unapproved item");
@@ -133,6 +133,6 @@ public class Server{
     }
 
     public static void main (String[] args){
-        Server server = new Server();
+        Server server = new Server(new ServerDataHandler());
     }
 }

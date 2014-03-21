@@ -41,7 +41,9 @@ public class EditMembers extends JFrame {
 	private JList groupsList;
 	private DefaultListModel listModelgroupsList;
 	private ArrayList<String> members = new ArrayList<>();
+    private ArrayList<String> membersUsername = new ArrayList<>();
 	private ArrayList<String> admin = new ArrayList<>();
+    private ArrayList<String> adminUsername = new ArrayList<>();
 	private ArrayList<String> groups = new ArrayList<>();
 	private ArrayList<String> groupMembers = new ArrayList<>();
 	private ArrayList<ExternalUser> externalUsers = new ArrayList<>();

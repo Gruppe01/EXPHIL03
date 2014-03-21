@@ -16,7 +16,7 @@ public class MeetingInvite implements Serializable {
         this.coming = null;
     }
 
-    public MeetingInvite(int meetingID, String username, boolean coming, String alarm, String lastSeen) {
+    public MeetingInvite(int meetingID, String username, Boolean coming, String alarm, String lastSeen) {
         this.meetingID = meetingID;
         setUsername(username);
         setComing(coming);
@@ -24,7 +24,15 @@ public class MeetingInvite implements Serializable {
         setLastSeen(lastSeen);
     }
 
-    public MeetingInvite(int meetingID, String username, boolean coming, LocalDateTime alarm, LocalDateTime lastSeen) {
+    public MeetingInvite(int meetingID, String username, String coming, String alarm, String lastSeen) {
+        this.meetingID = meetingID;
+        setUsername(username);
+        setComingAsTinyInt(coming);
+        setAlarm(alarm);
+        setLastSeen(lastSeen);
+    }
+
+    public MeetingInvite(int meetingID, String username, Boolean coming, LocalDateTime alarm, LocalDateTime lastSeen) {
         this.meetingID = meetingID;
         setUsername(username);
         setComing(coming);
@@ -32,7 +40,7 @@ public class MeetingInvite implements Serializable {
         setLastSeen(lastSeen.toString());
     }
 
-    public MeetingInvite(int meetingID, String username, boolean coming) {
+    public MeetingInvite(int meetingID, String username, Boolean coming) {
         this.meetingID = meetingID;
         setUsername(username);
         setComing(coming);
@@ -59,11 +67,32 @@ public class MeetingInvite implements Serializable {
     }
 
     public String isComingAsTinyInt(){
+        if(coming == null) return "2";
+
         return coming ? "1" : "0";
     }
 
-    public void setComing(boolean coming) {
+    public void setComing(Boolean coming) {
         this.coming = coming;
+    }
+
+    public void setComingAsTinyInt(String coming){
+        if(coming == null){
+            this.coming = null;
+            return;
+        }
+
+        switch (coming){
+            case "0":
+                setComing(false);
+                break;
+            case "1":
+                setComing(true);
+                break;
+            default:
+                this.coming = null;
+                break;
+        }
     }
 
     public String getAlarm() {
@@ -83,7 +112,7 @@ public class MeetingInvite implements Serializable {
     }
 
     public void setLastSeen(String lastUpdated) throws IllegalArgumentException{
-        this.lastSeen = LocalDateTime.parse(lastUpdated);
+        this.lastSeen = lastUpdated == null ? null : LocalDateTime.parse(lastUpdated);
     }
 
     public void setLastSeenAsLocalDateTime(LocalDateTime lastUpdated) throws IllegalArgumentException{
