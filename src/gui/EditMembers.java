@@ -200,8 +200,10 @@ public class EditMembers extends JFrame {
 				int selectedIndex = groupMembersList.getSelectedIndex();
 				if (selectedIndex != -1) {
 					String selected = (String) groupMembersList.getSelectedValue();
-					members.add(selected);
-			        }
+					if(!members.contains(groupMembersList.getSelectedValue())) {
+						members.add(selected);
+					}
+			    }
 					updateMembersList();
 				}
 		});
