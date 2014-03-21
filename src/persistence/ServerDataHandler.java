@@ -119,7 +119,7 @@ public class ServerDataHandler extends DataHandler {
                 MeetingInvite meetingInvite = (MeetingInvite) changedObject;
 
                 fields = new ArrayList<>(Arrays.asList("username", "meetingID", "coming", "alarm", "lastSeen"));
-                values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID()), String.valueOf(meetingInvite.isComing()), meetingInvite.getAlarm(), meetingInvite.getLastSeen()));
+                values = new ArrayList<>(Arrays.asList(meetingInvite.getUsername(), String.valueOf(meetingInvite.getMeetingID()), String.valueOf(meetingInvite.isComingAsTinyInt()), meetingInvite.getAlarm(), meetingInvite.getLastSeen()));
 
                 mySQLQuery.insert(table, fields, values);
                 break;
