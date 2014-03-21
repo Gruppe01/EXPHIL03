@@ -130,9 +130,7 @@ public class CreateUser extends JPanel {
 		try{
 		    user = new User(username, password, name, email, phonenumber);
 
-            ArrayList<Object> changedObject = new ArrayList<>(); changedObject.add(user);
-
-            Frame.getClient().sendChanges(changedObject, "insert");
+            Frame.getClient().sendChanges(user, "insert");
 		}catch(IllegalArgumentException e){
 			ErrorMessage error = new ErrorMessage("Error", e.getMessage());
 			return;
