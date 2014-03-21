@@ -79,7 +79,7 @@ public class EditMeeting extends JPanel {
 		endh.setValue(Integer.parseInt(endHour));
 		startm.setValue(Integer.parseInt(startMinute));
 		endm.setValue(Integer.parseInt(endMinute));
-		model.setDate(Integer.parseInt(year), Integer.parseInt(month)-1, Integer.parseInt(day));
+		model.setDate(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
 		
 		roomLoader();
 		
