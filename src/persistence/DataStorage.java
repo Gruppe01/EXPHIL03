@@ -314,7 +314,7 @@ public class DataStorage implements Serializable{
         return externalUsers().getExternalUsersByMeetingID(meetingID);
     }
 
-    public void addExternaMeetinglMember(int meetingID, String email, String name, String phonenumber) throws IllegalArgumentException {
+    public void addExternaMeetingMember(int meetingID, String email, String name, String phonenumber) throws IllegalArgumentException {
         if(externalUsers().getExternalUsersByMeetingID(meetingID).contains(email)) throw new IllegalArgumentException("The user is already invited");
         else{
             ExternalUser externalUser = new ExternalUser(email, meetingID, name, phonenumber);

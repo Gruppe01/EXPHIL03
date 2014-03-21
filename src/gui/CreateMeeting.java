@@ -236,10 +236,10 @@ public class CreateMeeting extends JPanel {
 		btnClear.setBounds(449, 227, 125, 25);
 		add(btnClear);
 		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				list.clearSelection();
-			}
-		});
+            public void actionPerformed(ActionEvent e) {
+                list.clearSelection();
+            }
+        });
 
 
 
@@ -256,11 +256,11 @@ public class CreateMeeting extends JPanel {
 	}
 
 	public void setAdmins(ArrayList<String> in){
-		admin = in;
+        admin = in;
 	}
 
 	public void setMembers(ArrayList<String> in){
-		members = in;
+        members = in;
 	}
 	
 	public void setExternalUsers(ArrayList<ExternalUser> in){
@@ -355,7 +355,7 @@ public class CreateMeeting extends JPanel {
 		}
 		
 		for (ExternalUser i: externalUsers){
-			Frame.getClient().getDataStorage().addExternaMeetinglMember(meetingid, i.getEmail(), i.getName(), i.getPhoneNumber());
+			Frame.getClient().getDataStorage().addExternaMeetingMember(meetingid, i.getEmail(), i.getName(), i.getPhoneNumber());
 		}
 
 		Frame.getClient().sendChanges(tempAdmin, "insert");

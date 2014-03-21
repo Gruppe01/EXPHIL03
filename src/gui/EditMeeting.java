@@ -344,8 +344,6 @@ public class EditMeeting extends JPanel {
 		String roomS;
 		int room;
 
-		//int meetingid = Frame.getClient().getDataStorage().meetings().getNextMeetingID();
-
 		String month = model.getMonth()+1<10 ? "0" + (model.getMonth()+1) : "" + (model.getMonth()+1);
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
 		String startH = (Integer)starth.getValue() < 10 ? "0" + (Integer)starth.getValue() : "" + (Integer)starth.getValue();
@@ -358,7 +356,8 @@ public class EditMeeting extends JPanel {
 		endtime = Integer.toString(model.getYear())+"-"+month+"-"+day+"T"+endH+":"+endM+":00";
 		capacity = (Integer) participantsSpinner.getValue();
 		place = placeTextField.getText();
-		ArrayList<Object> meeting = new ArrayList<>();
+
+        int meetingid = meeting.getMeetingID();
 
 		if (list_1.isSelectionEmpty()){
             if(place.equals("")){
@@ -366,16 +365,15 @@ public class EditMeeting extends JPanel {
                 return;
             }
 
-			//meeting.add(new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null));
-		}
-		else{
+			meeting = new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null);
+		}else{
             roomS = list_1.getSelectedValue().toString();
 			room = Integer.parseInt(roomS.substring(roomS.indexOf(" ") + 1));
 
-			//meeting.add(new Meeting(meetingid, starttime, endtime, description, place, room, capacity, Frame.getUserName(), null));
+			meeting = new Meeting(meetingid, starttime, endtime, description, place, room, capacity, Frame.getUserName(), null);
 		}
-		/*
-		Frame.getClient().sendChanges(meeting, "insert");
+
+		Frame.getDataStorage().updateMeetingByMeeting(meeting);
 
 		ArrayList<Object> tempMembers = new ArrayList<>();
 		ArrayList<Object> tempAdmin = new ArrayList<>();
@@ -390,12 +388,11 @@ public class EditMeeting extends JPanel {
 		}
 		
 		for (ExternalUser i: externalUsers){
-			Frame.getClient().getDataStorage().addExternaMeetinglMember(meetingid, i.getEmail(), i.getName(), i.getPhoneNumber());
+			Frame.getClient().getDataStorage().addExternaMeetingMember(meetingid, i.getEmail(), i.getName(), i.getPhoneNumber());
 		}
 
 		Frame.getClient().sendChanges(tempAdmin, "insert");
 		Frame.getClient().sendChanges(tempMembers, "insert");
-		*/
 
 		frame.setFrame("mainScreen");
 	}
