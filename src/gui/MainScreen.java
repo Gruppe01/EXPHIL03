@@ -161,8 +161,6 @@ public class MainScreen extends JPanel {
         pickedDate = LocalDate.now().toString();
 
 		add(datePicker);
-        setNewsfeed();
-		setNotifications();
 	}
 
 	public void refresh(){
@@ -170,7 +168,7 @@ public class MainScreen extends JPanel {
 		this.repaint();
 	}
 
-	private void setDatePicked(){
+	public void setDatePicked(){
 		int thismonth = model.getMonth() + 1;
 		String month = thismonth<10 ? "0" + thismonth : "" + thismonth;
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();

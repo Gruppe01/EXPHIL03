@@ -132,11 +132,11 @@ public class Frame extends JPanel{
 				break;
 			case "createMeeting":
 				frame.remove(curPanel);
+				frame.add(createMeeting);
+				createMeeting.refresh();
 				createMeeting.setYear(year);
 				createMeeting.setMonth(month);
 				createMeeting.setDay(day);
-				frame.add(createMeeting);
-				createMeeting.refresh();
 				frame.validate();
 				frame.repaint();
 				curPanel=createMeeting;
@@ -155,6 +155,9 @@ public class Frame extends JPanel{
 				frame.remove(curPanel);
 				frame.add(mainScreen);
 				mainScreen.refresh();
+				mainScreen.setDatePicked();
+				mainScreen.setNewsfeed();
+				mainScreen.setNotifications();
 				frame.validate();
 				frame.repaint();
 				curPanel=mainScreen;
