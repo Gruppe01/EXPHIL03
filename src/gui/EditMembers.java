@@ -1,6 +1,7 @@
 package gui;
 
 import model.ExternalUser;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -12,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -50,7 +52,7 @@ public class EditMembers extends JFrame {
 		meeting = in;
 		working = this;
 		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(697,335);
 		listModelgroupMembers = new DefaultListModel<>();
 		listModelMembers = new DefaultListModel<>();
@@ -80,8 +82,6 @@ public class EditMembers extends JFrame {
 				int selectedIndex = meetingList.getSelectedIndex();
 				if (selectedIndex != -1) {
 					String selected = (String) meetingList.getSelectedValue();
-					selected = selected.replaceAll("\\b (Admin)\\b", "");
-					selected = selected.replaceAll("\\b (External)\\b", "");
 					for ( int i = 0;  i < members.size(); i++){
 			            String tempName = members.get(i);
 			            if(tempName.equals(selected)){
@@ -91,7 +91,7 @@ public class EditMembers extends JFrame {
 			        }
 					for ( int i = 0;  i < externalUsers.size(); i++){
 			            String tempName = externalUsers.get(i).getName();
-			            if(tempName.equals(selected)){
+			            if((tempName+" (External)").equals(selected)){
 			            	ErrorMessage Error = new ErrorMessage("Error", "External Users can not be admins");
 			            }
 			        }
@@ -108,10 +108,9 @@ public class EditMembers extends JFrame {
 				int selectedIndex = meetingList.getSelectedIndex();
 				if (selectedIndex != -1) {
 					String selected = (String) meetingList.getSelectedValue();
-					selected = selected.replaceAll("\\b (Admin)\\b", "");
 					for ( int i = 0;  i < admin.size(); i++){
 			            String tempName = admin.get(i);
-			            if(tempName.equals(selected)){
+			            if((tempName+" (Admin)").equals(selected)){
 			                admin.remove(i);
 			                members.add(admin.get(i));
 			            }
@@ -130,27 +129,27 @@ public class EditMembers extends JFrame {
 				int selectedIndex = meetingList.getSelectedIndex();
 				if (selectedIndex != -1) {
 					String selected = (String) meetingList.getSelectedValue();
-					selected = selected.replaceAll("\\b (Admin)\\b", "");
-					selected = selected.replaceAll("\\b (External)\\b", "");
 					for ( int i = 0;  i < admin.size(); i++){
 			            String tempName = admin.get(i);
-			            if(tempName.equals(selected)){
+			            if((tempName+" (Admin)").equals(selected)){
 			                admin.remove(i);
+							updateMembersList();
 			            }
 			        }
 					for ( int i = 0;  i < members.size(); i++){
 			            String tempName = members.get(i);
 			            if(tempName.equals(selected)){
 			                members.remove(i);
+							updateMembersList();
 			            }
 			        }
 					for ( int i = 0;  i < externalUsers.size(); i++){
 			            String tempName = externalUsers.get(i).getName();
-			            if(tempName.equals(selected)){
+			            if((tempName+" (External)").equals(selected)){
 			            	externalUsers.remove(i);
+							updateMembersList();
 			            }
 			        }
-					updateMembersList();
 				}
 			}
 		});
@@ -247,12 +246,6 @@ public class EditMembers extends JFrame {
 		setResizable(false);
 		setContentPane(contentPane);
 		updateGroups();
-		
-		this.addWindowListener(new WindowAdapter(){
-            public void windowClosing(WindowEvent e){
-            	meeting.enableEditButton();
-            }
-        });
 	}
 	
 	public void addExternal(ExternalUser user){
@@ -266,7 +259,7 @@ public class EditMembers extends JFrame {
 	
 	private void updateGroups(){
 		ArrayList<Integer> tempGroups = new ArrayList<>();
-		groups = null;
+		groups.clear();
 		tempGroups = Frame.getClient().getDataStorage().groups().getGroupID();
 		for (int id:tempGroups){
 			groups.add(String.valueOf(id));
