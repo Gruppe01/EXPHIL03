@@ -12,14 +12,30 @@ public class MeetingInvite implements Serializable {
 
     public MeetingInvite(int meetingID, String username) {
         this.meetingID = meetingID;
-        this.username = username;
+        setUsername(username);
         this.coming = null;
+    }
+
+    public MeetingInvite(int meetingID, String username, boolean coming, String alarm, String lastSeen) {
+        this.meetingID = meetingID;
+        setUsername(username);
+        setComing(coming);
+        setAlarm(alarm);
+        setLastSeen(lastSeen);
+    }
+
+    public MeetingInvite(int meetingID, String username, boolean coming, LocalDateTime alarm, LocalDateTime lastSeen) {
+        this.meetingID = meetingID;
+        setUsername(username);
+        setComing(coming);
+        setAlarm(alarm.toString());
+        setLastSeen(lastSeen.toString());
     }
 
     public MeetingInvite(int meetingID, String username, boolean coming) {
         this.meetingID = meetingID;
-        this.username = username;
-        this.coming = coming;
+        setUsername(username);
+        setComing(coming);
     }
 
     public int getMeetingID() {
@@ -46,7 +62,7 @@ public class MeetingInvite implements Serializable {
         return coming ? "1" : "0";
     }
 
-    public void setComing(Boolean coming) {
+    public void setComing(boolean coming) {
         this.coming = coming;
     }
 

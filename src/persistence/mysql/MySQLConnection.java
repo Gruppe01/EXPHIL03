@@ -37,7 +37,11 @@ public class MySQLConnection {
 
             if(values != null){
                 for(int i=0; i<values.size(); i++){
-                    preparedStatement.setString(i+1, values.get(i));
+                    Object value = values.get(i);
+
+                    if(value == null){
+                        preparedStatement.setNull(i+1, 91);
+                    }else preparedStatement.setString(i+1, values.get(i));
                 }
             }
 

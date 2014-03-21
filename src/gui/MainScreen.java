@@ -3,19 +3,13 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.DefaultListModel;
-import javax.swing.SpringLayout;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 import java.awt.Font;
 import java.time.LocalDate;
@@ -23,8 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import javax.swing.JList;
-
+import javafx.scene.paint.Color;
 import persistence.data.*;
 import model.*;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
@@ -45,6 +38,9 @@ public class MainScreen extends JPanel {
 	private ArrayList<Integer> notifmeetings = new ArrayList<Integer>();
 	private model.Meeting meeting;
 	private ArrayList<Integer> meetingIDList;
+    private ButtonGroup group;
+
+
 	/**
 	 * Create the frame.
 	 */
@@ -55,68 +51,57 @@ public class MainScreen extends JPanel {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		//setContentPane(contentPane);
 		setLayout(null);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 35, 256, 296);
 		add(scrollPane);
-		
+
 		JLabel lblNewLabel = new JLabel("Newsfeed");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		scrollPane.setColumnHeaderView(lblNewLabel);
-		
+
 		meetingListModel = new DefaultListModel();
 		meetingslist = new JList(meetingListModel);
 		scrollPane.setViewportView(meetingslist);
-		
+
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(276, 35, 369, 129);
 		add(scrollPane_1);
-		
+
 		JLabel lblNotifications = new JLabel("Notifications");
 		lblNotifications.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNotifications.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		scrollPane_1.setColumnHeaderView(lblNotifications);
-		
+
 		notiflistModel = new DefaultListModel<>();
 		notifications = new JList(notiflistModel);
 		scrollPane_1.setViewportView(notifications);
-		
+        group = new ButtonGroup();
+
 		meetingIDList = new ArrayList<Integer>();
-		
+
 		JButton btnEditShow = new JButton("Edit / Show meeting");
-		btnEditShow.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-			}
-		});
-		btnEditShow.setBounds(276, 175, 170, 45);
+        btnEditShow.setBounds(276, 175, 170, 45);
 		add(btnEditShow);
-		btnEditShow.addActionListener(new ActionListener(){
+        btnEditShow.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(meetingslist.getSelectedIndex() > -1){
-					ArrayList<String> admins = new ArrayList<>();
 					meeting = Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingIDList.get(meetingslist.getSelectedIndex()));
-					admins = Frame.getClient().getDataStorage().getMeetingAdminsByMeetingID(meetingIDList.get(meetingslist.getSelectedIndex()));
-					if (meeting.getCreator() == Frame.getUserName()){
+					MeetingAdmin admin = Frame.getDataStorage().meetingAdmins().getMeetingAdminByUsernameAndMeetingID(meeting.getMeetingID(), Frame.getUserName());
+					if (admin != null){
 						frame.getEditMeeting().setMeeting(meeting);
 						frame.setFrame("editMeeting");	
-					}
-					else if(admins.contains(Frame.getUserName())){
-						frame.getEditMeeting().setMeeting(meeting);
-						frame.setFrame("editMeeting");
-					}
-					else{
+					}else{
 						frame.getShowMeeting().setMeeting(meeting);
 						frame.setFrame("showMeeting");	
 					}
 				}
 			}
-			
 		});
-		
+
 		JButton btnShowCalendar = new JButton("Show week calendar");
 		btnShowCalendar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -126,7 +111,7 @@ public class MainScreen extends JPanel {
 		});
 		btnShowCalendar.setBounds(276, 231, 170, 45);
 		add(btnShowCalendar);
-		
+
 		JButton btnNewMeeting = new JButton("New meeting");
 		btnNewMeeting.setBounds(276, 287, 170, 44);
 		add(btnNewMeeting);
@@ -135,7 +120,7 @@ public class MainScreen extends JPanel {
 				frame.setFrame("createMeeting");
 			}
 		});
-		
+
 		JButton btnLogOut = new JButton("Log out");
 		btnLogOut.setBounds(556, 299, 89, 32);
 		add(btnLogOut);
@@ -145,12 +130,12 @@ public class MainScreen extends JPanel {
 				frame.setFrame("login");
 			}
 		});
-		
+
 		lblUsername = new JLabel("");
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsername.setBounds(556, 11, 89, 14);
 		add(lblUsername);
-		
+
 		model = new UtilDateModel();
 		datePanel = new JDatePanelImpl(model);
 		datePicker = new JDatePickerImpl(datePanel);
@@ -165,47 +150,60 @@ public class MainScreen extends JPanel {
 				// TODO Auto-generated method stub
 				setDatePicked();
 			}
-			
+
 		});
 
+        pickedDate = LocalDate.now().toString();
+
 		add(datePicker);
+        setNewsfeed();
 		setNotifications();
 	}
-	
+
 	public void refresh(){
 		this.revalidate();
 		this.repaint();
 	}
-	
+
 	private void setDatePicked(){
 		int thismonth = model.getMonth() + 1;
 		String month = thismonth<10 ? "0" + thismonth : "" + thismonth;
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
-		
+
 		pickedDate = model.getYear() + "-" + month + "-" + day;
 		setNewsfeed();
 	}
-	
+
+    @SuppressWarnings("unchecked")
 	public void setNewsfeed(){
-		meetingListModel.removeAllElements();
-		meetingIDList.clear();
-		ArrayList<MeetingInvite> meetings = Frame.getClient().getDataStorage().getMeetingInvitesByUsernameAndDate(Frame.getUserName(), LocalDate.parse(pickedDate));
-		for(MeetingInvite meetingInvite : meetings){
-			meetingListModel.addElement(Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID()).getDescription());
-			meetingIDList.add(Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID()).getMeetingID());
-		}
+        meetingListModel.removeAllElements();
+        meetingIDList.clear();
+
+        ArrayList<MeetingInvite> meetings = Frame.getClient().getDataStorage().getMeetingInvitesByUsernameAndDate(Frame.getUserName(), LocalDate.parse(pickedDate));
+
+        for(MeetingInvite meetingInvite : meetings){
+            Meeting meeting = Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingInvite.getMeetingID());
+
+            meetingListModel.addElement(meeting.getDescription());
+            meetingIDList.add(meeting.getMeetingID());
+        }
 	}
-	
+
+    @SuppressWarnings("unchecked")
 	public void setNotifications(){
-		ArrayList<Meeting> notif = Frame.getClient().getDataStorage().getMeetingNotificationsByUsername(Frame.getUserName());
-		for(Meeting meeting : notif){
-			if(!notifmeetings.contains(meeting.getMeetingID())){
-				notiflistModel.addElement(meeting.getDescription() + " has been updated.");
-				notifmeetings.add(meeting.getMeetingID());
-			}
-		}
+        notiflistModel.removeAllElements();
+        notifmeetings.clear();
+
+        ArrayList<Meeting> notif = Frame.getClient().getDataStorage().getMeetingNotificationsByUsername(Frame.getUserName());
+
+        for(Meeting meeting : notif){
+            if(!notifmeetings.contains(meeting.getMeetingID())){
+                notiflistModel.addElement(meeting.getDescription() + " has been updated.");
+                notifmeetings.add(meeting.getMeetingID());
+            }
+        }
 	}
-	
+
 	public void setUser(String in){
 		lblUsername.setText(in);
 	}

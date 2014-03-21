@@ -323,7 +323,7 @@ public class CreateMeeting extends JPanel {
 		endtime = Integer.toString(model.getYear())+"-"+month+"-"+day+"T"+endH+":"+endM+":00";
 		capacity = (Integer) participantsSpinner.getValue();
 		place = placeTextField.getText();
-		ArrayList<Object> meeting = new ArrayList<>();
+		Object meeting = new ArrayList<>();
 
 		if (list.isSelectionEmpty()){
             if(place.equals("")){
@@ -331,13 +331,13 @@ public class CreateMeeting extends JPanel {
                 return;
             }
 
-			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null));
+			meeting = new Meeting(meetingid, starttime, endtime, description, place, -1, -1, Frame.getUserName(), null);
 		}
 		else{
             roomS = list.getSelectedValue().toString();
 			room = Integer.parseInt(roomS.substring(roomS.indexOf(" ") + 1));
 
-			meeting.add(new Meeting(meetingid, starttime, endtime, description, place, room, capacity, Frame.getUserName(), null));
+			meeting = new Meeting(meetingid, starttime, endtime, description, place, room, capacity, Frame.getUserName(), null);
 		}
 
 		Frame.getClient().sendChanges(meeting, "insert");
