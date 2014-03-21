@@ -44,8 +44,15 @@ public class ShowMeeting extends JPanel {
 	
 	public void setMeeting(model.Meeting m){
 		this.meeting = m;
+		String placeOrRoom;
+		if (meeting.getPlace() != null){
+			placeOrRoom = meeting.getPlace();
+		}
+		else{
+			placeOrRoom = "Room " + meeting.getRoom();
+		}
 		textPane.setText(meeting.getDescription());
-		textPane_1.setText(meeting.getPlace());
+		textPane_1.setText(placeOrRoom);
 		textPane_2.setText(meeting.getStartTimeAsLocalDateTime().toLocalTime().toString());
 		textPane_3.setText(meeting.getEndTimeAsLocalDateTime().toLocalTime().toString());
 		textPane_4.setText(meeting.getStartTimeAsLocalDateTime().toLocalDate().toString());
