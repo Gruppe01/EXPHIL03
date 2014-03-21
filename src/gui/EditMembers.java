@@ -61,6 +61,7 @@ public class EditMembers extends JFrame {
 			for (model.MeetingInvite i :Frame.getClient().getDataStorage().getMeetingMembers(meetingE.getMeetingID())){
 				members.add(i.getUsername());
 			}
+			updateMembersList();
 			
 		}
 		working = this;
