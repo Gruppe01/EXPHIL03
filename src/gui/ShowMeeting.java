@@ -7,8 +7,10 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.SwingConstants;
 import javax.swing.JList;
 import javax.swing.JTextPane;
@@ -17,6 +19,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.border.*;
 
+import model.MeetingInvite;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -29,12 +32,15 @@ import javax.swing.JTextField;
 public class ShowMeeting extends JPanel {
 	private JTable table;
 	private model.Meeting meeting;
-	JTextPane textPane;
-	JTextPane textPane_1;
-	JTextPane textPane_2;
-	JTextPane textPane_3;
-	JTextPane textPane_4;
-    JComboBox comboBox;
+	private JTextPane textPane;
+	private JTextPane textPane_1;
+	private JTextPane textPane_2;
+	private JTextPane textPane_3;
+	private JTextPane textPane_4;
+    private JComboBox comboBox;
+    private JScrollPane scrollPane;
+    private JList listMeetingMembers;
+    private DefaultListModel listMeetingMembersModel;
 	
 	public void setMeeting(model.Meeting m){
 		this.meeting = m;
@@ -43,6 +49,16 @@ public class ShowMeeting extends JPanel {
 		textPane_2.setText(meeting.getStartTimeAsLocalDateTime().toLocalTime().toString());
 		textPane_3.setText(meeting.getEndTimeAsLocalDateTime().toLocalTime().toString());
 		textPane_4.setText(meeting.getStartTimeAsLocalDateTime().toLocalDate().toString());
+		
+		listMeetingMembersModel = new DefaultListModel();
+		ArrayList<MeetingInvite> meetingMembers =  Frame.getDataStorage().getMeetingMembers(meeting.getMeetingID());
+		
+		for (MeetingInvite mI : meetingMembers){
+			listMeetingMembersModel.addElement(mI.getUsername());
+		}
+		
+		listMeetingMembers = new JList(listMeetingMembersModel);
+		scrollPane.setViewportView(listMeetingMembers);
 		
 		textPane.setEditable(false);
 		textPane_1.setEditable(false);
@@ -158,7 +174,7 @@ public class ShowMeeting extends JPanel {
 		textPane_4.setBounds(312, 5, 123, 20);
 		add(textPane_4);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(267, 42, 302, 162);
 		add(scrollPane);
 		
@@ -167,10 +183,6 @@ public class ShowMeeting extends JPanel {
 		lblMeetingMembers.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		scrollPane.setColumnHeaderView(lblMeetingMembers);
 		
-		JList list = new JList();
-		scrollPane.setViewportView(list);
-		
-
 		
 		
 
