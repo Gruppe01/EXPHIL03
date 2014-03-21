@@ -241,11 +241,13 @@ public class EditMembers extends JFrame {
 			}
 		});
 		
+		/*
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Search...", "Simon", "Robin", "Simen", "Sindre", "Peder", "Arne", "Kjell-Elvis"}));
 		comboBox.setBounds(27, 12, 104, 20);
 		AutoCompleteDecorator.decorate(comboBox);
 		contentPane.add(comboBox);
+		*/
 		
 		setResizable(false);
 		setContentPane(contentPane);
