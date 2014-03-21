@@ -28,6 +28,12 @@ import javax.swing.JTextField;
 
 public class ShowMeeting extends JPanel {
 	private JTable table;
+	private model.Meeting meeting;
+	
+	public void setMeeting(model.Meeting m){
+		this.meeting = m;
+		System.out.println(meeting.getDescription());
+	}
 
 	
 	public ShowMeeting(final Frame frame) {

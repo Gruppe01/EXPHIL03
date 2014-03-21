@@ -10,10 +10,13 @@ import javax.swing.DefaultListModel;
 import javax.swing.SpringLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
 import java.awt.Font;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,7 +27,6 @@ import javax.swing.JList;
 
 import persistence.data.*;
 import model.*;
-
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -41,6 +43,7 @@ public class MainScreen extends JPanel {
 	private JList notifications;
 	private DefaultListModel notiflistModel;
 	private ArrayList<Integer> notifmeetings = new ArrayList<Integer>();
+	private model.Meeting meeting;
 	/**
 	 * Create the frame.
 	 */
@@ -91,9 +94,19 @@ public class MainScreen extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				//if(meetingslist.hasFocus()){
-					frame.setFrame("showMeeting");
-				//}
+				if(meetingslist.getSelectedIndex() > -1){
+					meeting = Frame.getClient().getDataStorage().meetings().getMeetingByID(meetingslist.getSelectedIndex() + 1);
+					//if (meeting.isAdmin()){
+						//frame.getEditMeeting().setMeeting(meeting);
+						//frame.setFrame("editMeeting");	
+					//}
+					//else{
+						frame.getShowMeeting().setMeeting(meeting);
+						frame.setFrame("showMeeting");	
+					//}
+
+					
+				}
 			}
 			
 		});

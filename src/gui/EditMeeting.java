@@ -23,6 +23,12 @@ import javax.swing.JTextField;
 
 public class EditMeeting extends JPanel {
 	private JTextField textField;
+	private model.Meeting meeting;
+	
+	public void setMeeting(model.Meeting m){
+		this.meeting = m;
+		System.out.println(meeting.getDescription());
+	}
 
 	/**
 	 * Create the panel.
