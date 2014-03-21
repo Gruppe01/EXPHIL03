@@ -331,7 +331,7 @@ public class EditMeeting extends JPanel {
 		String roomS;
 		int room;
 
-		int meetingid = Frame.getClient().getDataStorage().meetings().getNextMeetingID();
+		//int meetingid = Frame.getClient().getDataStorage().meetings().getNextMeetingID();
 
 		String month = model.getMonth()+1<10 ? "0" + (model.getMonth()+1) : "" + (model.getMonth()+1);
 		String day = model.getDay()<10 ? "0" + model.getDay() : "" + model.getDay();
