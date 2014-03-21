@@ -51,6 +51,10 @@ public class EditMembers extends JFrame {
 	
 	public EditMembers(final CreateMeeting inC, final EditMeeting inE) {
 		
+		listModelgroupMembers = new DefaultListModel<>();
+		listModelMembers = new DefaultListModel<>();
+		listModelgroupsList = new DefaultListModel<>();
+		
 		if (inC!=null&&inE==null){
 			meetingC = inC;
 			isCreate = true;
@@ -68,9 +72,6 @@ public class EditMembers extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(697,335);
-		listModelgroupMembers = new DefaultListModel<>();
-		listModelMembers = new DefaultListModel<>();
-		listModelgroupsList = new DefaultListModel<>();
 		groups.add("Show All Members");
 		contentPane = new JPanel();
 		
